@@ -6,7 +6,7 @@
 [![pnpm](https://img.shields.io/badge/pnpm-11.x-blue?logo=pnpm&style=for-the-badge)](https://pnpm.io)
 [![Gulp](https://img.shields.io/badge/Gulp-5.x-red?logo=gulp&style=for-the-badge)](https://gulpjs.com)
 
-![:markdown-viewer-moe](https://count.getloli.com/@:markdown-viewer-moe?theme=gelbooru-h)
+![:markdown-viewer-moe](https://count.getloli.com/@:markdown-viewer-moe?theme=moebooru)
 
 ---
 
