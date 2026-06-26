@@ -75,8 +75,8 @@ pnpm build
 }
 ```
 
-- defaultUrl：当没有匹配别名或 ?md= 参数时的默认文档地址。
-- aliases：键为访问路径（如 #!/vmdownload），值为实际的 Markdown 文件 URL。
+- defaultUrl：当没有匹配别名或 `?md=` 参数时的默认文档地址。
+- aliases：键为访问路径（如 `#!/vmdownload`），值为实际的 Markdown 文件 URL。
 
 > 访问 `?md=直接URL` 将覆盖所有配置，优先级最高。
 
