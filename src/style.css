@@ -148,6 +148,11 @@ body {
     border-radius: 30px;
     -webkit-text-fill-color: var(--moe-text-light);
 }
+.logo-img {
+    height: 32px;   /* 根据喜好调整 */
+    width: auto;
+    margin-right: 8px;
+}
 .toc-toggle {
     background: rgba(255, 255, 255, 0.7);
     border: 1px solid rgba(255, 107, 157, 0.25);

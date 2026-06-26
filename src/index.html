@@ -4,9 +4,18 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>🌸 萌·Markdown 预览器</title>
+
+    <!-- ====== 网站图标 ====== -->
+    <link rel="icon" type="image/svg+xml" href="img/favicon.svg">
+    <link rel="alternate icon" href="img/favicon.ico" sizes="32x32">
+    <link rel="apple-touch-icon" href="img/apple-touch-icon.png" sizes="180x180">
+    <link rel="manifest" href="img/site.webmanifest">
+
+    <!-- 外部依赖 -->
     <script src="https://cdn.jsdelivr.net/npm/marked@15.0.7/marked.min.js"></script>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/themes/prism-tomorrow.min.css">
     <script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/prism.min.js"></script>
+
     <config-placeholder></config-placeholder>
     <link rel="stylesheet" href="style.css">
 </head>
@@ -32,6 +41,7 @@
     <main class="card" role="main">
         <div class="header">
             <div class="header-left">
+                <img id="logo-img" src="logo-placeholder" alt="Logo" class="logo-img">
                 <span class="logo">📝 萌·Markdown</span>
                 <span class="logo-sub">Moe Preview</span>
             </div>

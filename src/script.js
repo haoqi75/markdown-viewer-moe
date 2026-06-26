@@ -7,6 +7,14 @@ const CONFIG = window.__CONFIG__ || {
 };
 
 // ============================================================
+// 初始化：设置自定义标题
+// ============================================================
+
+if (CONFIG.title) {
+    document.title = CONFIG.title;
+}
+
+// ============================================================
 // 目录功能 (TOC) —— 完整实现
 // ============================================================
 const TOC = (function() {
@@ -234,6 +242,15 @@ const Renderer = (function() {
 // ============================================================
 document.addEventListener('DOMContentLoaded', function() {
     TOC.init();
+    // 设置 Logo 文字
+    const logoEl = document.querySelector('.logo');
+    const subEl = document.querySelector('.logo-sub');
+    if (logoEl && CONFIG.logo && CONFIG.logo.text) {
+        logoEl.textContent = CONFIG.logo.text;
+    }
+    if (subEl && CONFIG.logo && CONFIG.logo.sub) {
+        subEl.textContent = CONFIG.logo.sub;
+    }
     Renderer.load();
     if (window.location.hash) {
         setTimeout(() => {
