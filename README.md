@@ -6,6 +6,8 @@
 [![pnpm](https://img.shields.io/badge/pnpm-8.x-blue?logo=pnpm)](https://pnpm.io)
 [![Gulp](https://img.shields.io/badge/Gulp-5.x-red?logo=gulp)](https://gulpjs.com)
 
+![:markdown-viewer-moe](https://count.getloli.com/@:markdown-viewer-moe)
+
 ---
 
 ## ✨ 特色
