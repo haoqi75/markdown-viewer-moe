@@ -1,6 +1,6 @@
 {
-    "defaultUrl": "https://cp.qtdt.qzz.io/api/raw/index",
+    "defaultUrl": "https://raw.githubusercontent.com/haoqi75/markdown-viewer-moe/refs/heads/main/README.md",
     "aliases": {
-        "vmdownload": "https://cp.qtdt.qzz.io/api/raw/wmdownload"
+        "index": "https://cp.qtdt.qzz.io/api/raw/index"
     }
 }

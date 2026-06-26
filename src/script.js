@@ -2,7 +2,7 @@
 // 配置加载（由构建工具注入 __CONFIG__）
 // ============================================================
 const CONFIG = window.__CONFIG__ || {
-    defaultUrl: 'https://cp.qtdt.qzz.io/api/raw/index',
+    defaultUrl: 'https://raw.githubusercontent.com/haoqi75/markdown-viewer-moe/refs/heads/main/README.md',
     aliases: {}
 };
 
