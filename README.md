@@ -71,7 +71,17 @@ pnpm build
 
 ```json
 {
-    "defaultUrl": "https://your-default-api.com/raw/index",
+    "title": "🌸 萌·Markdown 预览器：我的专属 Markdown 空间",
+    "logo": {
+        "text": "📝 萌·Markdown",
+        "sub": "我的专属 Markdown 空间"
+    },
+    "logoImage": "img/favicon.svg",
+    "icon": {
+        "svg": "img/favicon.svg",
+        "ico": "img/favicon.ico",
+        "apple": "img/apple-touch-icon.png"
+    },
     "aliases": {
         "test": "https://another-api.com/raw/wmdownload",
         "docs": "https://docs.example.com/readme.md"
