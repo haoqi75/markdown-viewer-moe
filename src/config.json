@@ -1,0 +1,6 @@
+{
+    "defaultUrl": "https://cp.qtdt.qzz.io/api/raw/index",
+    "aliases": {
+        "vmdownload": "https://cp.qtdt.qzz.io/api/raw/wmdownload"
+    }
+}

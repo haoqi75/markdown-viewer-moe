@@ -1,0 +1,120 @@
+# 🌸 Moe Markdown Viewer
+
+> 由 AI 生成的 Moe Markdown 查看器 · 萌系主题 · 开箱即用
+
+[![License: MIT](https://img.shields.io/badge/License-MIT-pink.svg)](LICENSE)
+[![pnpm](https://img.shields.io/badge/pnpm-8.x-blue?logo=pnpm)](https://pnpm.io)
+[![Gulp](https://img.shields.io/badge/Gulp-5.x-red?logo=gulp)](https://gulpjs.com)
+
+---
+
+## ✨ 特色
+
+- 🎀 **萌系主题** – 粉紫渐变、毛玻璃效果、浮动装饰、标题小图标
+- 📑 **智能目录** – 自动提取 `h1~h6`，点击平滑滚动，移动端自动收起
+- 🛣️ **别名路由** – 支持 `#!/vmdownload` 形式的路径别名，无需修改服务器配置
+- ⚙️ **灵活配置** – `config.json` 轻松设置默认文档和别名映射
+- 🔧 **开发友好** – 使用 Gulp 构建，支持 `pnpm dev` 实时预览 + 热重载
+- 📦 **单文件交付** – 构建后生成 `dist/index.html`，所有资源内联，部署简单
+- 💻 **代码高亮** – 集成 Prism.js，代码块美观易读
+
+---
+
+## 📷 预览
+
+| 桌面端 | 移动端 |
+|:------:|:------:|
+| ![桌面预览](screenshots/desktop.png) | ![移动预览](screenshots/mobile.jpg) |
+
+---
+
+## 🚀 快速开始
+
+### 前置要求
+- Node.js 16+（推荐 18+）
+- pnpm 8.x
+
+### 克隆项目
+```bash
+git clone https://github.com/your-username/markdown-viewer-moe.git
+cd markdown-viewer-moe
+```
+
+### 安装依赖
+```bash
+pnpm install
+```
+
+### 开发模式（自动预览 + 热重载）
+```bash
+pnpm dev
+# 浏览器自动打开 http://localhost:3000
+```
+
+### 生产构建
+```bash
+pnpm build
+# 生成 dist/index.html
+```
+
+---
+
+## ⚙️ 配置说明
+
+所有配置位于 `src/config.json`：
+
+```json
+{
+    "defaultUrl": "https://your-default-api.com/raw/index",
+    "aliases": {
+        "vmdownload": "https://another-api.com/raw/wmdownload",
+        "docs": "https://docs.example.com/readme.md"
+    }
+}
+```
+
+- defaultUrl：当没有匹配别名或 ?md= 参数时的默认文档地址。
+- aliases：键为访问路径（如 #!/vmdownload），值为实际的 Markdown 文件 URL。
+
+> 访问 `?md=直接URL` 将覆盖所有配置，优先级最高。
+
+---
+
+## 📂 项目结构
+```
+markdown-viewer-moe/
+├── src/
+│   ├── index.html          # 主页面
+│   ├── style.css           # 萌系样式
+│   ├── script.js           # 主要逻辑（TOC、渲染、路由）
+│   └── config.json         # 配置文件
+├── dist/                   # 构建输出（仅含 index.html）
+├── gulpfile.js             # Gulp 构建脚本
+├── package.json            # 项目依赖和脚本
+└── README.md               # 就是这个文件啦~
+```
+
+---
+
+## 🛠️ 技术栈
+- [marked](https://marked.js.org/) – Markdown 解析
+- [Prism.js](https://prismjs.com/) – 代码高亮
+- [Gulp](https://gulpjs.com/) – 构建工具（内联、压缩）
+- [BrowserSync](https://browsersync.io/) – 热重载开发服务器
+- [pnpm](https://pnpm.io/) – 包管理
+
+---
+
+## 🤝 贡献
+欢迎提出 Issue 或 Pull Request！
+如果您喜欢这个项目，别忘了点个 ⭐ 哦～
+
+---
+
+## 📄 License
+MIT © [ApHeQua758](https://github.com/haoqi75)
+
+---
+
+## 💖 致谢
+本项目由 [AI](https://github.com/) 辅助生成，融合了人类审美与机器效率，愿为您的 Markdown 阅读带来一丝惬意。

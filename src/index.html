@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🌸 萌·Markdown 预览器</title>
+    <script src="https://cdn.jsdelivr.net/npm/marked@15.0.7/marked.min.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/themes/prism-tomorrow.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/prism.min.js"></script>
+    <config-placeholder></config-placeholder>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <!-- 浮动装饰 -->
+    <div class="moe-deco" aria-hidden="true">🌸</div>
+    <div class="moe-deco" aria-hidden="true">⭐</div>
+    <div class="moe-deco" aria-hidden="true">💖</div>
+    <div class="moe-deco" aria-hidden="true">✨</div>
+
+    <div id="toc-overlay" class="toc-overlay"></div>
+
+    <aside id="toc-sidebar" class="toc-sidebar" role="navigation" aria-label="文档目录">
+        <div class="toc-header">
+            <h3>📋 大纲 <span id="toc-count">0</span></h3>
+            <button class="toc-close" id="toc-close-btn" aria-label="关闭目录">✕</button>
+        </div>
+        <div id="toc-content">
+            <div class="toc-empty">🌸 暂无标题</div>
+        </div>
+    </aside>
+
+    <main class="card" role="main">
+        <div class="header">
+            <div class="header-left">
+                <span class="logo">📝 萌·Markdown</span>
+                <span class="logo-sub">Moe Preview</span>
+            </div>
+            <button id="toc-toggle" class="toc-toggle" aria-label="切换目录">
+                📑 大纲 <span class="badge" id="toc-badge">0</span>
+            </button>
+        </div>
+        <div id="content">
+            <div class="loading-wrap">
+                <div class="spinner"></div>
+                <p>🌸 正在加载文档...</p>
+            </div>
+        </div>
+    </main>
+
+    <script src="script.js"></script>
+</body>
+</html>
