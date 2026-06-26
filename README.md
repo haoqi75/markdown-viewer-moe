@@ -2,11 +2,11 @@
 
 > 由 AI 生成的 Moe Markdown 查看器 · 萌系主题 · 开箱即用
 
-[![License: MIT](https://img.shields.io/badge/License-MIT-pink.svg)](LICENSE)
-[![pnpm](https://img.shields.io/badge/pnpm-8.x-blue?logo=pnpm)](https://pnpm.io)
-[![Gulp](https://img.shields.io/badge/Gulp-5.x-red?logo=gulp)](https://gulpjs.com)
+[![License: MIT](https://img.shields.io/badge/License-MIT-pink.svg?style=for-the-badge)](LICENSE)
+[![pnpm](https://img.shields.io/badge/pnpm-11.x-blue?logo=pnpm&style=for-the-badge)](https://pnpm.io)
+[![Gulp](https://img.shields.io/badge/Gulp-5.x-red?logo=gulp&style=for-the-badge)](https://gulpjs.com)
 
-![:markdown-viewer-moe](https://count.getloli.com/@:markdown-viewer-moe)
+![:markdown-viewer-moe](https://count.getloli.com/@:markdown-viewer-moe?theme=gelbooru-h)
 
 ---
 
@@ -34,7 +34,7 @@
 
 ### 前置要求
 - Node.js 16+（推荐 18+）
-- pnpm 8.x
+- pnpm 8.x或者更高
 
 ### 克隆项目
 ```bash
@@ -83,7 +83,7 @@ pnpm build
 ---
 
 ## 📂 项目结构
-```
+```tree
 markdown-viewer-moe/
 ├── src/
 │   ├── index.html          # 主页面
