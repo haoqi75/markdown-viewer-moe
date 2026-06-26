@@ -26,7 +26,7 @@
 
 | 桌面端 | 移动端 |
 |:------:|:------:|
-| ![桌面预览](screenshots/desktop.png) | ![移动预览](screenshots/mobile.jpg) |
+| ![桌面预览](https://raw.githubusercontent.com/haoqi75/markdown-viewer-moe/main/screenshots/desktop.png) | ![移动预览](https://raw.githubusercontent.com/haoqi75/markdown-viewer-moe/main/screenshots/mobile.jpg) |
 
 ---
 
@@ -38,7 +38,7 @@
 
 ### 克隆项目
 ```bash
-git clone https://github.com/your-username/markdown-viewer-moe.git
+git clone https://github.com/haoqi75/markdown-viewer-moe.git
 cd markdown-viewer-moe
 ```
 
@@ -69,7 +69,7 @@ pnpm build
 {
     "defaultUrl": "https://your-default-api.com/raw/index",
     "aliases": {
-        "vmdownload": "https://another-api.com/raw/wmdownload",
+        "test": "https://another-api.com/raw/wmdownload",
         "docs": "https://docs.example.com/readme.md"
     }
 }
