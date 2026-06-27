@@ -492,6 +492,51 @@ body {
     margin: 1.8rem 0;
     opacity: 0.4;
 }
+/* 页脚 */
+.footer {
+    margin-top: 2rem;
+    padding-top: 1rem;
+    border-top: 1px solid rgba(255, 107, 157, 0.15);
+    text-align: center;
+    font-size: 0.85rem;
+    color: var(--moe-text-light);
+}
+.footer a {
+    color: var(--moe-pink-dark);
+    text-decoration: none;
+    border-bottom: 1px solid rgba(255, 107, 157, 0.2);
+}
+.footer a:hover {
+    color: var(--moe-purple);
+    border-bottom-color: var(--moe-purple);
+}
+
+/* 右下角吉祥物 */
+.mascot {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    z-index: 1;
+    width: 120px;
+    height: auto;
+    pointer-events: none; /* 不干扰点击 */
+    opacity: 0.85;
+    transition: transform 0.3s ease;
+}
+.mascot img {
+    width: 100%;
+    height: auto;
+    display: block;
+    filter: drop-shadow(0 4px 12px rgba(255, 107, 157, 0.15));
+}
+/* 移动端缩小 */
+@media (max-width: 640px) {
+    .mascot {
+        width: 80px;
+        bottom: 12px;
+        right: 12px;
+    }
+}
 /* 加载状态 */
 .loading-wrap {
     display: flex;

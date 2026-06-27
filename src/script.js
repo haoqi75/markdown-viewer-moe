@@ -242,6 +242,7 @@ const Renderer = (function() {
 // ============================================================
 document.addEventListener('DOMContentLoaded', function() {
     TOC.init();
+
     // 设置 Logo 文字
     const logoEl = document.querySelector('.logo');
     const subEl = document.querySelector('.logo-sub');
@@ -251,7 +252,24 @@ document.addEventListener('DOMContentLoaded', function() {
     if (subEl && CONFIG.logo && CONFIG.logo.sub) {
         subEl.textContent = CONFIG.logo.sub;
     }
+
+    // 页脚
+    const footerEl = document.getElementById('footer');
+    if (footerEl && CONFIG.footer) {
+        footerEl.innerHTML = marked.parse(CONFIG.footer);
+    }
+
+    // 吉祥物（保留内联，避免覆盖）
+    const mascotImg = document.getElementById('mascot-img');
+    if (mascotImg && CONFIG.mascot) {
+        if (!mascotImg.src.startsWith('data:')) {
+            mascotImg.src = CONFIG.mascot;
+        }
+    }
+
+    // ====== 关键：加载 Markdown 内容 ======
     Renderer.load();
+
     if (window.location.hash) {
         setTimeout(() => {
             const id = window.location.hash.slice(1);

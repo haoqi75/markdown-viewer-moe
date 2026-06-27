@@ -14,6 +14,12 @@
 
 ---
 
+## 🌐 在线演示
+
+打开[https://moe520.haoqi75.os.kg/](https://moe520.haoqi75.os.kg/)即可使用。
+
+---
+
 ## ✨ 特色
 
 - 🎀 **萌系主题** – 粉紫渐变、毛玻璃效果、浮动装饰、标题小图标
@@ -23,6 +29,8 @@
 - 🔧 **开发友好** – 使用 Gulp 构建，支持 `pnpm dev` 实时预览 + 热重载
 - 📦 **单文件交付** – 构建后生成 `dist/index.html`，所有资源内联，部署简单
 - 💻 **代码高亮** – 集成 Prism.js，代码块美观易读
+- 🦊 **萌系吉祥物** – 可配置透明背景的右下角角色，为页面增添活力
+- 📝 **自定义页脚** – 支持 Markdown 的页脚内容，轻松添加版权或链接
 
 ---
 
@@ -37,8 +45,8 @@
 ## 🚀 快速开始
 
 ### 前置要求
-- Node.js 16+（推荐 18+）
-- pnpm 8.x或者更高
+- Node.js 24+（避免错误，因为这是我开发的Node.js版本）
+- pnpm 11.x或者更高（跟Node.js一样）
 
 ### 克隆项目
 ```bash
@@ -68,6 +76,7 @@ pnpm build
 ## 🌐使用方式
 
 这是一个单独的**html**文件，可以直接打开或者上传到
+- GitHub Pages
 - Cloudfare Pages
 - Netlify
 - Vercel
@@ -92,6 +101,9 @@ pnpm build
         "ico": "img/favicon.ico",
         "apple": "img/apple-touch-icon.png"
     },
+    "footer": "[萌·Markdown](https://github.com/haoqi75/markdown-viewer-moe) | 由 ApHeQua758 与 AI 创建",
+    "mascot": "img/mascot.png",
+    "defaultUrl": "https://your-default-api.com/raw/index",
     "aliases": {
         "test": "https://another-api.com/raw/wmdownload",
         "docs": "https://docs.example.com/readme.md"
@@ -109,6 +121,7 @@ pnpm build
 ## 📂 项目结构
 ```tree
 markdown-viewer-moe/
+├── images/                  #图片
 ├── src/
 │   ├── img/                # 图标文件夹
 │   ├── index.html          # 主页面

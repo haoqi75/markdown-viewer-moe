@@ -10,6 +10,8 @@
         "ico": "img/favicon.ico",
         "apple": "img/apple-touch-icon.png"
     },
+    "footer": "[萌·Markdown](https://github.com/haoqi75/markdown-viewer-moe) | 由 ApHeQua758 与 AI 创建",
+    "mascot": "img/mascot.png",
     "defaultUrl": "https://raw.githubusercontent.com/haoqi75/markdown-viewer-moe/refs/heads/main/README.md",
     "aliases": {
         "index": "https://cp.qtdt.qzz.io/api/raw/index"

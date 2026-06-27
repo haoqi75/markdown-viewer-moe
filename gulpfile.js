@@ -13,9 +13,6 @@ const browserSync = require('browser-sync').create();
 const srcDir = 'src';
 const distDir = 'dist';
 
-// ============================================================
-// 获取 MIME 类型
-// ============================================================
 function getMimeType(filePath) {
     const ext = path.extname(filePath).toLowerCase();
     const map = {
@@ -30,9 +27,6 @@ function getMimeType(filePath) {
     return map[ext] || 'image/png';
 }
 
-// ============================================================
-// 检查必要文件
-// ============================================================
 function checkRequiredFiles() {
     const required = [
         path.join(srcDir, 'index.html'),
@@ -49,9 +43,6 @@ function checkRequiredFiles() {
     console.log('✅ 所有必要文件检查通过');
 }
 
-// ============================================================
-// 验证构建产物
-// ============================================================
 function verifyBuild() {
     const outputPath = path.join(distDir, 'index.html');
     if (!fs.existsSync(outputPath)) {
@@ -70,16 +61,10 @@ function verifyBuild() {
     console.log('✅ 构建产物验证通过');
 }
 
-// ============================================================
-// 清理
-// ============================================================
 function clean() {
     return deleteAsync([distDir]);
 }
 
-// ============================================================
-// 将文件转为 Base64 Data URI
-// ============================================================
 function toDataUri(filePath, mimeType) {
     const fullPath = path.join(srcDir, filePath);
     if (!fs.existsSync(fullPath)) return null;
@@ -87,10 +72,6 @@ function toDataUri(filePath, mimeType) {
     const base64 = data.toString('base64');
     return `data:${mimeType};base64,${base64}`;
 }
-
-// ============================================================
-// 构建任务
-// ============================================================
 
 function build() {
     checkRequiredFiles();
@@ -106,7 +87,7 @@ function build() {
     }
     const configScript = `<script>window.__CONFIG__ = ${JSON.stringify(config)};</script>`;
 
-    // ---- 处理图标路径 ----
+    // ---- 图标 ----
     const defaultIcon = {
         svg: 'img/favicon.svg',
         ico: 'img/favicon.ico',
@@ -121,7 +102,7 @@ function build() {
     const icoUri = toDataUri(icoPath, 'image/x-icon');
     const appleUri = toDataUri(applePath, 'image/png');
 
-    // ---- 处理 Logo 图片 ----
+    // ---- Logo ----
     const logoPath = config.logoImage || null;
     let logoSrc = 'logo-placeholder';
     if (logoPath) {
@@ -133,25 +114,38 @@ function build() {
         } else {
             console.warn(`⚠️ Logo 图片文件不存在: ${logoPath}，将使用占位符`);
         }
-    } else {
-        console.log('ℹ️ 未配置 logoImage，将使用占位符');
     }
-
-    // 如果仍然是占位符，可以设置为一个透明 1x1 GIF 的 data URI（避免 404）
     if (logoSrc === 'logo-placeholder') {
-        // 1x1 透明 GIF data URI
         logoSrc = 'data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7';
         console.log('ℹ️ 使用透明占位图代替 logo');
     }
 
-    // ---- 开始流式处理 ----
+    // ---- 吉祥物 ----
+    const mascotPath = config.mascot || null;
+    let mascotSrc = 'mascot-placeholder';
+    if (mascotPath) {
+        const mime = getMimeType(mascotPath);
+        const dataUri = toDataUri(mascotPath, mime);
+        if (dataUri) {
+            mascotSrc = dataUri;
+            console.log(`✅ 吉祥物图片已转为 Data URI (${mascotPath})`);
+        } else {
+            console.warn(`⚠️ 吉祥物图片文件不存在: ${mascotPath}，将使用占位符`);
+        }
+    }
+    if (mascotSrc === 'mascot-placeholder') {
+        mascotSrc = 'data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7';
+        console.log('ℹ️ 使用透明占位图代替吉祥物');
+    }
+
+    // ---- 流式处理 ----
     return gulp.src(path.join(srcDir, 'index.html'))
         .pipe(replace('<config-placeholder>', configScript))
         .pipe(replace(/href="img\/favicon\.svg"/g, `href="${svgUri || 'img/favicon.svg'}"`))
         .pipe(replace(/href="img\/favicon\.ico"/g, `href="${icoUri || 'img/favicon.ico'}"`))
         .pipe(replace(/href="img\/apple-touch-icon\.png"/g, `href="${appleUri || 'img/apple-touch-icon.png'}"`))
-        // 替换 Logo 图片 src
         .pipe(replace(/src="logo-placeholder"/g, `src="${logoSrc}"`))
+        .pipe(replace(/src="mascot-placeholder"/g, `src="${mascotSrc}"`))
         .pipe(replace(/<link rel="manifest" href="[^"]*">/g, ''))
         .pipe(inline({
             base: srcDir,
@@ -169,9 +163,6 @@ function build() {
         });
 }
 
-// ============================================================
-// 开发任务
-// ============================================================
 function dev() {
     browserSync.init({
         server: {
@@ -190,9 +181,6 @@ function dev() {
     );
 }
 
-// ============================================================
-// 导出任务
-// ============================================================
 exports.clean = clean;
 exports.build = gulp.series(clean, build);
 exports.dev = gulp.series(clean, build, dev);
