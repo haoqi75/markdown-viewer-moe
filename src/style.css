@@ -519,9 +519,13 @@ body {
     z-index: 1;
     width: 120px;
     height: auto;
-    pointer-events: none; /* 不干扰点击 */
+    cursor: pointer;
     opacity: 0.85;
-    transition: transform 0.3s ease;
+    transition: transform 0.3s ease, opacity 0.3s ease;
+}
+.mascot:hover {
+    transform: scale(1.08);
+    opacity: 1;
 }
 .mascot img {
     width: 100%;
