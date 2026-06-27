@@ -45,32 +45,38 @@
 
 ## 🚀 快速开始
 
-### 前置要求
+### 本地部署
+
+#### 前置要求
 - Node.js 24+（避免错误，因为这是我开发的Node.js版本）
 - pnpm 11.x或者更高（跟Node.js一样）
 
-### 克隆项目
+#### 克隆项目
 ```bash
 git clone https://github.com/haoqi75/markdown-viewer-moe.git
 cd markdown-viewer-moe
 ```
 
-### 安装依赖
+#### 安装依赖
 ```bash
 pnpm install
 ```
 
-### 开发模式（自动预览 + 热重载）
+#### 开发模式（自动预览 + 热重载）
 ```bash
 pnpm dev
-# 浏览器自动打开 http://localhost:3000
+# 请手动打开 http://localhost:8520
 ```
 
-### 生产构建
+#### 生产构建
 ```bash
 pnpm build
 # 生成 dist/index.html
 ```
+
+### 自动部署到GitHub Pages
+
+Actions文件在：`.github/workflows/static.yml`
 
 ---
 
@@ -122,7 +128,10 @@ pnpm build
 ## 📂 项目结构
 ```tree
 markdown-viewer-moe/
-├── images/                  #图片
+├── .github/
+│   └── workflows/
+│        └── static.yml     # 自动构建并推送到GitHub Pages
+├── images/                  # 图片
 ├── src/
 │   ├── img/                # 图标文件夹
 │   ├── index.html          # 主页面
