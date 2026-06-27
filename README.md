@@ -1,7 +1,7 @@
 # 🌸 Moe Markdown Viewer
 
 <p align="center">
-  <img src="https://raw.githubusercontent.com/haoqi75/markdown-viewer-moe/main/images/icon.png" alt="Moe Markdown Viewer 图标" width="128">
+  <img src="images/icon.png" alt="Moe Markdown Viewer 图标" width="128">
 </p>
 
 > 由 AI 生成的 Moe Markdown 查看器 · 萌系主题 · 开箱即用
@@ -38,7 +38,7 @@
 
 | 桌面端 | 移动端 |
 |:------:|:------:|
-| ![桌面预览](https://raw.githubusercontent.com/haoqi75/markdown-viewer-moe/main/images/desktop.png) | ![移动预览](https://raw.githubusercontent.com/haoqi75/markdown-viewer-moe/main/images/mobile.jpg) |
+| ![桌面预览](images/desktop.png) | ![移动预览](images/mobile.jpg) |
 
 ---
 

@@ -207,6 +207,20 @@ const Renderer = (function() {
             const markdown = await resp.text();
             const html = marked.parse(markdown, { gfm: true, breaks: true, pedantic: false });
             contentEl.innerHTML = html;
+
+            contentEl.querySelectorAll('img[src]').forEach(img => {
+                const src = img.getAttribute('src');
+                if (src && !/^https?:\/\//i.test(src) && !src.startsWith('data:')) {
+                    try { img.src = new URL(src, url).href; } catch(e) {}
+                }
+            });
+            contentEl.querySelectorAll('a[href]').forEach(a => {
+                const href = a.getAttribute('href');
+                if (href && !/^https?:\/\//i.test(href) && !href.startsWith('#') && !href.startsWith('javascript:') && !href.startsWith('mailto:')) {
+                    try { a.href = new URL(href, url).href; } catch(e) {}
+                }
+            });
+
             if (typeof Prism !== 'undefined') {
                 Prism.highlightAll();
             }
