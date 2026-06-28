@@ -24,8 +24,12 @@
 ## ✨ 特色
 
 - 🎀 **萌系主题** – 粉紫渐变、毛玻璃效果、浮动装饰、标题小图标
-- 📑 **智能目录** – 自动提取 `h1~h6`，点击平滑滚动，移动端自动收起
+- 📑 **智能目录** – 自动提取 `h1~h6`，点击平滑滚动，滚动时 URL 自动更新
+- 🦘 **锚点导航** – 支持 Markdown `[text](#heading)` 锚点，点击平滑滚动不重载
 - 🛣️ **别名路由** – 支持 `?p=test` 形式的参数别名，无需修改服务器配置
+- 💕 **萌系错误页** – 加载失败时显示吉祥物 + 大号状态码 + 中文提示
+- 🖼️ **图片容错** – 加载失败的图片自动替换为吉祥物占位提示
+- 🐱 **GitHub 图标** – 右上角猫咪图标直达仓库，吉祥物 hover 对话泡泡
 - ⚙️ **灵活配置** – `config.json` 轻松设置默认文档和别名映射
 - 🔧 **开发友好** – 使用 Gulp 构建，支持 `pnpm dev` 实时预览 + 热重载
 - 📦 **单文件交付** – 构建后生成 `dist/index.html`，所有资源内联，部署简单
@@ -151,7 +155,7 @@ markdown-viewer-moe/
 - [marked](https://marked.js.org/) – Markdown 解析
 - [Prism.js](https://prismjs.com/) – 代码高亮
 - [Gulp](https://gulpjs.com/) – 构建工具（内联、压缩）
-- [BrowserSync](https://browsersync.io/) – 热重载开发服务器
+- [http-server](https://github.com/http-party/http-server) – 开发服务器
 - [pnpm](https://pnpm.io/) – 包管理
 
 ---
