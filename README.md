@@ -173,6 +173,18 @@ markdown-viewer-moe/
 
 ---
 
+## ⭐Star 历史
+
+<a href="https://www.star-history.com/?repos=haoqi75%2Fmarkdown-viewer-moe&type=timeline&legend=bottom-right">
+ <picture>
+   <source media="(prefers-color-scheme: dark)" srcset="https://api.star-history.com/chart?repos=haoqi75/markdown-viewer-moe&type=timeline&theme=dark&legend=bottom-right" />
+   <source media="(prefers-color-scheme: light)" srcset="https://api.star-history.com/chart?repos=haoqi75/markdown-viewer-moe&type=timeline&legend=bottom-right" />
+   <img alt="Star History Chart" src="https://api.star-history.com/chart?repos=haoqi75/markdown-viewer-moe&type=timeline&legend=bottom-right" />
+ </picture>
+</a>
+
+---
+
 ## 🤝 贡献
 欢迎提出 Issue 或 Pull Request！
 如果您喜欢这个项目，别忘了点个 **⭐Star** 哦～
