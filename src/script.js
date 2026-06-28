@@ -279,15 +279,41 @@ const Renderer = (function() {
             }
         } catch (err) {
             console.error('加载失败:', err);
+            var statusCode = '';
+            var statusMsg = '';
+            var m = err.message && err.message.match(/HTTP\s*(\d+)/);
+            if (m) {
+                statusCode = m[1];
+                var messages = {
+                    '400': '请求无效',
+                    '401': '需要身份验证',
+                    '403': '禁止访问',
+                    '404': '页面未找到',
+                    '408': '请求超时',
+                    '429': '请求过于频繁',
+                    '500': '服务器内部错误',
+                    '502': '网关错误',
+                    '503': '服务不可用',
+                    '504': '网关超时'
+                };
+                statusMsg = messages[statusCode] || ('服务器错误');
+            }
+            var mascotHtml = '';
+            if (CONFIG.errorMascot) {
+                mascotHtml = '<img class="error-mascot-img" src="' + CONFIG.errorMascot + '" alt="Error Mascot">';
+            } else {
+                mascotHtml = '<span class="error-mascot-text">🌸</span>';
+            }
             contentEl.innerHTML =
                 '<div class="error-wrap">' +
-                    '<h3>🌸 哎呀，加载失败了</h3>' +
-                    '<p><strong>请求地址：</strong><span style="word-break:break-all;">' + url + '</span></p>' +
-                    '<p><strong>错误信息：</strong>' + (err.message || '未知错误') + '</p>' +
+                    '<div class="error-mascot">' + mascotHtml + '</div>' +
+                    (statusCode ? '<p class="error-code">' + statusCode + '</p>' : '') +
+                    (statusMsg ? '<p class="error-msg">' + statusMsg + '</p>' : '<p class="error-msg">🌸 哎呀，加载失败了</p>') +
+                    '<p class="error-detail"><strong>请求地址：</strong><span style="word-break:break-all;">' + url + '</span></p>' +
+                    '<p class="error-detail"><strong>原始信息：</strong>' + (err.message || '未知错误') + '</p>' +
                     '<p style="font-size:0.85rem; opacity:0.6; margin-top:0.5rem;">' +
                         (err.name === 'TypeError' && err.message && err.message.indexOf('Failed to fetch') >= 0 ?
-                        '💡 可能是跨域（CORS）问题或网络不可达，请检查 URL 是否支持跨域或网络连接。' :
-                        '') +
+                        '💡 可能是跨域（CORS）问题或网络不可达' : '') +
                     '</p>' +
                     '<button class="retry-btn" onclick="location.reload()">🔄 重试</button>' +
                 '</div>';

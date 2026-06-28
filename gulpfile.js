@@ -86,7 +86,6 @@ function build() {
     } catch (err) {
         throw new Error(`❌ JSON 格式错误：${err.message}`);
     }
-    const configScript = `<script>window.__CONFIG__ = ${JSON.stringify(config)};</script>`;
 
     // ======== 步骤 2：读取并压缩 style.css 和 script.js ========
     const styleContent = fs.readFileSync(path.join(srcDir, 'style.css'), 'utf8');
@@ -146,6 +145,17 @@ function build() {
         mascotSrc = 'data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7';
         console.log('ℹ️ 使用透明占位图代替吉祥物');
     }
+
+    // ---- 错误页吉祥物 ----
+    const errorMascotUri = toDataUri('img/error.png', 'image/png');
+    const extendedConfig = Object.assign({}, config);
+    if (errorMascotUri) {
+        extendedConfig.errorMascot = errorMascotUri;
+        console.log('✅ 错误页吉祥物已转为 Data URI (img/error.png)');
+    } else {
+        console.warn('⚠️ 错误页吉祥物图片不存在: img/error.png');
+    }
+    const configScript = `<script>window.__CONFIG__ = ${JSON.stringify(extendedConfig)};</script>`;
 
     // ======== 步骤 4：流式组装，生成 dist/index.html ========
     return gulp.src(path.join(srcDir, 'index.html'))
