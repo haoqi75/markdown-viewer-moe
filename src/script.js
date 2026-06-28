@@ -313,25 +313,23 @@ const Renderer = (function() {
                 function scrollToHash() {
                     var el = document.getElementById(headingId);
                     if (!el) return false;
-                    TOC.scrollToHeading(headingId, false);
-                    // 验证是否滚动到位
-                    requestAnimationFrame(function() {
-                        var rect = el.getBoundingClientRect();
-                        if (rect.top < 60 || rect.bottom > window.innerHeight) {
-                            // 没到位，再试一次
-                            setTimeout(function() {
-                                el.scrollIntoView({ block: 'start' });
-                                window.scrollBy(0, -80);
-                            }, 200);
-                        }
-                    });
+                    var top = el.getBoundingClientRect().top + window.pageYOffset - 80;
+                    window.scrollTo({ top: top });
+                    el.style.transition = 'background 0.3s';
+                    el.style.background = 'rgba(255,107,157,0.12)';
+                    el.style.borderRadius = '6px';
+                    el.style.padding = '0 0.4rem';
+                    setTimeout(function() {
+                        el.style.background = 'transparent';
+                        el.style.padding = '0';
+                    }, 1200);
                     return true;
                 }
 
                 function afterLayout(fn) {
                     requestAnimationFrame(function() {
                         requestAnimationFrame(function() {
-                            setTimeout(fn, 100);
+                            setTimeout(fn, 150);
                         });
                     });
                 }
@@ -341,8 +339,7 @@ const Renderer = (function() {
                     if (scrollToHash()) {
                         _hashScrolled = true;
                     }
-                    // 无论如何都在 600ms 后启动 scroll spy
-                    setTimeout(function() { TOC.startScrollSpy(); }, 600);
+                    setTimeout(function() { TOC.startScrollSpy(); }, 800);
                 }
 
                 var imgs = contentEl.querySelectorAll('img');
@@ -363,7 +360,7 @@ const Renderer = (function() {
                     });
                     setTimeout(function() {
                         if (pending > 0) { pending = 0; afterLayout(doScrollThenSpy); }
-                    }, 4000);
+                    }, 5000);
                 }
             } else {
                 TOC.startScrollSpy();
