@@ -35,6 +35,7 @@ const TOC = (function() {
     let isOpen = false;
     let headings = [];
     let _scrollSpyObserver = null;
+    let _scrollSpyActiveAt = 0;
 
     function generate() {
         const els = content.querySelectorAll('h1, h2, h3, h4, h5, h6');
@@ -139,10 +140,13 @@ const TOC = (function() {
         if (_scrollSpyObserver) {
             _scrollSpyObserver.disconnect();
         }
+        _scrollSpyActiveAt = Date.now();
         var hds = headings;
         if (!hds.length) return;
 
         _scrollSpyObserver = new IntersectionObserver(function(entries) {
+            // 启动后 2 秒内不更新 hash，等待初始 hash 滚动完成
+            if (Date.now() - _scrollSpyActiveAt < 2000) return;
             var candidates = [];
             entries.forEach(function(entry) {
                 if (entry.isIntersecting) {
@@ -301,49 +305,54 @@ const Renderer = (function() {
             });
 
             // 初次加载后，跳到 URL 中已有 #heading
-            // 必须在 startScrollSpy 之前执行，否则 IntersectionObserver 会覆盖 hash
             if (window.location.hash) {
                 var headingId = window.location.hash.slice(1);
                 try { headingId = decodeURIComponent(headingId); } catch(e) {}
+                var _hashScrolled = false;
 
                 function scrollToHash() {
                     var el = document.getElementById(headingId);
-                    if (!el) return;
-                    el.scrollIntoView({ behavior: 'smooth', block: 'start' });
-                    window.scrollBy(0, -80);
-                    el.style.transition = 'background 0.3s';
-                    el.style.background = 'rgba(255,107,157,0.12)';
-                    el.style.borderRadius = '6px';
-                    el.style.padding = '0 0.4rem';
-                    setTimeout(function() {
-                        el.style.background = 'transparent';
-                        el.style.padding = '0';
-                    }, 1200);
+                    if (!el) return false;
+                    TOC.scrollToHeading(headingId, false);
+                    // 验证是否滚动到位
+                    requestAnimationFrame(function() {
+                        var rect = el.getBoundingClientRect();
+                        if (rect.top < 60 || rect.bottom > window.innerHeight) {
+                            // 没到位，再试一次
+                            setTimeout(function() {
+                                el.scrollIntoView({ block: 'start' });
+                                window.scrollBy(0, -80);
+                            }, 200);
+                        }
+                    });
+                    return true;
                 }
 
-                function afterScrollStartSpy() {
-                    TOC.startScrollSpy();
-                }
-
-                var imgs = contentEl.querySelectorAll('img');
                 function afterLayout(fn) {
                     requestAnimationFrame(function() {
                         requestAnimationFrame(function() {
-                            setTimeout(fn, 80);
+                            setTimeout(fn, 100);
                         });
                     });
                 }
-                function doScrollAndSpy() {
-                    scrollToHash();
-                    setTimeout(afterScrollStartSpy, 400);
+
+                function doScrollThenSpy() {
+                    if (_hashScrolled) return;
+                    if (scrollToHash()) {
+                        _hashScrolled = true;
+                    }
+                    // 无论如何都在 600ms 后启动 scroll spy
+                    setTimeout(function() { TOC.startScrollSpy(); }, 600);
                 }
+
+                var imgs = contentEl.querySelectorAll('img');
                 if (imgs.length === 0) {
-                    afterLayout(doScrollAndSpy);
+                    afterLayout(doScrollThenSpy);
                 } else {
                     var pending = imgs.length;
                     function onImgDone() {
                         pending--;
-                        if (pending <= 0) afterLayout(doScrollAndSpy);
+                        if (pending <= 0) afterLayout(doScrollThenSpy);
                     }
                     imgs.forEach(function(img) {
                         if (img.complete) { onImgDone(); }
@@ -353,8 +362,8 @@ const Renderer = (function() {
                         }
                     });
                     setTimeout(function() {
-                        if (pending > 0) { pending = 0; afterLayout(doScrollAndSpy); }
-                    }, 3000);
+                        if (pending > 0) { pending = 0; afterLayout(doScrollThenSpy); }
+                    }, 4000);
                 }
             } else {
                 TOC.startScrollSpy();
