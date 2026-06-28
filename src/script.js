@@ -292,7 +292,6 @@ const Renderer = (function() {
             }
 
             TOC.generate();
-            TOC.startScrollSpy();
             interceptAnchors();
 
             contentEl.querySelectorAll('img').forEach(function(img) {
@@ -302,6 +301,7 @@ const Renderer = (function() {
             });
 
             // 初次加载后，跳到 URL 中已有 #heading
+            // 必须在 startScrollSpy 之前执行，否则 IntersectionObserver 会覆盖 hash
             if (window.location.hash) {
                 var headingId = window.location.hash.slice(1);
                 try { headingId = decodeURIComponent(headingId); } catch(e) {}
@@ -321,7 +321,10 @@ const Renderer = (function() {
                     }, 1200);
                 }
 
-                // 等待图片加载完毕 + 浏览器完成布局后再滚动
+                function afterScrollStartSpy() {
+                    TOC.startScrollSpy();
+                }
+
                 var imgs = contentEl.querySelectorAll('img');
                 function afterLayout(fn) {
                     requestAnimationFrame(function() {
@@ -330,13 +333,17 @@ const Renderer = (function() {
                         });
                     });
                 }
+                function doScrollAndSpy() {
+                    scrollToHash();
+                    setTimeout(afterScrollStartSpy, 400);
+                }
                 if (imgs.length === 0) {
-                    afterLayout(scrollToHash);
+                    afterLayout(doScrollAndSpy);
                 } else {
                     var pending = imgs.length;
                     function onImgDone() {
                         pending--;
-                        if (pending <= 0) afterLayout(scrollToHash);
+                        if (pending <= 0) afterLayout(doScrollAndSpy);
                     }
                     imgs.forEach(function(img) {
                         if (img.complete) { onImgDone(); }
@@ -345,11 +352,12 @@ const Renderer = (function() {
                             img.addEventListener('error', onImgDone, { once: true });
                         }
                     });
-                    // 兜底：3 秒后强制滚动
                     setTimeout(function() {
-                        if (pending > 0) { pending = 0; afterLayout(scrollToHash); }
+                        if (pending > 0) { pending = 0; afterLayout(doScrollAndSpy); }
                     }, 3000);
                 }
+            } else {
+                TOC.startScrollSpy();
             }
         } catch (err) {
             console.error('加载失败:', err);
