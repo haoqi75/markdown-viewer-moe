@@ -6,6 +6,11 @@ const CONFIG = window.__CONFIG__ || {
     aliases: {}
 };
 
+// 禁止浏览器自动恢复滚动位置，避免与 #heading 导航冲突
+if ('scrollRestoration' in history) {
+    history.scrollRestoration = 'manual';
+}
+
 // ============================================================
 // 初始化：设置自定义标题
 // ============================================================
@@ -299,9 +304,11 @@ const Renderer = (function() {
             // 初次加载后，跳到 URL 中已有 #heading
             if (window.location.hash) {
                 var headingId = window.location.hash.slice(1);
-                setTimeout(function() {
-                    TOC.scrollToHeading(headingId, false);
-                }, 300);
+                requestAnimationFrame(function() {
+                    requestAnimationFrame(function() {
+                        TOC.scrollToHeading(headingId, false);
+                    });
+                });
             }
         } catch (err) {
             console.error('加载失败:', err);
