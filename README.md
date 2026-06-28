@@ -78,9 +78,22 @@ pnpm build
 # 生成 dist/index.html
 ```
 
+---
+
 ### 自动部署到GitHub Pages
 
 Actions文件在：`.github/workflows/static.yml`
+
+1. **Fork** 和 **⭐Star** 此仓库。
+2. 在`Settings`->`Pages`里面找到**Build and deployment**。
+3. 在`Source`选项选择`GitHub Actions`。
+4. （可选）在`Custom domain`里可以添加你自己的域名。
+5. 编辑`src/config.json`，把内容替换成你自己想要的。
+6. 转到`Actions`，开启它，在左菜单里找到`Deploy static content to Pages`。
+    * 手动触发：点击 **Run Workflow**。
+    * 自动触发：每当更改任何文件会自动触发。
+
+祝你一切顺利~
 
 ---
 
@@ -122,8 +135,8 @@ Actions文件在：`.github/workflows/static.yml`
 }
 ```
 
-- defaultUrl：当没有匹配别名或 `?md=` 参数时的默认文档地址。
-- aliases：键为访问路径（如 `?p=vmdownload`），值为实际的 Markdown 文件 URL。
+- **defaultUrl**：当没有匹配别名或 `?md=` 参数时的默认文档地址。
+- **aliases**：键为访问路径（如 `?p=vmdownload`），值为实际的 Markdown 文件 URL。
 
 > 访问 `?md=直接URL` 将覆盖所有配置，优先级最高。
 
@@ -162,7 +175,7 @@ markdown-viewer-moe/
 
 ## 🤝 贡献
 欢迎提出 Issue 或 Pull Request！
-如果您喜欢这个项目，别忘了点个 ⭐ 哦～
+如果您喜欢这个项目，别忘了点个 **⭐Star** 哦～
 
 ---
 
