@@ -304,11 +304,52 @@ const Renderer = (function() {
             // 初次加载后，跳到 URL 中已有 #heading
             if (window.location.hash) {
                 var headingId = window.location.hash.slice(1);
-                requestAnimationFrame(function() {
+                try { headingId = decodeURIComponent(headingId); } catch(e) {}
+
+                function scrollToHash() {
+                    var el = document.getElementById(headingId);
+                    if (!el) return;
+                    el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                    window.scrollBy(0, -80);
+                    el.style.transition = 'background 0.3s';
+                    el.style.background = 'rgba(255,107,157,0.12)';
+                    el.style.borderRadius = '6px';
+                    el.style.padding = '0 0.4rem';
+                    setTimeout(function() {
+                        el.style.background = 'transparent';
+                        el.style.padding = '0';
+                    }, 1200);
+                }
+
+                // 等待图片加载完毕 + 浏览器完成布局后再滚动
+                var imgs = contentEl.querySelectorAll('img');
+                function afterLayout(fn) {
                     requestAnimationFrame(function() {
-                        TOC.scrollToHeading(headingId, false);
+                        requestAnimationFrame(function() {
+                            setTimeout(fn, 80);
+                        });
                     });
-                });
+                }
+                if (imgs.length === 0) {
+                    afterLayout(scrollToHash);
+                } else {
+                    var pending = imgs.length;
+                    function onImgDone() {
+                        pending--;
+                        if (pending <= 0) afterLayout(scrollToHash);
+                    }
+                    imgs.forEach(function(img) {
+                        if (img.complete) { onImgDone(); }
+                        else {
+                            img.addEventListener('load', onImgDone, { once: true });
+                            img.addEventListener('error', onImgDone, { once: true });
+                        }
+                    });
+                    // 兜底：3 秒后强制滚动
+                    setTimeout(function() {
+                        if (pending > 0) { pending = 0; afterLayout(scrollToHash); }
+                    }, 3000);
+                }
             }
         } catch (err) {
             console.error('加载失败:', err);
