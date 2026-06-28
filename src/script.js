@@ -224,6 +224,18 @@ const Renderer = (function() {
         });
     }
 
+    function replaceBrokenImg(img) {
+        var alt = img.getAttribute('alt') || '';
+        var span = document.createElement('span');
+        span.className = 'img-error';
+        span.setAttribute('role', 'img');
+        if (alt) span.setAttribute('aria-label', alt);
+        span.innerHTML = '<span class="img-error-icon">🖼️</span><span class="img-error-text">moe 图片加载失败</span>';
+        if (img.parentNode) {
+            img.parentNode.replaceChild(span, img);
+        }
+    }
+
     async function load() {
         var url = resolveUrl();
         contentEl.innerHTML =
@@ -253,6 +265,17 @@ const Renderer = (function() {
                 var href = a.getAttribute('href');
                 if (href && !/^https?:\/\//i.test(href) && !href.startsWith('#') && !href.startsWith('javascript:') && !href.startsWith('mailto:')) {
                     try { a.href = new URL(href, url).href; } catch(e) {}
+                }
+            });
+
+            // 加载失败的图片替换为 moe 占位提示
+            contentEl.querySelectorAll('img').forEach(function(img) {
+                if (img.complete && img.naturalWidth === 0 && img.naturalHeight === 0 && img.src) {
+                    replaceBrokenImg(img);
+                } else {
+                    img.addEventListener('error', function() {
+                        replaceBrokenImg(img);
+                    });
                 }
             });
 

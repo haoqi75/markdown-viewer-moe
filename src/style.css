@@ -462,6 +462,30 @@ body {
     box-shadow: 0 4px 16px rgba(0, 0, 0, 0.06);
     margin: 0.6rem 0;
 }
+.img-error {
+    display: inline-flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 0.3rem;
+    padding: 1.8rem 2rem;
+    border-radius: var(--moe-radius-sm);
+    border: 2px dashed rgba(255, 107, 157, 0.25);
+    background: rgba(255, 107, 157, 0.04);
+    max-width: 100%;
+    margin: 0.6rem 0;
+    box-sizing: border-box;
+}
+.img-error-icon {
+    font-size: 2.2rem;
+    opacity: 0.5;
+}
+.img-error-text {
+    font-size: 0.82rem;
+    color: var(--moe-text-light);
+    opacity: 0.7;
+    letter-spacing: 0.3px;
+}
 #content table {
     width: 100%;
     border-collapse: collapse;
