@@ -486,7 +486,7 @@ body {
 }
 #content p > img:only-child {
     display: block;
-    margin: 0.6rem auto;
+    margin: 0.6rem 0;
 }
 .img-error {
     display: inline-flex;
