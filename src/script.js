@@ -263,7 +263,7 @@ const Renderer = (function() {
                 throw new Error('HTTP ' + resp.status + ' ' + resp.statusText);
             }
             var markdown = await resp.text();
-            var html = marked.parse(markdown, { gfm: true, breaks: true, pedantic: false });
+            var html = marked.parse(markdown, { gfm: true, breaks: false, pedantic: false });
             contentEl.innerHTML = html;
 
             // 修正相对路径图片和链接
