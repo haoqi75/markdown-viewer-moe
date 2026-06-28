@@ -230,7 +230,10 @@ const Renderer = (function() {
         span.className = 'img-error';
         span.setAttribute('role', 'img');
         if (alt) span.setAttribute('aria-label', alt);
-        span.innerHTML = '<span class="img-error-icon">🖼️</span><span class="img-error-text">moe 图片加载失败</span>';
+        var iconHtml = CONFIG.errorMascot
+            ? '<img class="img-error-mascot" src="' + CONFIG.errorMascot + '" alt="">'
+            : '<span class="img-error-icon">🖼️</span>';
+        span.innerHTML = iconHtml + '<span class="img-error-text">哎呀，图片加载失败了</span>';
         if (img.parentNode) {
             img.parentNode.replaceChild(span, img);
         }
