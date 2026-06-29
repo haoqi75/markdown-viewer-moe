@@ -55,13 +55,43 @@ jobs:
       - name: Build page to release
         run: pnpm run build:release
         
+      - name: Generate release body
+        id: body
+        run: |
+          if [ "${{ github.event_name }}" = "push" ]; then
+            # 从 tag annotation 或最近的 commit 获取描述
+            TAG_MSG=$(git tag -l --format='%(contents)' ${{ steps.get_tag.outputs.tag_name }})
+            COMMIT_MSG=$(git log -1 --pretty=%B ${{ steps.get_tag.outputs.tag_name }})
+            {
+              echo "## 📦 构建信息"
+              echo ""
+              echo "**Tag:** ${{ steps.get_tag.outputs.tag_name }}"
+              echo "**Commit:** $(git rev-parse --short ${{ steps.get_tag.outputs.tag_name }})"
+              echo ""
+              if [ -n "$TAG_MSG" ]; then
+                echo "## 📝 更新内容"
+                echo ""
+                echo "$TAG_MSG"
+              else
+                echo "## 📝 更新内容"
+                echo ""
+                echo "$COMMIT_MSG"
+              fi
+              echo ""
+              echo "## 📥 下载"
+              echo "下载 \`index.release.html\`，用记事本编辑顶部 JSON 即可自定义 defaultUrl 和 aliases。"
+            } > release_body.md
+          else
+            echo "${{ github.event.inputs.changes_description }}" > release_body.md
+          fi
+
       - name: Create GitHub Release
         uses: softprops/action-gh-release@v2
         with:
           tag_name: ${{ steps.get_tag.outputs.tag_name }}
-          name: "${{ steps.get_tag.outputs.tag_name }} ${{ github.event.inputs.changes_name || '' }}"
+          name: "${{ steps.get_tag.outputs.tag_name }}${{ github.event.inputs.changes_name && format(' {0}', github.event.inputs.changes_name) || '' }}"
           draft: false
-          body: ${{ github.event.inputs.changes_description || '' }}
+          body_path: release_body.md
           prerelease: false
           files: ./dist/index.release.html
         env:
