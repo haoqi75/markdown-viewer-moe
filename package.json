@@ -4,6 +4,7 @@
   "description": "由AI生成的Moe Markdown查看器",
   "scripts": {
     "build": "gulp build",
+    "build:release": "gulp build && node script/release.js",
     "dev": "trap 'exit 0' EXIT; gulp clean build && http-server dist -p 8520 -a 127.0.0.1",
     "start": "trap 'exit 0' EXIT; gulp clean build && http-server dist -p 8520 -a 127.0.0.1"
   },
