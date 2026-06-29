@@ -12,6 +12,7 @@
 [![Deploy static content to Pages](https://img.shields.io/github/actions/workflow/status/haoqi75/markdown-viewer-moe/static.yml?style=for-the-badge&label=Deploy%20static%20content%20to%20Pages)](https://github.com/haoqi75/markdown-viewer-moe/actions/workflows/static.yml)
 [![Release to GitHub Releases](https://img.shields.io/github/actions/workflow/status/haoqi75/markdown-viewer-moe/release.yml?style=for-the-badge&label=Release%20to%20GitHub%20Releases&labelColor=violet)](https://github.com/haoqi75/markdown-viewer-moe/actions/workflows/release.yml)
 [![GitHub Tag](https://img.shields.io/github/v/tag/haoqi75/markdown-viewer-moe?style=for-the-badge&label=%E7%89%88%E6%9C%AC&color=pink)](https://github.com/haoqi75/markdown-viewer-moe/tags)
+![GitHub Repo stars](https://img.shields.io/github/stars/haoqi75/markdown-viewer-moe?style=for-the-badge&label=%E2%AD%90%20Stars&color=yellow)
 [![GitHub Downloads](https://img.shields.io/github/downloads/haoqi75/markdown-viewer-moe/total?style=for-the-badge&label=%E4%B8%8B%E8%BD%BD%E9%87%8F&color=cyan)](https://github.com/haoqi75/markdown-viewer-moe/releases)
 
 ![:markdown-viewer-moe](https://count.getloli.com/@:markdown-viewer-moe?theme=moebooru&padding=1)
