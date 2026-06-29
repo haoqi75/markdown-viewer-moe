@@ -68,9 +68,10 @@
 -->
 <script id="release-config" type="application/json">
 {
-  "defaultUrl": "https://raw.githubusercontent.com/haoqi75/markdown-viewer-moe/refs/heads/main/README.md",
+  "defaultUrl": "https://your-default-api.com/raw/index.md",
   "aliases": {
-    "index": "https://cp.qtdt.qzz.io/api/raw/index"
+        "test": "https://another-api.com/raw/rypa",
+        "docs": "https://docs.example.com/readme.md"
   }
 }
 </script>
@@ -98,7 +99,7 @@ cd markdown-viewer-moe
 pnpm install
 ```
 
-#### 开发模式（自动预览 + 热重载）
+#### 开发模式（自动预览 + ~~热重载~~ 临时还没有做到这一点）
 ```bash
 pnpm dev
 # 请手动打开 http://localhost:8520
@@ -107,7 +108,13 @@ pnpm dev
 #### 生产构建
 ```bash
 pnpm build
-# 生成 dist/index.html
+# 代码会生成到 dist/index.html 喔~
+```
+
+#### 构建Release版本
+```bash
+pnpm build:release
+# 代码会生成到 dist/index.release.html 喔~
 ```
 
 ---
@@ -159,9 +166,9 @@ Actions文件在：`.github/workflows/static.yml`
     },
     "footer": "[萌·Markdown](https://github.com/haoqi75/markdown-viewer-moe) | 由 ApHeQua758 与 AI 创建",
     "mascot": "img/mascot.png",
-    "defaultUrl": "https://your-default-api.com/raw/index",
+    "defaultUrl": "https://your-default-api.com/raw/index.md",
     "aliases": {
-        "test": "https://another-api.com/raw/wmdownload",
+        "test": "https://another-api.com/raw/rypa",
         "docs": "https://docs.example.com/readme.md"
     }
 }
@@ -179,8 +186,11 @@ Actions文件在：`.github/workflows/static.yml`
 markdown-viewer-moe/
 ├── .github/
 │   └── workflows/
+│        ├── release.yml    # 自动发布Release
 │        └── static.yml     # 自动构建并推送到GitHub Pages
 ├── images/                  # 图片
+├── script/
+│   └── release.js          # Release版本构建代码
 ├── src/
 │   ├── img/                # 图标文件夹
 │   ├── index.html          # 主页面
