@@ -9,7 +9,9 @@
 [![License: MIT](https://img.shields.io/badge/License-MIT-pink.svg?style=for-the-badge)](LICENSE)
 [![pnpm](https://img.shields.io/badge/pnpm-11.x-blue?logo=pnpm&style=for-the-badge)](https://pnpm.io)
 [![Gulp](https://img.shields.io/badge/Gulp-5.x-red?logo=gulp&style=for-the-badge)](https://gulpjs.com)
+[![Deploy static content to Pages](https://github.com/haoqi75/markdown-viewer-moe/actions/workflows/static.yml/badge.svg)](https://github.com/haoqi75/markdown-viewer-moe/actions/workflows/static.yml)
 [![GitHub Tag](https://img.shields.io/github/v/tag/haoqi75/markdown-viewer-moe?style=for-the-badge&label=%E7%89%88%E6%9C%AC&color=pink)](https://github.com/haoqi75/markdown-viewer-moe/tags)
+[![GitHub Downloads](https://img.shields.io/github/downloads/haoqi75/markdown-viewer-moe/total?style=for-the-badge&label=%E4%B8%8B%E8%BD%BD%E9%87%8F&color=cyan)](https://github.com/haoqi75/markdown-viewer-moe/releases)
 
 ![:markdown-viewer-moe](https://count.getloli.com/@:markdown-viewer-moe?theme=moebooru)
 
@@ -48,6 +50,33 @@
 ---
 
 ## 🚀 快速开始
+
+### 下载编辑好的
+
+[![GitHub Release](https://img.shields.io/github/v/release/haoqi75/markdown-viewer-moe?display_name=release&style=for-the-badge)](https://github.com/haoqi75/markdown-viewer-moe/releases)
+
+从**v1.4.0**后，支持直接编辑index.html，从[Releases](https://github.com/haoqi75/markdown-viewer-moe/releases)下载一个叫`index.release.html`的文件，直接使用记事本编辑上面的内容：
+```html
+<!--
+  ╔══════════════════════════════════════════════╗
+  ║  RELEASE CONFIG — 编辑 defaultUrl 和 aliases  ║
+  ║  修改下方 JSON 后保存，直接部署即可            ║
+  ╚══════════════════════════════════════════════╝
+-->
+<script id="release-config" type="application/json">
+{
+  "defaultUrl": "https://raw.githubusercontent.com/haoqi75/markdown-viewer-moe/refs/heads/main/README.md",
+  "aliases": {
+    "index": "https://cp.qtdt.qzz.io/api/raw/index"
+  }
+}
+</script>
+<!-- RELEASE CONFIG END -->
+<!DOCTYPE html>...
+```
+编辑后保存，可以重命名为`index.html`，打开或上传到服务器。[更多信息](#使用方式)
+
+---
 
 ### 本地部署
 
