@@ -262,6 +262,38 @@ const Renderer = (function() {
         }
     }
 
+    function setupImagePreview() {
+        var overlay = document.getElementById('img-preview');
+        if (!overlay) {
+            overlay = document.createElement('div');
+            overlay.id = 'img-preview';
+            overlay.className = 'img-preview-overlay';
+            overlay.innerHTML = '<img class="img-preview-content" alt="">';
+            overlay.addEventListener('click', function(e) {
+                if (e.target === overlay) overlay.classList.remove('active');
+            });
+            document.addEventListener('keydown', function(e) {
+                if (e.key === 'Escape') overlay.classList.remove('active');
+            });
+            document.body.appendChild(overlay);
+        }
+        var previewImg = overlay.querySelector('img');
+
+        contentEl.querySelectorAll('img').forEach(function(img) {
+            if (img.closest('a')) return;
+            if (img.classList.contains('img-error-mascot')) return;
+            if (img.parentElement && img.parentElement.classList.contains('img-error')) return;
+
+            img.style.cursor = 'zoom-in';
+            img.addEventListener('click', function(e) {
+                e.stopPropagation();
+                previewImg.src = img.src;
+                previewImg.alt = img.alt || '';
+                overlay.classList.add('active');
+            });
+        });
+    }
+
     async function load() {
         var url = resolveUrl();
         contentEl.innerHTML =
@@ -311,6 +343,7 @@ const Renderer = (function() {
 
             TOC.generate();
             interceptAnchors();
+            setupImagePreview();
 
             contentEl.querySelectorAll('img').forEach(function(img) {
                 img.addEventListener('load', function() {

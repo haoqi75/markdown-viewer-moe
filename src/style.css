@@ -799,3 +799,34 @@ pre[class*="language-"] {
 .token.class-name {
     color: #ffcb6b !important;
 }
+/* ============================================================
+   6. 图片预览
+   ============================================================ */
+.img-preview-overlay {
+    position: fixed;
+    inset: 0;
+    z-index: 1000;
+    background: rgba(0, 0, 0, 0.75);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s ease;
+}
+.img-preview-overlay.active {
+    opacity: 1;
+    pointer-events: auto;
+}
+.img-preview-content {
+    max-width: 90vw;
+    max-height: 90vh;
+    border-radius: var(--moe-radius-sm);
+    box-shadow: 0 8px 48px rgba(0, 0, 0, 0.3);
+    object-fit: contain;
+    cursor: zoom-out;
+    user-select: none;
+    -webkit-user-select: none;
+}
