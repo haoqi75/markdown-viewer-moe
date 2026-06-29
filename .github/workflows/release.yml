@@ -1,4 +1,4 @@
-name: Release to GitHub Releases
+name: Build to GitHub Releases
 
 on:
   push:
@@ -8,6 +8,7 @@ on:
       tag_name:
         required: true
         description: 发布的标签名（如 v1.4.0）
+        default: "v1.4.0"
       changes_name:
         description: 发布名称
       changes_description:
@@ -52,7 +53,7 @@ jobs:
       - name: Install Dependencies
         run: pnpm install
         
-      - name: Build page to release
+      - name: Build page for release
         run: pnpm run build:release
         
       - name: Generate release body
@@ -81,8 +82,10 @@ jobs:
               echo "## 📥 下载"
               echo "下载 \`index.release.html\`，用记事本编辑顶部 JSON 即可自定义 defaultUrl 和 aliases。"
             } > release_body.md
+            echo "✅ Use commit to synthesize the release body."
           else
             echo "${{ github.event.inputs.changes_description }}" > release_body.md
+            echo "✅ Use charge_description to configure the release body."
           fi
 
       - name: Create GitHub Release
