@@ -9,7 +9,8 @@
 [![License: MIT](https://img.shields.io/badge/License-MIT-pink.svg?style=for-the-badge)](LICENSE)
 [![pnpm](https://img.shields.io/badge/pnpm-11.x-blue?logo=pnpm&style=for-the-badge)](https://pnpm.io)
 [![Gulp](https://img.shields.io/badge/Gulp-5.x-red?logo=gulp&style=for-the-badge)](https://gulpjs.com)
-[![GitHub Actions Workflow Status](https://img.shields.io/github/actions/workflow/status/haoqi75/markdown-viewer-moe/static.yml?style=for-the-badge&label=Deploy%20static%20content%20to%20Pages)](https://github.com/haoqi75/markdown-viewer-moe/actions/workflows/static.yml)
+[![Deploy static content to Pages](https://img.shields.io/github/actions/workflow/status/haoqi75/markdown-viewer-moe/static.yml?style=for-the-badge&label=Deploy%20static%20content%20to%20Pages)](https://github.com/haoqi75/markdown-viewer-moe/actions/workflows/static.yml)
+[![Release to GitHub Releases](https://img.shields.io/github/actions/workflow/status/haoqi75/markdown-viewer-moe/release.yml?style=for-the-badge&label=Release%20to%20GitHub%20Releases&labelColor=violet)](https://github.com/haoqi75/markdown-viewer-moe/actions/workflows/release.yml)
 [![GitHub Tag](https://img.shields.io/github/v/tag/haoqi75/markdown-viewer-moe?style=for-the-badge&label=%E7%89%88%E6%9C%AC&color=pink)](https://github.com/haoqi75/markdown-viewer-moe/tags)
 [![GitHub Downloads](https://img.shields.io/github/downloads/haoqi75/markdown-viewer-moe/total?style=for-the-badge&label=%E4%B8%8B%E8%BD%BD%E9%87%8F&color=cyan)](https://github.com/haoqi75/markdown-viewer-moe/releases)
 
