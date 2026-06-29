@@ -1,0 +1,65 @@
+name: Release to GitHub Releases
+
+on:
+  workflow_dispatch:
+    inputs:
+      charges_name:
+        required: true
+        description: 更改名称
+      charges_description:
+        description: 更改内容
+  
+permissions:
+  contents: write
+  id-token: write
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Get tag name
+        id: get_tag
+        run: |
+          TAG_NAME=${GITHUB_REF#refs/tags/}
+          echo "tag_name=$TAG_NAME" >> $GITHUB_OUTPUT
+          echo "Current Tag: $TAG_NAME"
+      
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0  # 需要完整的Git历史来获取标签信息
+      
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "24"
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v6
+        with:
+          version: "11"
+
+      - name: Install Dependencies
+        run: pnpm install
+        
+      - name: Build page to release
+        run: pnpm run build:release
+        
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: ${{ steps.get_tag.outputs.tag_name }}
+          name: "${{ steps.get_tag.outputs.tag_name }} ${{ github.event.inputs.charges_name }}"
+          draft: false
+          body: ${{ github.event.inputs.charges_description }}
+          prerelease: false
+          files: ./dist/index.release.html
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          
+      - name: Output summary
+        run: |
+          echo "## 部署完成" >> $GITHUB_STEP_SUMMARY
+          echo "已构建index.release.html并发布到Releases里面" >> $GITHUB_STEP_SUMMARY
+          echo "✅ Success"
