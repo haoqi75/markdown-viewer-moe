@@ -13,6 +13,17 @@ const UglifyJS = require('uglify-js');
 const srcDir = 'src';
 const distDir = 'dist';
 
+const DEFAULTS = {
+    title: '🌸 萌·Markdown 预览器',
+    logo: { text: '📝 萌·Markdown', sub: 'README.md' },
+    logoImage: 'img/favicon.svg',
+    icon: { svg: 'img/favicon.svg', ico: 'img/favicon.ico', apple: 'img/apple-touch-icon.png' },
+    footer: '[萌·Markdown](https://github.com/haoqi75/markdown-viewer-moe) | 由 ApHeQua758 与 AI 创建',
+    mascot: 'img/mascot.png',
+    defaultUrl: 'https://raw.githubusercontent.com/haoqi75/markdown-viewer-moe/refs/heads/main/README.md',
+    aliases: {}
+};
+
 function getMimeType(filePath) {
     const ext = path.extname(filePath).toLowerCase();
     const map = {
@@ -31,8 +42,7 @@ function checkRequiredFiles() {
     const required = [
         path.join(srcDir, 'index.html'),
         path.join(srcDir, 'style.css'),
-        path.join(srcDir, 'script.js'),
-        path.join(srcDir, 'config.json')
+        path.join(srcDir, 'script.js')
     ];
     const missing = required.filter(file => !fs.existsSync(file));
     if (missing.length) {
@@ -73,101 +83,99 @@ function toDataUri(filePath, mimeType) {
     return `data:${mimeType};base64,${base64}`;
 }
 
+function resolveImage(cfgPath, defPath, label) {
+    if (cfgPath) {
+        var mime = getMimeType(cfgPath);
+        var uri = toDataUri(cfgPath, mime);
+        if (uri) {
+            console.log('✅ ' + label + ': ' + cfgPath);
+            return uri;
+        }
+        console.warn('⚠️ ' + label + ' 配置图片不存在: ' + cfgPath + '，使用默认');
+    }
+    var mime = getMimeType(defPath);
+    var uri = toDataUri(defPath, mime);
+    if (uri) {
+        console.log('✅ ' + label + '(默认): ' + defPath);
+        return uri;
+    }
+    throw new Error('❌ ' + label + ' 默认图片不存在: ' + defPath);
+}
+
 function build() {
     checkRequiredFiles();
 
-    // ======== 步骤 1：读取 config.json ========
-    const configPath = path.join(srcDir, 'config.json');
-    let config;
+    // ======== 步骤 1：读取 config.json，缺失则用默认值 ========
+    var configPath = path.join(srcDir, 'config.json');
+    var config;
     try {
-        const raw = fs.readFileSync(configPath, 'utf8');
+        var raw = fs.readFileSync(configPath, 'utf8');
         config = JSON.parse(raw);
-        console.log('✅ 读取配置成功:', config);
-    } catch (err) {
-        throw new Error(`❌ JSON 格式错误：${err.message}`);
+        console.log('✅ 读取配置成功');
+    } catch (e) {
+        console.warn('⚠️ config.json 读取失败: ' + e.message + '，使用全部默认值');
+        config = {};
     }
+
+    // 合并默认值（config 中存在的字段保留，缺失的补默认值）
+    function mergeDefault(cfg, def) {
+        if (typeof def !== 'object' || def === null) return cfg != null ? cfg : def;
+        if (cfg == null || typeof cfg !== 'object') return def;
+        var result = {};
+        var keys = Object.keys(def);
+        for (var i = 0; i < keys.length; i++) {
+            var k = keys[i];
+            result[k] = (k in cfg) ? mergeDefault(cfg[k], def[k]) : def[k];
+        }
+        // 保留 config 中额外的自定义字段
+        Object.keys(cfg).forEach(function(k) {
+            if (!(k in def)) result[k] = cfg[k];
+        });
+        return result;
+    }
+    config = mergeDefault(config, DEFAULTS);
+    console.log('📋 最终配置:', JSON.stringify(config, null, 2));
 
     // ======== 步骤 2：读取并压缩 style.css 和 script.js ========
-    const styleContent = fs.readFileSync(path.join(srcDir, 'style.css'), 'utf8');
-    const scriptContent = fs.readFileSync(path.join(srcDir, 'script.js'), 'utf8');
+    var styleContent = fs.readFileSync(path.join(srcDir, 'style.css'), 'utf8');
+    var scriptContent = fs.readFileSync(path.join(srcDir, 'script.js'), 'utf8');
 
-    const minifiedCss = new CleanCSS().minify(styleContent).styles;
-    const minifiedJs = UglifyJS.minify(scriptContent).code;
+    var minifiedCss = new CleanCSS().minify(styleContent).styles;
+    var minifiedJs = UglifyJS.minify(scriptContent).code;
 
-    console.log(`📦 CSS: ${styleContent.length} → ${minifiedCss.length} 字节`);
-    console.log(`📦 JS:  ${scriptContent.length} → ${minifiedJs.length} 字节`);
+    console.log('📦 CSS: ' + styleContent.length + ' → ' + minifiedCss.length + ' 字节');
+    console.log('📦 JS:  ' + scriptContent.length + ' → ' + minifiedJs.length + ' 字节');
 
-    // ======== 步骤 3：处理图标、Logo、吉祥物 (按 config 填写) ========
-    const defaultIcon = {
-        svg: 'img/favicon.svg',
-        ico: 'img/favicon.ico',
-        apple: 'img/apple-touch-icon.png'
-    };
-    const iconPaths = config.icon || {};
-    const svgPath = iconPaths.svg || defaultIcon.svg;
-    const icoPath = iconPaths.ico || defaultIcon.ico;
-    const applePath = iconPaths.apple || defaultIcon.apple;
-
-    const svgUri = toDataUri(svgPath, 'image/svg+xml');
-    const icoUri = toDataUri(icoPath, 'image/x-icon');
-    const appleUri = toDataUri(applePath, 'image/png');
-
-    const logoPath = config.logoImage || null;
-    let logoSrc = 'logo-placeholder';
-    if (logoPath) {
-        const mime = getMimeType(logoPath);
-        const dataUri = toDataUri(logoPath, mime);
-        if (dataUri) {
-            logoSrc = dataUri;
-            console.log(`✅ Logo 图片已转为 Data URI (${logoPath})`);
-        } else {
-            console.warn(`⚠️ Logo 图片文件不存在: ${logoPath}，将使用占位符`);
-        }
-    }
-    if (logoSrc === 'logo-placeholder') {
-        logoSrc = 'data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7';
-        console.log('ℹ️ 使用透明占位图代替 logo');
-    }
-
-    const mascotPath = config.mascot || null;
-    let mascotSrc = 'mascot-placeholder';
-    if (mascotPath) {
-        const mime = getMimeType(mascotPath);
-        const dataUri = toDataUri(mascotPath, mime);
-        if (dataUri) {
-            mascotSrc = dataUri;
-            console.log(`✅ 吉祥物图片已转为 Data URI (${mascotPath})`);
-        } else {
-            console.warn(`⚠️ 吉祥物图片文件不存在: ${mascotPath}，将使用占位符`);
-        }
-    }
-    if (mascotSrc === 'mascot-placeholder') {
-        mascotSrc = 'data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7';
-        console.log('ℹ️ 使用透明占位图代替吉祥物');
-    }
+    // ======== 步骤 3：按 config 处理图标、Logo、吉祥物 ========
+    var iconCfg = config.icon || {};
+    var svgUri = resolveImage(iconCfg.svg, DEFAULTS.icon.svg, 'Favicon SVG');
+    var icoUri = resolveImage(iconCfg.ico, DEFAULTS.icon.ico, 'Favicon ICO');
+    var appleUri = resolveImage(iconCfg.apple, DEFAULTS.icon.apple, 'Apple Icon');
+    var logoSrc = resolveImage(config.logoImage, DEFAULTS.logoImage, 'Logo');
+    var mascotSrc = resolveImage(config.mascot, DEFAULTS.mascot, '吉祥物');
 
     // ---- 错误页吉祥物 ----
-    const errorMascotUri = toDataUri('img/error.png', 'image/png');
-    const extendedConfig = Object.assign({}, config);
+    var errorMascotUri = toDataUri('img/error.png', 'image/png');
+    var extendedConfig = Object.assign({}, config);
     if (errorMascotUri) {
         extendedConfig.errorMascot = errorMascotUri;
         console.log('✅ 错误页吉祥物已转为 Data URI (img/error.png)');
     } else {
         console.warn('⚠️ 错误页吉祥物图片不存在: img/error.png');
     }
-    const configScript = `<script>window.__CONFIG__ = ${JSON.stringify(extendedConfig)};</script>`;
+    var configScript = '<script>window.__CONFIG__ = ' + JSON.stringify(extendedConfig) + ';</script>';
 
     // ======== 步骤 4：流式组装，生成 dist/index.html ========
     return gulp.src(path.join(srcDir, 'index.html'))
         .pipe(replace('<config-placeholder>', configScript))
-        .pipe(replace(/href="img\/favicon\.svg"/g, `href="${svgUri || 'img/favicon.svg'}"`))
-        .pipe(replace(/href="img\/favicon\.ico"/g, `href="${icoUri || 'img/favicon.ico'}"`))
-        .pipe(replace(/href="img\/apple-touch-icon\.png"/g, `href="${appleUri || 'img/apple-touch-icon.png'}"`))
-        .pipe(replace(/src="logo-placeholder"/g, `src="${logoSrc}"`))
-        .pipe(replace(/src="mascot-placeholder"/g, `src="${mascotSrc}"`))
+        .pipe(replace(/href="img\/favicon\.svg"/g, 'href="' + svgUri + '"'))
+        .pipe(replace(/href="img\/favicon\.ico"/g, 'href="' + icoUri + '"'))
+        .pipe(replace(/href="img\/apple-touch-icon\.png"/g, 'href="' + appleUri + '"'))
+        .pipe(replace(/src="logo-placeholder"/g, 'src="' + logoSrc + '"'))
+        .pipe(replace(/src="mascot-placeholder"/g, 'src="' + mascotSrc + '"'))
         .pipe(replace(/<link rel="manifest" href="[^"]*">/g, ''))
-        .pipe(replace(/<link[^>]*href="[^"]*style\.css"[^>]*>/gi, `<style>${minifiedCss}</style>`))
-        .pipe(replace(/<script[^>]*src="[^"]*script\.js"[^>]*><\/script>/gi, `<script>${minifiedJs}</script>`))
+        .pipe(replace(/<link[^>]*href="[^"]*style\.css"[^>]*>/gi, '<style>' + minifiedCss + '</style>'))
+        .pipe(replace(/<script[^>]*src="[^"]*script\.js"[^>]*><\/script>/gi, '<script>' + minifiedJs + '</script>'))
         .pipe(htmlmin({ collapseWhitespace: true, removeComments: true }))
         .pipe(rename('index.html'))
         .pipe(gulp.dest(distDir))
