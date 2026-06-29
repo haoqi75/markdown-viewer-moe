@@ -1,14 +1,18 @@
 name: Release to GitHub Releases
 
 on:
+  push:
+    tags: ['v*']
   workflow_dispatch:
     inputs:
-      charges_name:
+      tag_name:
         required: true
-        description: 更改名称
-      charges_description:
-        description: 更改内容
-  
+        description: 发布的标签名（如 v1.4.0）
+      changes_name:
+        description: 发布名称
+      changes_description:
+        description: 发布内容
+        
 permissions:
   contents: write
   id-token: write
@@ -21,15 +25,20 @@ jobs:
       - name: Get tag name
         id: get_tag
         run: |
-          TAG_NAME=${GITHUB_REF#refs/tags/}
+          if [ "${{ github.event_name }}" = "push" ]; then
+            TAG_NAME=${GITHUB_REF#refs/tags/}
+          else
+            TAG_NAME=${{ github.event.inputs.tag_name }}
+          fi
           echo "tag_name=$TAG_NAME" >> $GITHUB_OUTPUT
-          echo "Current Tag: $TAG_NAME"
+          echo "Tag: $TAG_NAME"
       
       - name: Checkout repository
         uses: actions/checkout@v4
         with:
-          fetch-depth: 0  # 需要完整的Git历史来获取标签信息
-      
+          ref: ${{ steps.get_tag.outputs.tag_name }}
+          fetch-depth: 0
+
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
@@ -50,9 +59,9 @@ jobs:
         uses: softprops/action-gh-release@v2
         with:
           tag_name: ${{ steps.get_tag.outputs.tag_name }}
-          name: "${{ steps.get_tag.outputs.tag_name }} ${{ github.event.inputs.charges_name }}"
+          name: "${{ steps.get_tag.outputs.tag_name }} ${{ github.event.inputs.changes_name || '' }}"
           draft: false
-          body: ${{ github.event.inputs.charges_description }}
+          body: ${{ github.event.inputs.changes_description || '' }}
           prerelease: false
           files: ./dist/index.release.html
         env:
@@ -61,5 +70,5 @@ jobs:
       - name: Output summary
         run: |
           echo "## 部署完成" >> $GITHUB_STEP_SUMMARY
-          echo "已构建index.release.html并发布到Releases里面" >> $GITHUB_STEP_SUMMARY
+          echo "已构建 index.release.html 并发布到 Releases" >> $GITHUB_STEP_SUMMARY
           echo "✅ Success"
