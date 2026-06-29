@@ -1,10 +1,24 @@
 // ============================================================
-// 配置加载（由构建工具注入 __CONFIG__）
+// 配置加载（由构建工具注入 __CONFIG__，release 版可被 #release-config 覆盖）
 // ============================================================
-const CONFIG = window.__CONFIG__ || {
-    defaultUrl: 'https://raw.githubusercontent.com/haoqi75/markdown-viewer-moe/refs/heads/main/README.md',
-    aliases: {}
-};
+const CONFIG = (function() {
+    var cfg = window.__CONFIG__ || {
+        defaultUrl: 'https://raw.githubusercontent.com/haoqi75/markdown-viewer-moe/refs/heads/main/README.md',
+        aliases: {}
+    };
+    var releaseBlock = document.getElementById('release-config');
+    if (releaseBlock) {
+        try {
+            var rel = JSON.parse(releaseBlock.textContent);
+            if (rel.defaultUrl) cfg.defaultUrl = rel.defaultUrl;
+            if (rel.aliases && typeof rel.aliases === 'object') {
+                if (!cfg.aliases || typeof cfg.aliases !== 'object') cfg.aliases = {};
+                Object.assign(cfg.aliases, rel.aliases);
+            }
+        } catch(e) { console.warn('⚠️ release-config JSON 解析失败:', e); }
+    }
+    return cfg;
+})();
 
 // 禁止浏览器自动恢复滚动位置，避免与 #heading 导航冲突
 if ('scrollRestoration' in history) {
