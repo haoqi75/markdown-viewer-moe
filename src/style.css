@@ -448,11 +448,17 @@ body {
 #content h4:hover .heading-anchor,
 #content h5:hover .heading-anchor,
 #content h6:hover .heading-anchor {
-    opacity: 1;
+    opacity: 0.5;
+}
+.heading-anchor:hover {
+    opacity: 1 !important;
 }
 @media (max-width: 640px) {
     .heading-anchor {
-        opacity: 1;
+        opacity: 0.5;
+    }
+    .heading-anchor:hover {
+        opacity: 1 !important;
     }
 }
 #content h1 {

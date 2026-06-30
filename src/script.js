@@ -67,7 +67,7 @@ const TOC = (function() {
             let id = el.id;
             if (!id) {
                 let base = el.textContent.trim().slice(0, 50)
-                    .replace(/[^a-zA-Z\u4e00-\u9fa5\d\-_]/g, '-')
+                    .replace(/[^a-zA-Z\u4e00-\u9fa5\d\-]/g, '-')
                     .replace(/-+/g, '-')
                     .replace(/^-|-$/g, '')
                     .toLowerCase();
@@ -135,10 +135,8 @@ const TOC = (function() {
         el.style.transition = 'background 0.3s';
         el.style.background = 'rgba(255,107,157,0.12)';
         el.style.borderRadius = '6px';
-        el.style.padding = '0 0.4rem';
         setTimeout(function() {
             el.style.background = 'transparent';
-            el.style.padding = '0';
         }, 1200);
         if (pushState !== false) {
             history.pushState(null, null, '#' + id);
