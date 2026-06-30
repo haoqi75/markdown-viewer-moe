@@ -15,5 +15,6 @@
     "defaultUrl": "https://raw.githubusercontent.com/haoqi75/markdown-viewer-moe/refs/heads/main/README.md",
     "aliases": {
         "index": "https://cp.qtdt.qzz.io/api/raw/index"
-    }
+    },
+    "tocWelcome": "欢迎来到萌·Markdown"
 }

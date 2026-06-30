@@ -509,6 +509,11 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 
+    var bubbleEl = document.getElementById('toc-bubble');
+    if (bubbleEl && CONFIG.tocWelcome) {
+        bubbleEl.textContent = CONFIG.tocWelcome;
+    }
+
     Renderer.load();
 });
 

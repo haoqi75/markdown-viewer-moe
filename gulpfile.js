@@ -21,7 +21,8 @@ const DEFAULTS = {
     footer: '[萌·Markdown](https://github.com/haoqi75/markdown-viewer-moe) | 由 ApHeQua758 与 AI 创建',
     mascot: 'img/mascot.png',
     defaultUrl: 'https://raw.githubusercontent.com/haoqi75/markdown-viewer-moe/refs/heads/main/README.md',
-    aliases: {}
+    aliases: {},
+    tocWelcome: '欢迎来到萌·Markdown'
 };
 
 function getMimeType(filePath) {
