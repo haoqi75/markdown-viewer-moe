@@ -173,7 +173,8 @@ Actions文件在：`.github/workflows/static.yml`
     "aliases": {
         "test": "https://another-api.com/raw/rypa",
         "docs": "https://docs.example.com/readme.md"
-    }
+    },
+    "tocWelcome": "欢迎来到萌·Markdown"
 }
 ```
 
@@ -201,6 +202,7 @@ markdown-viewer-moe/
 │   ├── script.js           # 主要逻辑（TOC、渲染、路由）
 │   └── config.json         # 配置文件
 ├── dist/                   # 构建输出（仅含 index.html）
+├── AGENTS.md            # AI Agent提示文件
 ├── gulpfile.js             # Gulp 构建脚本
 ├── package.json            # 项目依赖和脚本
 ├── LICENSE                 # LICENSE

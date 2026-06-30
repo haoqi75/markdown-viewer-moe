@@ -14,7 +14,8 @@
     "mascot": "img/mascot.png",
     "defaultUrl": "https://raw.githubusercontent.com/haoqi75/markdown-viewer-moe/refs/heads/main/README.md",
     "aliases": {
-        "index": "https://cp.qtdt.qzz.io/api/raw/index"
+        "page": "https://cp.qtdt.qzz.io/api/raw/index",
+        "agents": "https://raw.githubusercontent.com/haoqi75/markdown-viewer-moe/refs/heads/main/AGENTS.md"
     },
     "tocWelcome": "欢迎来到萌·Markdown"
 }
