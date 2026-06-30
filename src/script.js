@@ -378,10 +378,8 @@ const Renderer = (function() {
                     el.style.transition = 'background 0.3s';
                     el.style.background = 'rgba(255,107,157,0.12)';
                     el.style.borderRadius = '6px';
-                    el.style.padding = '0 0.4rem';
                     setTimeout(function() {
                         el.style.background = 'transparent';
-                        el.style.padding = '0';
                     }, 1200);
                     return true;
                 }

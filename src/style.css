@@ -436,7 +436,8 @@ body {
     left: 0;
     top: 50%;
     transform: translateY(-50%);
-    text-decoration: none;
+    text-decoration: none !important;
+    border-bottom: none !important;
     font-size: 0.7em;
     opacity: 0;
     transition: opacity 0.2s ease;
@@ -449,9 +450,13 @@ body {
 #content h5:hover .heading-anchor,
 #content h6:hover .heading-anchor {
     opacity: 0.5;
+    color: var(--moe-pink-dark);
+    border-bottom: none !important;
 }
 .heading-anchor:hover {
     opacity: 1 !important;
+    color: var(--moe-pink-dark) !important;
+    border-bottom: none !important;
 }
 @media (max-width: 640px) {
     .heading-anchor {
