@@ -173,6 +173,15 @@ function build() {
         console.warn('⚠️ 加载页吉祥物图片不存在: img/loading.png');
     }
 
+    // ---- TOC 底部装饰图 ----
+    var sitDownUri = toDataUri('img/sit-down.png', 'image/png');
+    if (sitDownUri) {
+        console.log('✅ TOC 装饰图已转为 Data URI (img/sit-down.png)');
+    } else {
+        console.warn('⚠️ TOC 装饰图不存在: img/sit-down.png，将使用透明占位');
+        sitDownUri = 'data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7';
+    }
+
     var configScript = '<script>window.__CONFIG__ = ' + JSON.stringify(extendedConfig) + ';</script>';
 
     // ======== 步骤 4：流式组装，生成 dist/index.html ========
@@ -183,6 +192,7 @@ function build() {
         .pipe(replace(/href="img\/apple-touch-icon\.png"/g, 'href="' + appleUri + '"'))
         .pipe(replace(/src="logo-placeholder"/g, 'src="' + logoSrc + '"'))
         .pipe(replace(/src="mascot-placeholder"/g, 'src="' + mascotSrc + '"'))
+        .pipe(replace(/src="sit-down-placeholder"/g, 'src="' + sitDownUri + '"'))
         .pipe(replace(/<link rel="manifest" href="[^"]*">/g, ''))
         .pipe(replace(/<link[^>]*href="[^"]*style\.css"[^>]*>/gi, '<style>' + minifiedCss + '</style>'))
         .pipe(replace(/<script[^>]*src="[^"]*script\.js"[^>]*><\/script>/gi, '<script>' + minifiedJs + '</script>'))

@@ -362,6 +362,20 @@ body {
     font-size: 0.92rem;
     opacity: 0.6;
 }
+.toc-footer-deco {
+    flex-shrink: 0;
+    display: flex;
+    justify-content: center;
+    padding: 0.8rem 0 1.2rem;
+}
+.toc-footer-deco img {
+    width: 110px;
+    height: auto;
+    opacity: 0.55;
+    pointer-events: none;
+    user-select: none;
+    -webkit-user-select: none;
+}
 /* ============================================================
    4. 内容区样式
    ============================================================ */

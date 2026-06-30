@@ -127,9 +127,7 @@ const TOC = (function() {
         if (pushState !== false) {
             history.pushState(null, null, '#' + id);
         }
-        if (window.innerWidth < 768) {
-            close();
-        }
+        close();
     }
 
     function open() {
