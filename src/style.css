@@ -648,6 +648,18 @@ body {
     color: var(--moe-text-light);
     gap: 1.2rem;
 }
+.loading-mascot {
+    width: 140px;
+    height: auto;
+    opacity: 0.85;
+    filter: drop-shadow(0 4px 16px rgba(255, 107, 157, 0.15));
+    animation: loadingBounce 2s ease-in-out infinite;
+    border-radius: 20px;
+}
+@keyframes loadingBounce {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-8px); }
+}
 .loading-wrap .spinner {
     width: 48px;
     height: 48px;

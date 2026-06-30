@@ -298,6 +298,7 @@ const Renderer = (function() {
         var url = resolveUrl();
         contentEl.innerHTML =
             '<div class="loading-wrap">' +
+                (CONFIG.loadingMascot ? '<img class="loading-mascot" src="' + CONFIG.loadingMascot + '" alt="加载中">' : '') +
                 '<div class="spinner"></div>' +
                 '<p>🌸 正在加载文档…</p>' +
                 '<p style="font-size:0.8rem; opacity:0.5; word-break:break-all;">请求：' + url + '</p>' +

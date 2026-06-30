@@ -163,6 +163,16 @@ function build() {
     } else {
         console.warn('⚠️ 错误页吉祥物图片不存在: img/error.png');
     }
+
+    // ---- 加载页吉祥物 ----
+    var loadingMascotUri = toDataUri('img/loading.png', 'image/png');
+    if (loadingMascotUri) {
+        extendedConfig.loadingMascot = loadingMascotUri;
+        console.log('✅ 加载页吉祥物已转为 Data URI (img/loading.png)');
+    } else {
+        console.warn('⚠️ 加载页吉祥物图片不存在: img/loading.png');
+    }
+
     var configScript = '<script>window.__CONFIG__ = ' + JSON.stringify(extendedConfig) + ';</script>';
 
     // ======== 步骤 4：流式组装，生成 dist/index.html ========
