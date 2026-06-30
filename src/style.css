@@ -429,6 +429,31 @@ body {
     line-height: 1.35;
     scroll-margin-top: 0.8rem;
     position: relative;
+    padding-left: 1.4rem;
+}
+.heading-anchor {
+    position: absolute;
+    left: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    text-decoration: none;
+    font-size: 0.7em;
+    opacity: 0;
+    transition: opacity 0.2s ease;
+    line-height: 1;
+}
+#content h1:hover .heading-anchor,
+#content h2:hover .heading-anchor,
+#content h3:hover .heading-anchor,
+#content h4:hover .heading-anchor,
+#content h5:hover .heading-anchor,
+#content h6:hover .heading-anchor {
+    opacity: 1;
+}
+@media (max-width: 640px) {
+    .heading-anchor {
+        opacity: 1;
+    }
 }
 #content h1 {
     font-size: 2.0rem;
@@ -447,13 +472,7 @@ body {
     font-size: 1.08rem;
     color: var(--moe-text-light);
 }
-#content h1::before,
-#content h2::before {
-    content: '🌸 ';
-    font-size: 0.7em;
-    opacity: 0.5;
-}
-#content p {
+.toc-header-deco img {
     margin: 0.8rem 0;
 }
 #content a {

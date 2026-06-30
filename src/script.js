@@ -96,6 +96,22 @@ const TOC = (function() {
         badge.textContent = String(els.length);
         countEl.textContent = String(els.length);
 
+        els.forEach(function(el) {
+            var level = parseInt(el.tagName.charAt(1), 10);
+            var icons = ['🌸', '🌿', '🍀', '💮', '🌺', '🌻'];
+            var icon = icons[(level - 1) % icons.length];
+            var anchor = document.createElement('a');
+            anchor.className = 'heading-anchor';
+            anchor.href = '#' + el.id;
+            anchor.textContent = icon;
+            anchor.title = '链接到此标题';
+            anchor.addEventListener('click', function(e) {
+                e.preventDefault();
+                scrollToHeading(el.id, true);
+            });
+            el.appendChild(anchor);
+        });
+
         tocContent.querySelectorAll('.toc-item').forEach(item => {
             const targetId = item.dataset.target;
             item.addEventListener('click', function(e) {
