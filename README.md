@@ -57,7 +57,9 @@
 
 ## 🚀 快速开始
 
-![准备好要部署我了吗](images/ready-to-deploy.png)
+<p align="left">
+  <img src="images/ready-to-deploy.png" alt="准备好要部署我了吗" width="220">
+</p>
 
 ### 下载编辑好的
 
