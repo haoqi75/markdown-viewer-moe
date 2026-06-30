@@ -57,6 +57,8 @@
 
 ## 🚀 快速开始
 
+![准备好要部署我了吗](images/ready-to-deploy.png)
+
 ### 下载编辑好的
 
 [![GitHub Release](https://img.shields.io/github/v/release/haoqi75/markdown-viewer-moe?display_name=release&style=for-the-badge)](https://github.com/haoqi75/markdown-viewer-moe/releases)
