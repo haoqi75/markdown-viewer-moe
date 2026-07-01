@@ -17,6 +17,8 @@
 
 ![:markdown-viewer-moe](https://count.getloli.com/@:markdown-viewer-moe?theme=moebooru&padding=1)
 
+此作品基于[AI Markdown](https://github.com/haoqi75/haoqi75)（我的老版首页，已停止更新）生成和修复内容，专门给Moe爱好提供的Markdown预览器。功能增强，修复了老版本错误。
+
 ---
 
 ## 🌐 在线演示
