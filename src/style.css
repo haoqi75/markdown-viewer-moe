@@ -466,6 +466,12 @@ body {
         opacity: 1 !important;
     }
 }
+.is-mobile .heading-anchor {
+    opacity: 0.5;
+}
+.is-mobile .heading-anchor:hover {
+    opacity: 1 !important;
+}
 #content h1 {
     font-size: 2.0rem;
     border-bottom: 3px solid rgba(255, 107, 157, 0.20);

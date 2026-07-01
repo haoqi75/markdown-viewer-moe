@@ -25,6 +25,17 @@ if ('scrollRestoration' in history) {
     history.scrollRestoration = 'manual';
 }
 
+// 通过 User-Agent 检测移动端，增强图标显示判断
+(function() {
+    var ua = navigator.userAgent || '';
+    var isMobile = /Android|iPhone|iPad|iPod|webOS|BlackBerry|IEMobile|Opera Mini/i.test(ua);
+    if (isMobile) {
+        document.documentElement.classList.add('is-mobile');
+    }
+})();
+
+// ============================================================
+// 配置加载（由构建工具注入 __CONFIG__，release 版可被 #release-config 覆盖）
 // ============================================================
 // 初始化：设置自定义标题
 // ============================================================
