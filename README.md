@@ -237,6 +237,11 @@ markdown-viewer-moe/
 ---
 
 ## 🤝 贡献
+
+<p align="left">
+  <img src="images/stars.png" alt="准备好要部署我了吗" width="220">
+</p>
+
 欢迎提出 Issue 或 Pull Request！
 如果您喜欢这个项目，别忘了点个 **⭐Star** 哦～
 
