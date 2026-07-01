@@ -231,16 +231,19 @@ const Renderer = (function() {
 
         // 2. 使用 ?p= 查询别名
         var pParam = params.get('p');
-        if (pParam && CONFIG.aliases && typeof CONFIG.aliases === 'object') {
-            var lowerP = pParam.toLowerCase();
-            var keys = Object.keys(CONFIG.aliases);
-            for (var i = 0; i < keys.length; i++) {
-                if (keys[i].toLowerCase() === lowerP) {
-                    console.log('✅ 匹配到别名 "' + keys[i] + '" -> ' + CONFIG.aliases[keys[i]]);
-                    return CONFIG.aliases[keys[i]];
+        if (pParam) {
+            if (CONFIG.aliases && typeof CONFIG.aliases === 'object') {
+                var lowerP = pParam.toLowerCase();
+                var keys = Object.keys(CONFIG.aliases);
+                for (var i = 0; i < keys.length; i++) {
+                    if (keys[i].toLowerCase() === lowerP) {
+                        console.log('✅ 匹配到别名 "' + keys[i] + '" -> ' + CONFIG.aliases[keys[i]]);
+                        return CONFIG.aliases[keys[i]];
+                    }
                 }
             }
-            console.log('⚠️ 未匹配到别名: ' + pParam);
+            // 别名未找到 → 返回特殊标记
+            return '__ALIAS_NOT_FOUND__';
         }
 
         // 3. 回退到默认 URL
@@ -308,6 +311,23 @@ const Renderer = (function() {
 
     async function load() {
         var url = resolveUrl();
+
+        if (url === '__ALIAS_NOT_FOUND__') {
+            var aliasNotFound = new URLSearchParams(window.location.search).get('p');
+            var homeUrl = window.location.pathname + (window.location.hash || '');
+            contentEl.innerHTML =
+                '<div class="error-wrap">' +
+                    (CONFIG.errorMascot ? '<div class="error-mascot"><img class="error-mascot-img" src="' + CONFIG.errorMascot + '" alt=""></div>' : '') +
+                    '<p class="error-code">?</p>' +
+                    '<p class="error-msg">别名未找到</p>' +
+                    '<p class="error-detail"><strong>别名：</strong>' + (aliasNotFound || '') + '</p>' +
+                    '<p class="error-detail">此别名不存在于配置中，请检查 URL 或联系管理员</p>' +
+                    '<button class="retry-btn" style="margin-right:0.6rem;" onclick="location.href=\'' + homeUrl + '\'">🏠 返回首页</button>' +
+                    '<button class="retry-btn" onclick="location.reload()">🔄 重试</button>' +
+                '</div>';
+            return;
+        }
+
         contentEl.innerHTML =
             '<div class="loading-wrap">' +
                 (CONFIG.loadingMascot ? '<img class="loading-mascot" src="' + CONFIG.loadingMascot + '" alt="加载中">' : '') +
@@ -461,6 +481,7 @@ const Renderer = (function() {
                         (err.name === 'TypeError' && err.message && err.message.indexOf('Failed to fetch') >= 0 ?
                         '💡 可能是跨域（CORS）问题或网络不可达' : '') +
                     '</p>' +
+                    '<button class="retry-btn" style="margin-right:0.6rem;" onclick="var u=new URL(window.location);u.searchParams.delete(\'md\');u.searchParams.delete(\'p\');window.location.href=u.href">🏠 返回首页</button>' +
                     '<button class="retry-btn" onclick="location.reload()">🔄 重试</button>' +
                 '</div>';
         }
