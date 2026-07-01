@@ -470,6 +470,11 @@ const Renderer = (function() {
             } else {
                 mascotHtml = '<span class="error-mascot-text">🌸</span>';
             }
+            var homeBtn = '';
+            var params = new URLSearchParams(window.location.search);
+            if (params.get('p') || params.get('md')) {
+                homeBtn = '<button class="retry-btn" style="margin-right:0.6rem;" onclick="var u=new URL(window.location);u.searchParams.delete(\'md\');u.searchParams.delete(\'p\');window.location.href=u.href">🏠 返回首页</button>';
+            }
             contentEl.innerHTML =
                 '<div class="error-wrap">' +
                     '<div class="error-mascot">' + mascotHtml + '</div>' +
@@ -481,7 +486,7 @@ const Renderer = (function() {
                         (err.name === 'TypeError' && err.message && err.message.indexOf('Failed to fetch') >= 0 ?
                         '💡 可能是跨域（CORS）问题或网络不可达' : '') +
                     '</p>' +
-                    '<button class="retry-btn" style="margin-right:0.6rem;" onclick="var u=new URL(window.location);u.searchParams.delete(\'md\');u.searchParams.delete(\'p\');window.location.href=u.href">🏠 返回首页</button>' +
+                    homeBtn +
                     '<button class="retry-btn" onclick="location.reload()">🔄 重试</button>' +
                 '</div>';
         }
@@ -523,6 +528,18 @@ document.addEventListener('DOMContentLoaded', function() {
     }
     if (subEl && CONFIG.logo && CONFIG.logo.sub) {
         subEl.textContent = CONFIG.logo.sub;
+    }
+
+    var headerLeft = document.querySelector('.header-left');
+    if (headerLeft) {
+        headerLeft.style.cursor = 'pointer';
+        headerLeft.title = '返回首页';
+        headerLeft.addEventListener('click', function() {
+            var u = new URL(window.location);
+            u.searchParams.delete('p');
+            u.searchParams.delete('md');
+            window.location.href = u.href;
+        });
     }
 
     var footerEl = document.getElementById('footer');
