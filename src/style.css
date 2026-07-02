@@ -875,6 +875,48 @@ body {
 pre[class*="language-"] {
     background: #1e1e2e !important;
 }
+/* ============================================================
+   7. GitHub 风格警报框
+   ============================================================ */
+.callout {
+    margin: 1rem 0;
+    padding: 0.8rem 1.2rem;
+    border-left: 4px solid;
+    border-radius: 0 var(--moe-radius-sm) var(--moe-radius-sm) 0;
+    font-size: 0.95rem;
+}
+.callout-title {
+    font-weight: 700;
+    margin: 0 0 0.3rem 0;
+}
+.callout-body p {
+    margin: 0.3rem 0;
+}
+.callout-note {
+    background: rgba(9, 105, 218, 0.08);
+    border-left-color: #0969da;
+}
+.callout-note .callout-title { color: #0969da; }
+.callout-tip {
+    background: rgba(26, 127, 55, 0.08);
+    border-left-color: #1a7f37;
+}
+.callout-tip .callout-title { color: #1a7f37; }
+.callout-important {
+    background: rgba(130, 80, 223, 0.08);
+    border-left-color: #8250df;
+}
+.callout-important .callout-title { color: #8250df; }
+.callout-warning {
+    background: rgba(154, 103, 0, 0.08);
+    border-left-color: #9a6700;
+}
+.callout-warning .callout-title { color: #9a6700; }
+.callout-caution {
+    background: rgba(207, 34, 46, 0.08);
+    border-left-color: #cf222e;
+}
+.callout-caution .callout-title { color: #cf222e; }
 .token.keyword,
 .token.operator {
     color: #c792ea !important;

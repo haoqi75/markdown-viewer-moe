@@ -304,6 +304,42 @@ const Renderer = (function() {
         }
     }
 
+    function setupCallouts() {
+        var types = {
+            'NOTE':       { icon: '📝', label: 'Note',        cls: 'callout-note' },
+            'TIP':        { icon: '💡', label: 'Tip',         cls: 'callout-tip' },
+            'IMPORTANT':  { icon: '📌', label: 'Important',   cls: 'callout-important' },
+            'WARNING':    { icon: '⚠️', label: 'Warning',     cls: 'callout-warning' },
+            'CAUTION':    { icon: '🚫', label: 'Caution',     cls: 'callout-caution' }
+        };
+        contentEl.querySelectorAll('blockquote').forEach(function(bq) {
+            var p = bq.querySelector('p');
+            if (!p) return;
+            var m = p.textContent.match(/^\[!(NOTE|TIP|IMPORTANT|WARNING|CAUTION)\]/i);
+            if (!m) return;
+            var type = m[1].toUpperCase();
+            var info = types[type];
+            if (!info) return;
+
+            var div = document.createElement('div');
+            div.className = 'callout ' + info.cls;
+            var titleEl = document.createElement('p');
+            titleEl.className = 'callout-title';
+            titleEl.textContent = info.icon + ' ' + info.label;
+            div.appendChild(titleEl);
+
+            // 移除第一行标签文字
+            var text = p.innerHTML.replace(/^\[!(NOTE|TIP|IMPORTANT|WARNING|CAUTION)\]\s*/i, '');
+            if (text.trim()) {
+                var bodyEl = document.createElement('div');
+                bodyEl.className = 'callout-body';
+                bodyEl.innerHTML = text;
+                div.appendChild(bodyEl);
+            }
+            bq.parentNode.replaceChild(div, bq);
+        });
+    }
+
     function setupImagePreview() {
         var overlay = document.getElementById('img-preview');
         if (!overlay) {
@@ -415,6 +451,8 @@ const Renderer = (function() {
             if (typeof Prism !== 'undefined') {
                 Prism.highlightAll();
             }
+
+            setupCallouts();
 
             TOC.generate();
             interceptAnchors();
