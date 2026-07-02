@@ -236,9 +236,25 @@ const Renderer = (function() {
     function resolveUrl() {
         var params = new URLSearchParams(window.location.search);
 
-        // 1. 优先使用 ?md= 直接指定 Markdown 地址
+        // 1. 优先使用 ?md= base64 编码的 Markdown 地址
         var mdParam = params.get('md');
-        if (mdParam) return mdParam;
+        if (mdParam) {
+            // 尝试 base64 解码
+            var decoded = null;
+            try {
+                decoded = atob(mdParam);
+            } catch(e) {
+                try {
+                    var padded = mdParam + '==='.slice(0, (4 - mdParam.length % 4) % 4);
+                    decoded = atob(padded);
+                } catch(e2) {}
+            }
+            if (decoded && /^https?:\/\//.test(decoded)) {
+                return decoded;
+            }
+            // 解码失败或非 URL → 报错
+            return '__MD_DECODE_FAILED__';
+        }
 
         // 2. 使用 ?p= 查询别名
         var pParam = params.get('p');
@@ -334,6 +350,21 @@ const Renderer = (function() {
                     '<p class="error-detail"><strong>别名：</strong>' + (aliasNotFound || '') + '</p>' +
                     '<p class="error-detail">此别名不存在于配置中，请检查 URL 或联系管理员</p>' +
                     '<button class="retry-btn" style="margin-right:0.6rem;" onclick="location.href=\'' + homeUrl + '\'">🏠 返回首页</button>' +
+                    '<button class="retry-btn" onclick="location.reload()">🔄 重试</button>' +
+                '</div>';
+            return;
+        }
+
+        if (url === '__MD_DECODE_FAILED__') {
+            var badMd = new URLSearchParams(window.location.search).get('md') || '';
+            contentEl.innerHTML =
+                '<div class="error-wrap">' +
+                    (CONFIG.errorMascot ? '<div class="error-mascot"><img class="error-mascot-img" src="' + CONFIG.errorMascot + '" alt=""></div>' : '') +
+                    '<p class="error-code">🔐</p>' +
+                    '<p class="error-msg">?md= 解码失败</p>' +
+                    '<p class="error-detail">?md= 参数需为 Base64 编码的 URL</p>' +
+                    '<p class="error-detail"><strong>原始值：</strong><span style="word-break:break-all;font-size:0.8em;">' + (badMd.length > 80 ? badMd.slice(0,80) + '...' : badMd) + '</span></p>' +
+                    '<button class="retry-btn" style="margin-right:0.6rem;" onclick="location.href=location.origin+location.pathname+location.hash">🏠 返回首页</button>' +
                     '<button class="retry-btn" onclick="location.reload()">🔄 重试</button>' +
                 '</div>';
             return;
@@ -484,7 +515,7 @@ const Renderer = (function() {
             var homeBtn = '';
             var params = new URLSearchParams(window.location.search);
             if (params.get('p') || params.get('md')) {
-                homeBtn = '<button class="retry-btn" style="margin-right:0.6rem;" onclick="var u=new URL(window.location);u.searchParams.delete(\'md\');u.searchParams.delete(\'p\');window.location.href=u.href">🏠 返回首页</button>';
+                homeBtn = '<button class="retry-btn" style="margin-right:0.6rem;" onclick="location.href=location.origin+location.pathname+location.hash">🏠 返回首页</button>';
             }
             contentEl.innerHTML =
                 '<div class="error-wrap">' +
