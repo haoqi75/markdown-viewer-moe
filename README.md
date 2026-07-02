@@ -187,7 +187,7 @@ Actions文件在：`.github/workflows/static.yml`
 - **defaultUrl**：当没有匹配别名或 `?md=` 参数时的默认文档地址。
 - **aliases**：键为访问路径（如 `?p=vmdownload`），值为实际的 Markdown 文件 URL。
 
-> 访问 `?md=直接URL` 将覆盖所有配置，优先级最高。
+> 访问 `?md=Base64编码的URL` 将覆盖所有配置，优先级最高。使用 `btoa('https://...')` 在浏览器控制台编码。
 
 ---
 

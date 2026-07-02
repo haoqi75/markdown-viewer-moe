@@ -1,6 +1,6 @@
 {
   "name": "markdown-viewer-moe",
-  "version": "1.8.0",
+  "version": "1.9.0",
   "description": "由AI生成的Moe Markdown查看器",
   "scripts": {
     "build": "gulp build",
