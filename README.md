@@ -19,6 +19,9 @@
 
 此作品基于[AI Markdown](https://github.com/haoqi75/haoqi75)（我的老版首页，已停止更新）生成和修复内容，专门给Moe爱好提供的Markdown预览器。功能增强，修复了老版本错误。
 
+> [!NOTE]
+> 此作品为 **AI** 生成，部分代码可能会缺失，我毕竟也不知道如何修复有些问题，所以可能全靠 **AI** 修复，谢谢理解。
+
 ---
 
 ## 🌐 在线演示
@@ -145,14 +148,49 @@ Actions文件在：`.github/workflows/static.yml`
 
 ---
 
-## 🌐使用方式
+## 🌐如何使用
+
+> [!WARNING]
+> 请确保你的Markdown可以被浏览器访问，Markdown存文本（Raw），并服务器拥有CORS配置正确，否则无法加载。
+
+### 上传或打开html文件
 
 这是一个单独的**html**文件，可以直接打开或者上传到
 - GitHub Pages
 - Cloudfare Pages
+- Edgeone Pages
 - Netlify
 - Vercel
 - 任何html服务器
+
+---
+
+### 使用方式
+
+- 方法1：通过编辑 `config.json` 里的 `"defaultUrl"` 和 `"aliases"` （[见下方](#配置说明)）然后重新构建（[见本地部署](#本地部署)）。
+- 方法2：下载[Release](#下载编辑好的)文件。按照步骤编辑。
+- 方法3：在地址栏提供参数，在地址栏写`?md=<base64 url>`即可访问到Markdown文件。
+
+---
+
+### 地址参数
+
+- `?p=`：别名，在[配置文件](#配置说明)或 [Release](#下载编辑好的) 头部编辑别名，别名编辑好后，可以按照这个方式访问：
+  ```url
+  http://127.0.0.1:8520/?p=page
+  ```
+  或者：
+  ```url
+  https://moe520.haoqi75.os.kg/?p=page
+  ```
+- `?md=`：加载其他Markdown地址，使用Base64加密地址，按照以下方式访问：
+  ```url
+  http://127.0.0.1:8520/?md=aHR0cHM6Ly9leGFtcGxlLmNvbS90ZXN0Lm1kCg==
+  ```
+  或者：
+  ```url
+  https://moe520.haoqi75.os.kg/?md=aHR0cHM6Ly9leGFtcGxlLmNvbS90ZXN0Lm1kCg==
+  ```
 
 ---
 
