@@ -151,7 +151,7 @@ Actions文件在：`.github/workflows/static.yml`
 ## 🌐如何使用
 
 > [!WARNING]
-> 请确保你的Markdown可以被浏览器访问，Markdown存文本（Raw），并服务器拥有CORS配置正确，否则无法加载。
+> 请确保你的Markdown可以被浏览器访问，Markdown纯文本（Raw），并服务器拥有CORS配置正确，否则无法加载。
 
 ### 上传或打开html文件
 
@@ -192,6 +192,9 @@ Actions文件在：`.github/workflows/static.yml`
   https://moe520.haoqi75.os.kg/?md=aHR0cHM6Ly9leGFtcGxlLmNvbS90ZXN0Lm1kCg==
   ```
 
+>[!TIP]
+>加密base64可以使用 `btoa('https://...')` 在浏览器控制台编码。或者在终端输入 `echo "https://..." | base64` 也可以获取base64加密。
+
 ---
 
 ## ⚙️ 配置说明
@@ -225,7 +228,7 @@ Actions文件在：`.github/workflows/static.yml`
 - **defaultUrl**：当没有匹配别名或 `?md=` 参数时的默认文档地址。
 - **aliases**：键为访问路径（如 `?p=vmdownload`），值为实际的 Markdown 文件 URL。
 
-> 访问 `?md=Base64编码的URL` 将覆盖所有配置，优先级最高。使用 `btoa('https://...')` 在浏览器控制台编码。
+> 访问 `?md=Base64编码的URL` 将覆盖所有配置，优先级最高。
 
 ---
 
