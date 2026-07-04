@@ -1,0 +1,6 @@
+{
+  "name": "小白配置文件生成器",
+  "description": "一款面向新手的可视化 JSON 配置文件交互式编辑器。支持多种预设模板、拖拽导入、错误语法校验、即时美化，并可一键打包压缩为 standalone 的单 HTML 网页工具 tools.html。",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

@@ -1,0 +1,73 @@
+import gulp from 'gulp';
+import fs from 'fs';
+import path from 'path';
+import { execSync } from 'child_process';
+
+// Gulp task to compile the React app and bundle it into a single tools.html file
+function buildSingleHtml(cb) {
+  try {
+    console.log('正在执行 Vite 生产环境编译...');
+    // Run vite build synchronously
+    execSync('npm run build', { stdio: 'inherit' });
+
+    console.log('编译成功！正在将 JS 和 CSS 文件注入单个 tools.html...');
+
+    const distPath = path.join(process.cwd(), 'dist');
+    const indexPath = path.join(distPath, 'index.html');
+    
+    if (!fs.existsSync(indexPath)) {
+      throw new Error('未找到编译生成物 dist/index.html，请确保 Vite 正常编译！');
+    }
+
+    let htmlContent = fs.readFileSync(indexPath, 'utf-8');
+
+    // Find and inline all link tags for CSS
+    // Matches patterns like: <link rel="stylesheet" crossorigin href="/assets/index-Bf6N0B-j.css">
+    const cssRegex = /<link[^>]*href=["']\/assets\/([^"']+\.css)["'][^>]*>/g;
+    let cssMatch;
+    let cssContent = '';
+
+    while ((cssMatch = cssRegex.exec(htmlContent)) !== null) {
+      const cssFileName = cssMatch[1];
+      const cssFilePath = path.join(distPath, 'assets', cssFileName);
+      if (fs.existsSync(cssFilePath)) {
+        cssContent += '\n' + fs.readFileSync(cssFilePath, 'utf-8');
+      }
+    }
+
+    // Replace the link stylesheet tag(s) with an inline <style> block
+    htmlContent = htmlContent.replace(cssRegex, '');
+    htmlContent = htmlContent.replace('</head>', `<style>${cssContent}</style>\n</head>`);
+
+    // Find and inline script tags
+    // Matches patterns like: <script type="module" crossorigin src="/assets/index-ChT_X6Z2.js"></script>
+    const jsRegex = /<script[^>]*src=["']\/assets\/([^"']+\.js)["'][^>]*><\/script>/g;
+    let jsMatch;
+    let jsContent = '';
+
+    while ((jsMatch = jsRegex.exec(htmlContent)) !== null) {
+      const jsFileName = jsMatch[1];
+      const jsFilePath = path.join(distPath, 'assets', jsFileName);
+      if (fs.existsSync(jsFilePath)) {
+        jsContent += '\n' + fs.readFileSync(jsFilePath, 'utf-8');
+      }
+    }
+
+    // Replace script tags with inline <script type="module">
+    htmlContent = htmlContent.replace(jsRegex, '');
+    htmlContent = htmlContent.replace('</body>', `<script type="module">${jsContent}</script>\n</body>`);
+
+    // Write to tools.html in the dist folder
+    const outputPath = path.join(distPath, 'tools.html');
+    fs.writeFileSync(outputPath, htmlContent, 'utf-8');
+
+    console.log(`🎉 恭喜！单网页文件 tools.html 已成功压缩生成在 dist 目录: ${outputPath}`);
+    cb();
+  } catch (error) {
+    console.error('打包 tools.html 失败:', error);
+    cb(error);
+  }
+}
+
+// Export gulp task
+export default buildSingleHtml;

@@ -30,6 +30,13 @@
 
 ---
 
+## 📝 简单编辑 config.json 工具
+
+请打开 [tools.html](https://moe520.haoqi75.os.kg/tools.html) 来简单编辑。
+
+
+---
+
 ## ✨ 特色
 
 - 🎀 **萌系主题** – 粉紫渐变、毛玻璃效果、浮动装饰、标题小图标
@@ -229,6 +236,10 @@ Actions文件在：`.github/workflows/static.yml`
 - **aliases**：键为访问路径（如 `?p=vmdownload`），值为实际的 Markdown 文件 URL。
 
 > 访问 `?md=Base64编码的URL` 将覆盖所有配置，优先级最高。
+
+若嫌麻烦可以使用UI化的编辑工具：[tools.html](https://moe520.haoqi75.os.kg/tools.html)
+
+具体在[简单编辑 config.json 工具](#简单编辑-config.json-工具)查看。
 
 ---
 

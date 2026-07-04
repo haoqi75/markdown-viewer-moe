@@ -51,6 +51,9 @@ jobs:
       - name: Build page
         run: pnpm run build
         
+      - name: Build tools
+        run: pnpm run build:tools
+        
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:

@@ -56,6 +56,9 @@ jobs:
       - name: Build page for release
         run: pnpm run build:release
         
+      - name: Build tools for release
+        run: pnpm run build:tools --release
+        
       - name: Generate release body
         id: body
         run: |
@@ -81,6 +84,7 @@ jobs:
               echo ""
               echo "## 📥 下载"
               echo "下载 \`index.release.html\`，用记事本编辑顶部 JSON 即可自定义 defaultUrl 和 aliases。"
+              echo "下载 \`tools-v.X.X.X.html\` 可以下载config.json编辑工具。"
             } > release_body.md
             echo "✅ Use commit to synthesize the release body."
           else
