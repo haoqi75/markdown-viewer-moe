@@ -100,7 +100,9 @@ jobs:
           draft: false
           body_path: release_body.md
           prerelease: false
-          files: ./dist/index.release.html
+          files: |
+            ./dist/index.release.html
+            ./dist/tools-*.html
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           
