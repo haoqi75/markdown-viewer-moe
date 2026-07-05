@@ -22,7 +22,8 @@ const DEFAULTS = {
     mascot: 'img/mascot.png',
     defaultUrl: 'https://raw.githubusercontent.com/haoqi75/markdown-viewer-moe/refs/heads/main/README.md',
     aliases: {},
-    tocWelcome: '欢迎来到萌·Markdown'
+    tocWelcome: '欢迎来到萌·Markdown',
+    toolsUrl: 'https://moe520.haoqi75.os.kg/tools.html'
 };
 
 function getMimeType(filePath) {

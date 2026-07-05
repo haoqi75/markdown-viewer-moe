@@ -644,6 +644,11 @@ document.addEventListener('DOMContentLoaded', function() {
         bubbleEl.textContent = CONFIG.tocWelcome;
     }
 
+    var toolsLink = document.getElementById('tools-link');
+    if (toolsLink && CONFIG.toolsUrl) {
+        toolsLink.href = CONFIG.toolsUrl;
+    }
+
     Renderer.load();
 });
 
