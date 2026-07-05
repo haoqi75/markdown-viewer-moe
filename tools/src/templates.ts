@@ -70,5 +70,30 @@ export const templates: ConfigTemplate[] = [
         ]
       }
     ]
+  },
+  {
+    id: 'markdown_basic',
+    name: '📄 基础·发布配置模板 (Basic Release Config)',
+    description: '标准、极简的 Markdown 预览发布配置，包含默认加载的 Markdown 文件地址与路由别名定义。',
+    icon: 'Globe',
+    config: {
+      defaultUrl: "https://your-default-api.com/raw/index.md",
+      aliases: {
+        test: "https://another-api.com/raw/rypa",
+        docs: "https://docs.example.com/readme.md"
+      }
+    },
+    schema: [
+      {
+        name: '⚙️ 基础设置 (Basic Settings)',
+        description: '配置最核心的数据源与路由别名映射表。',
+        icon: 'Sliders',
+        fields: [
+          { key: 'defaultUrl', label: '默认 Markdown 地址 (defaultUrl)', type: 'string', description: '预览器默认加载的 Markdown 原始文件链接' },
+          { key: 'aliases.test', label: '测试别名映射 (test)', type: 'string', description: '访问 /#test 时指向的 Markdown 原始链接' },
+          { key: 'aliases.docs', label: '文档别名映射 (docs)', type: 'string', description: '访问 /#docs 时指向的 Markdown 原始链接' }
+        ]
+      }
+    ]
   }
 ];

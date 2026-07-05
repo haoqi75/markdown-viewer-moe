@@ -228,7 +228,8 @@ Actions文件在：`.github/workflows/static.yml`
         "test": "https://another-api.com/raw/rypa",
         "docs": "https://docs.example.com/readme.md"
     },
-    "tocWelcome": "欢迎来到萌·Markdown"
+    "tocWelcome": "欢迎来到萌·Markdown",
+    "toolsUrl": "https://moe520.haoqi75.os.kg/tools.html"
 }
 ```
 
