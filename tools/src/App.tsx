@@ -908,52 +908,26 @@ export default function App() {
           <div className="absolute right-3 top-3 opacity-15 dark:opacity-10 text-pink-500 select-none pointer-events-none">
             <Sparkles className="w-10 h-10 animate-pulse" />
           </div>
-          {/* Chibi Mascot SVG */}
+          {/* Chibi Mascot Image */}
           <div className="shrink-0 relative">
-            <svg viewBox="0 0 100 100" className="w-20 h-20 filter drop-shadow-md">
-              <circle cx="50" cy="50" r="38" fill="#ffccd5" />
-              <polygon points="20,35 12,12 38,24" fill="#ffb3c1" />
-              <polygon points="20,35 15,16 32,24" fill="#ffccd5" />
-              <polygon points="80,35 88,12 62,24" fill="#ffb3c1" />
-              <polygon points="80,35 85,16 68,24" fill="#ffccd5" />
-              <circle cx="50" cy="55" r="28" fill="#ffe5ec" />
-              {mascotExpression === 'sad' ? (
-                <>
-                  <path d="M 33,52 Q 38,55 41,52" stroke="#4a353d" strokeWidth="2.5" fill="none" strokeLinecap="round" />
-                  <path d="M 59,52 Q 62,55 67,52" stroke="#4a353d" strokeWidth="2.5" fill="none" strokeLinecap="round" />
-                </>
-              ) : mascotExpression === 'wink' ? (
-                <>
-                  <path d="M 32,50 Q 38,54 42,50" stroke="#4a353d" strokeWidth="2.5" fill="none" strokeLinecap="round" />
-                  <circle cx="62" cy="52" r="4.5" fill="#4a353d" />
-                  <circle cx="62" cy="50" r="1.5" fill="#ffffff" />
-                </>
-              ) : mascotExpression === 'excited' ? (
-                <>
-                  <path d="M 32,52 L 40,48 L 32,44" stroke="#4a353d" strokeWidth="2.5" fill="none" strokeLinecap="round" />
-                  <path d="M 68,52 L 60,48 L 68,44" stroke="#4a353d" strokeWidth="2.5" fill="none" strokeLinecap="round" />
-                </>
-              ) : (
-                <>
-                  <circle cx="38" cy="52" r="4.5" fill="#4a353d" />
-                  <circle cx="38" cy="50" r="1.5" fill="#ffffff" />
-                  <circle cx="62" cy="52" r="4.5" fill="#4a353d" />
-                  <circle cx="62" cy="50" r="1.5" fill="#ffffff" />
-                </>
-              )}
-              <ellipse cx="32" cy="58" rx="6" ry="3" fill="#ff85a2" opacity="0.6" />
-              <ellipse cx="68" cy="58" rx="6" ry="3" fill="#ff85a2" opacity="0.6" />
-              {mascotExpression === 'happy' || mascotExpression === 'excited' ? (
-                <path d="M 46,59 Q 50,65 54,59 Z" fill="#ff477e" />
-              ) : (
-                <path d="M 46,61 Q 50,57 54,61" stroke="#4a353d" strokeWidth="2.2" fill="none" strokeLinecap="round" />
-              )}
-              <path d="M 18,38 Q 30,30 50,34 Q 70,30 82,38 Q 80,48 74,50 Q 64,44 50,46 Q 36,44 26,50 Q 20,48 18,38 Z" fill="#ffccd5" />
-              <path d="M 45,34 Q 48,46 52,48 Q 50,34 45,34 Z" fill="#ffb3c1" />
-              <circle cx="50" cy="24" r="5" fill="#ff477e" />
-              <path d="M 50,24 Q 40,16 42,28 Z" fill="#ff477e" />
-              <path d="M 50,24 Q 60,16 58,28 Z" fill="#ff477e" />
-            </svg>
+            <div className={`w-20 h-20 rounded-full bg-pink-100 dark:bg-pink-950/40 p-1 border-2 border-pink-200 dark:border-pink-800/30 overflow-hidden flex items-center justify-center transition-all duration-300 ${
+              mascotExpression === 'happy'
+                ? 'animate-bounce [animation-duration:0.6s] scale-105'
+                : mascotExpression === 'excited'
+                ? 'animate-bounce [animation-duration:0.4s] rotate-6 scale-110'
+                : mascotExpression === 'sad'
+                ? 'animate-pulse opacity-85 translate-y-1 rotate-[-4deg]'
+                : mascotExpression === 'wink'
+                ? 'scale-105 rotate-3'
+                : 'hover:scale-105 hover:rotate-2'
+            }`}>
+              <img 
+                src="/icon.png" 
+                alt="小萌 Mascot" 
+                className="w-full h-full object-contain rounded-full select-none"
+                referrerPolicy="no-referrer"
+              />
+            </div>
             <span className="absolute -bottom-1 -right-1 bg-pink-500 text-white text-3xs px-2 py-0.5 rounded-full font-black shadow-xs select-none">小萌</span>
           </div>
 

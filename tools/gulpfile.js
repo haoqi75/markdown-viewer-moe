@@ -7,8 +7,13 @@ import { execSync } from 'child_process';
 function buildSingleHtml(cb) {
   try {
     console.log('正在执行 Vite 生产环境编译...');
-    // Run vite build synchronously
-    execSync('npm run build', { stdio: 'inherit' });
+    // Run build with automatic fallback between pnpm and npm
+    try {
+      execSync('pnpm run build', { stdio: 'inherit' });
+    } catch (error) {
+      console.log('⚠️ pnpm 执行失败或未找到，正在尝试使用 npm 运行编译...');
+      execSync('npm run build', { stdio: 'inherit' });
+    }
 
     console.log('编译成功！正在将 JS 和 CSS 文件注入单个 tools.html...');
 
@@ -51,6 +56,21 @@ function buildSingleHtml(cb) {
       if (fs.existsSync(jsFilePath)) {
         jsContent += '\n' + fs.readFileSync(jsFilePath, 'utf-8');
       }
+    }
+
+    // Convert public/icon.png to Base64 and inline it into the Javascript / HTML contents
+    const iconPath = path.join(process.cwd(), 'public', 'icon.png');
+    if (fs.existsSync(iconPath)) {
+      console.log('正在将 public/icon.png 转换为 Base64 并打包注入...');
+      const iconBuffer = fs.readFileSync(iconPath);
+      const iconBase64 = `data:image/png;base64,${iconBuffer.toString('base64')}`;
+      
+      jsContent = jsContent.split('"/icon.png"').join(`"${iconBase64}"`);
+      jsContent = jsContent.split('\'/icon.png\'').join(`'${iconBase64}'`);
+      jsContent = jsContent.split('`/icon.png`').join(`\`${iconBase64}\``);
+      
+      htmlContent = htmlContent.split('"/icon.png"').join(`"${iconBase64}"`);
+      htmlContent = htmlContent.split('\'/icon.png\'').join(`'${iconBase64}'`);
     }
 
     // Replace script tags with inline <script type="module">
