@@ -121,10 +121,10 @@ cd markdown-viewer-moe
 pnpm install
 ```
 
-#### 开发模式（自动预览 + ~~热重载~~ 临时还没有做到这一点）
+#### 开发模式（自动预览 + 热重载）
 ```bash
 pnpm dev
-# 请手动打开 http://localhost:8520
+# 请手动打开 http://localhost:3001
 ```
 
 #### 生产构建
