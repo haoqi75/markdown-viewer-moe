@@ -503,6 +503,12 @@ body {
     color: var(--moe-purple);
     border-bottom-color: var(--moe-purple);
 }
+#content a:has(img) {
+    border-bottom: none;
+}
+#content a:has(img):hover {
+    border-bottom: none;
+}
 #content code {
     background: rgba(255, 107, 157, 0.08);
     padding: 0.15rem 0.5rem;
