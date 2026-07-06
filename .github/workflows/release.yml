@@ -59,6 +59,15 @@ jobs:
       - name: Build tools for release
         run: pnpm run build:tools --release
         
+      - name: Get tools verison
+        id: get_tools_version
+        run: |
+          if [ "${{ github.event_name }}" = "push" ]; then
+            TOOLS_VERSION=$(cat tools/package.json | jq -r .version)
+            echo "tools_version=${TOOLS_VERSION}" >> $GITHUB_OUTPUT
+            echo "Tools version: ${TOOLS_VERSION}"
+          fi
+        
       - name: Generate release body
         id: body
         run: |
@@ -72,6 +81,8 @@ jobs:
               echo "**Tag:** ${{ steps.get_tag.outputs.tag_name }}"
               echo "**Commit:** $(git rev-parse --short ${{ steps.get_tag.outputs.tag_name }})"
               echo ""
+              echo "**Tools version:** ${{ steps.get_tools_version.outputs.tools_version }}"
+              echo ""
               if [ -n "$TAG_MSG" ]; then
                 echo "## 📝 更新内容"
                 echo ""
@@ -84,7 +95,7 @@ jobs:
               echo ""
               echo "## 📥 下载"
               echo "下载 \`index.release.html\`，用记事本编辑顶部 JSON 即可自定义 defaultUrl 和 aliases。"
-              echo "下载 \`tools-v.X.X.X.html\` 可以下载config.json编辑工具。"
+              echo "下载 \`tools-vX.X.X.html\` 可以下载config.json编辑工具。"
             } > release_body.md
             echo "✅ Use commit to synthesize the release body."
           else
@@ -102,7 +113,7 @@ jobs:
           prerelease: false
           files: |
             ./dist/index.release.html
-            ./dist/tools-*.html
+            ./dist/tools-v*.html
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           
