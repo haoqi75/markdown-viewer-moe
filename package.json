@@ -6,9 +6,9 @@
     "build": "gulp build",
     "build:release": "gulp build && node script/release.js",
     "build:tools": "pnpm --filter moe-json-editor build:html && node script/copy-tools.js",
-    "dev": "trap 'exit 0' EXIT; gulp clean build && http-server dist -p 8520 -a 127.0.0.1",
+    "dev": "gulp",
     "dev:tools": "pnpm --filter moe-json-editor dev",
-    "start": "trap 'exit 0' EXIT; gulp clean build && http-server dist -p 8520 -a 127.0.0.1"
+    "start": "gulp"
   },
   "devDependencies": {
     "browser-sync": "^3.0.4",

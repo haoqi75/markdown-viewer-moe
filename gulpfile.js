@@ -9,6 +9,7 @@ const fs = require('fs');
 const path = require('path');
 const CleanCSS = require('clean-css');
 const UglifyJS = require('uglify-js');
+const browserSync = require('browser-sync').create();
 
 const srcDir = 'src';
 const distDir = 'dist';
@@ -208,6 +209,19 @@ function build() {
         });
 }
 
+function dev() {
+    browserSync.init({
+        server: { baseDir: distDir },
+        port: 8520,
+        open: false
+    });
+    gulp.watch(
+        [srcDir + '/index.html', srcDir + '/style.css', srcDir + '/script.js', srcDir + '/config.json'],
+        gulp.series(build, function(done) { browserSync.reload(); done(); })
+    );
+}
+
 exports.clean = clean;
 exports.build = gulp.series(clean, build);
-exports.default = exports.build;
+exports.dev = gulp.series(clean, build, dev);
+exports.default = exports.dev;
