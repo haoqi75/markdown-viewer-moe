@@ -18,9 +18,7 @@ import {
   Wrench,
   Sun,
   Moon,
-  Github,
-  RefreshCw,
-  Globe
+  Github
 } from 'lucide-react';
 
 const extractJsonFromHtml = (htmlContent: string): { json: Record<string, any> | null; error: string | null } => {
@@ -49,6 +47,57 @@ const injectJsonToHtml = (htmlContent: string, json: Record<string, any>): strin
   return htmlContent;
 };
 
+const DEFAULT_RELEASE_HTML = `<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Markdown 预览发布版</title>
+  <script id="release-config" type="application/json">
+{
+  "defaultUrl": "https://your-default-api.com/raw/index.md",
+  "aliases": {
+    "test": "https://another-api.com/raw/rypa",
+    "docs": "https://docs.example.com/readme.md"
+  }
+}
+  </script>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-slate-50 text-slate-800 min-h-screen flex flex-col font-sans">
+  <div class="max-w-4xl mx-auto w-full p-6 my-10 bg-white rounded-3xl shadow-xl border border-slate-100 flex-1 flex flex-col">
+    <div class="flex items-center space-x-3 pb-6 border-b border-slate-100 mb-6">
+      <div class="p-2.5 bg-pink-500 rounded-2xl text-white">
+        <svg class="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg>
+      </div>
+      <div>
+        <h1 class="text-xl font-bold text-slate-800">📄 Markdown 预览发布版</h1>
+        <p class="text-xs text-slate-500">Standalone Release Document Viewer</p>
+      </div>
+    </div>
+    
+    <div class="flex-1">
+      <div class="p-4 bg-pink-50/50 border border-pink-100/60 rounded-2xl text-sm mb-6 text-[#6e4e59]">
+        ✨ 这是一个由 <strong>萌·配置文件生成器</strong> 打包输出的独立发布版 HTML。配置已直接注入在页面头部的 <code class="bg-white/80 px-1 py-0.5 rounded text-pink-600 font-mono text-2xs">&lt;script id="release-config"&gt;</code> 中。
+      </div>
+      
+      <h2 class="text-sm font-bold text-slate-700 mb-3">📍 内置配置参数 (Parsed Config)</h2>
+      <pre id="config-display" class="bg-slate-900 text-slate-200 font-mono text-xs p-5 rounded-2xl overflow-x-auto shadow-inner leading-relaxed">加载中...</pre>
+    </div>
+  </div>
+
+  <script>
+    try {
+      const configText = document.getElementById('release-config').textContent;
+      const config = JSON.parse(configText);
+      document.getElementById('config-display').textContent = JSON.stringify(config, null, 2);
+    } catch (e) {
+      document.getElementById('config-display').textContent = 'Error parsing config: ' + e.message;
+    }
+  </script>
+</body>
+</html>`;
+
 export default function App() {
   const [config, setConfig] = useState<Record<string, any>>(templates[0].config);
   const [activeTemplate, setActiveTemplate] = useState<ConfigTemplate>(templates[0]);
@@ -61,7 +110,6 @@ export default function App() {
   // HTML file upload state
   const [uploadedHtmlContent, setUploadedHtmlContent] = useState<string | null>(null);
   const [uploadedHtmlName, setUploadedHtmlName] = useState<string>("index.release.html");
-  const [isFetchingHtml, setIsFetchingHtml] = useState<boolean>(false);
   const htmlInputRef = useRef<HTMLInputElement>(null);
 
   // Moe Mascot state
@@ -196,8 +244,9 @@ export default function App() {
 
   // Pack edited config back and download index.release.html
   const handleDownloadHtml = () => {
-    if (!uploadedHtmlContent) {
-      showToast('未上传 index.release.html 模板！', 'error');
+    const htmlToPack = uploadedHtmlContent || DEFAULT_RELEASE_HTML;
+    if (!htmlToPack) {
+      showToast('当前无可用 HTML 模板！', 'error');
       return;
     }
     if (!validation.isValid) {
@@ -208,7 +257,7 @@ export default function App() {
     }
 
     try {
-      const updatedHtml = injectJsonToHtml(uploadedHtmlContent, config);
+      const updatedHtml = injectJsonToHtml(htmlToPack, config);
       const blob = new Blob([updatedHtml], { type: 'text/html;charset=utf-8' });
       const downloadAnchor = document.createElement('a');
       downloadAnchor.setAttribute("href", URL.createObjectURL(blob));
@@ -217,85 +266,12 @@ export default function App() {
       downloadAnchor.click();
       downloadAnchor.remove();
       
-      showToast(`打包完成，${uploadedHtmlName} 下载已开始！`, 'success');
-      setMascotMessage(`太棒啦！新的配置已经成功打包写入「${uploadedHtmlName}」，下载已开始，快去部署上线看看吧！🚀`);
+      const fileName = uploadedHtmlName || "index.release.html";
+      showToast(`打包完成，${fileName} 下载已开始！`, 'success');
+      setMascotMessage(`太棒啦！新的配置已经成功打包写入「${fileName}」，下载已开始，快去部署上线看看吧！🚀`);
       setMascotExpression('excited');
     } catch (err: any) {
       showToast(`打包导出 HTML 失败: ${err.message}`, 'error');
-    }
-  };
-
-  const handleFetchLatestFromGithub = async () => {
-    setIsFetchingHtml(true);
-    setMascotMessage("正在全力连接 GitHub 并获取最新的 index.release.html 中，请稍候哦……⏳");
-    setMascotExpression('idle');
-    try {
-      // 1. Fetch latest release info from GitHub API
-      const releaseRes = await fetch('https://api.github.com/repos/haoqi75/markdown-viewer-moe/releases/latest');
-      if (!releaseRes.ok) {
-        throw new Error(`获取 GitHub Release 失败，状态码: ${releaseRes.status}`);
-      }
-      const releaseData = await releaseRes.json();
-      const tagName = releaseData.tag_name || 'latest';
-      
-      // 2. Find asset index.release.html
-      const asset = releaseData.assets?.find((a: any) => a.name === 'index.release.html');
-      if (!asset) {
-        throw new Error('在最新的 GitHub Release 中未找到 index.release.html 附件！');
-      }
-
-      // 3. Fetch the content of index.release.html
-      let htmlText = '';
-      try {
-        const fileRes = await fetch(asset.browser_download_url);
-        if (!fileRes.ok) throw new Error('CORS or network error');
-        htmlText = await fileRes.text();
-      } catch (fetchErr) {
-        // Fallback: raw path
-        const fallbackUrl = `https://raw.githubusercontent.com/haoqi75/markdown-viewer-moe/refs/tags/${tagName}/index.release.html`;
-        const fallbackRes = await fetch(fallbackUrl);
-        if (!fallbackRes.ok) {
-          throw new Error('无法下载 Release 资产。请检查您的网络连接，或尝试手动下载并上传文件。');
-        }
-        htmlText = await fallbackRes.text();
-      }
-
-      // 4. Extract configuration
-      const { json, error } = extractJsonFromHtml(htmlText);
-      if (error) {
-        throw new Error(error);
-      }
-
-      if (json) {
-        setUploadedHtmlContent(htmlText);
-        setUploadedHtmlName(`index.release-${tagName}.html`);
-        setConfig(json);
-        
-        // Match template or create custom
-        const matchedTpl = templates.find(t => JSON.stringify(t.config) === JSON.stringify(json));
-        if (matchedTpl) {
-          setActiveTemplate(matchedTpl);
-        } else {
-          setActiveTemplate({
-            id: 'html_release_config',
-            name: `📦 发布版 HTML (${tagName})`,
-            description: `正在编辑从 GitHub 获取的 ${tagName} 版本 release-config 参数。`,
-            icon: 'Layers',
-            config: json
-          });
-        }
-        
-        setValidation({ isValid: true });
-        showToast(`成功获取 GitHub 最新版 (${tagName}) 并提取配置！`, 'success');
-        setMascotMessage(`好棒！成功从 GitHub 最新 Release「${tagName}」中下载并加载了 index.release.html！快来根据需要修改它的 JSON 属性吧～🌸`);
-        setMascotExpression('excited');
-      }
-    } catch (err: any) {
-      showToast(`获取失败: ${err.message}`, 'error');
-      setMascotMessage(`呜呜……从 GitHub 获取最新版失败了：${err.message || '网络连接超时'}。您可以尝试手动下载文件，然后再上传哦～🎈`);
-      setMascotExpression('sad');
-    } finally {
-      setIsFetchingHtml(false);
     }
   };
 
@@ -1132,53 +1108,72 @@ export default function App() {
         </div>
         
         {/* index.release.html Release Injector Tools */}
-        <div className="bg-white/95 dark:bg-[#251620]/95 border border-pink-100/60 dark:border-pink-900/30 rounded-3xl p-6 mb-8 shadow-sm">
-          <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-4">
-            <div className="flex items-start space-x-3.5">
-              <div className="p-2.5 bg-pink-100 dark:bg-pink-950/80 rounded-2xl shrink-0 text-pink-500">
-                <Layers className="h-5 w-5" />
+        {activeTemplate.id === 'markdown_moe' ? (
+          <div className="bg-gray-50/55 dark:bg-[#1a0f16]/60 border border-gray-200/50 dark:border-pink-950/20 rounded-3xl p-6 mb-8 shadow-inner transition-all animate-fade-in">
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+              <div className="flex items-start space-x-3.5 opacity-65">
+                <div className="p-2.5 bg-gray-200 dark:bg-gray-800 rounded-2xl shrink-0 text-gray-400 dark:text-gray-500">
+                  <Layers className="h-5 w-5" />
+                </div>
+                <div>
+                  <h3 className="text-sm font-black text-gray-500 dark:text-gray-400 flex items-center gap-1.5">
+                    📦 index.release.html 预发布端配置工具
+                  </h3>
+                  <p className="mt-1 text-xs text-gray-400 dark:text-gray-500 font-medium max-w-2xl leading-relaxed">
+                    当前选中的是 <strong>完整版（萌·Markdown 预览器）</strong>。此版本使用独立的 <code className="bg-gray-100 dark:bg-gray-950 px-1 py-0.5 rounded text-gray-500 font-mono text-2xs">config.json</code>，不支持将配置内嵌打包到 HTML。
+                  </p>
+                </div>
               </div>
-              <div>
-                <h3 className="text-sm font-black text-[#4a353d] dark:text-white flex items-center gap-1.5">
-                  📦 index.release.html 预发布端配置工具
-                </h3>
-                <p className="mt-1 text-xs text-gray-500 dark:text-gray-300 font-medium max-w-2xl leading-relaxed">
-                  可用于直接更新已有 HTML 网页的预置脚本配置。点击上传含有 <code className="bg-pink-50 dark:bg-pink-950/40 px-1 py-0.5 rounded text-pink-600 font-mono text-2xs">&lt;script id="release-config" type="application/json"&gt;</code> 的 HTML 文件，系统将自动读取它，您可以像修改普通模板一样编辑里面的 JSON，并一键重新打包下载。
-                </p>
+              <div className="shrink-0">
+                <button
+                  type="button"
+                  onClick={() => {
+                    const basicTpl = templates.find(t => t.id === 'markdown_basic');
+                    if (basicTpl) handleTemplateSelect(basicTpl);
+                  }}
+                  className="px-4 py-2 text-xs font-bold rounded-2xl bg-white hover:bg-pink-50 border border-pink-200 text-pink-600 dark:border-pink-800 dark:bg-[#251620] dark:text-pink-300 dark:hover:bg-pink-950/20 transition-all cursor-pointer shadow-xs"
+                >
+                  切换到基础发布模板
+                </button>
               </div>
             </div>
-            
-            <div className="flex flex-wrap items-center gap-3 shrink-0">
-              <button
-                id="btn-fetch-github"
-                type="button"
-                disabled={isFetchingHtml}
-                onClick={handleFetchLatestFromGithub}
-                className="flex items-center space-x-1.5 px-4 py-2.5 text-xs font-bold rounded-2xl border border-pink-200 bg-pink-50/50 hover:bg-pink-100/60 text-pink-700 dark:border-pink-800 dark:bg-[#251620] dark:text-pink-300 dark:hover:bg-pink-950/20 transition-all shadow-xs disabled:opacity-55 cursor-pointer disabled:cursor-not-allowed"
-              >
-                <RefreshCw className={`h-4 w-4 shrink-0 text-pink-500 ${isFetchingHtml ? 'animate-spin' : ''}`} />
-                <span>{isFetchingHtml ? '正在获取 GitHub 最新版...' : '获取 GitHub 最新版'}</span>
-              </button>
+          </div>
+        ) : (
+          <div className="bg-gradient-to-br from-pink-50/40 to-white dark:from-[#2e1927]/40 dark:to-[#251620]/95 border-2 border-pink-100/70 dark:border-pink-900/40 rounded-3xl p-6 mb-8 shadow-md">
+            <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-4">
+              <div className="flex items-start space-x-3.5">
+                <div className="p-2.5 bg-pink-100 dark:bg-pink-950/80 rounded-2xl shrink-0 text-pink-500">
+                  <Layers className="h-5 w-5 animate-pulse" />
+                </div>
+                <div>
+                  <h3 className="text-sm font-black text-[#4a353d] dark:text-white flex items-center gap-1.5">
+                    📦 index.release.html 预发布端配置工具 (已激活)
+                  </h3>
+                  <p className="mt-1 text-xs text-gray-500 dark:text-gray-300 font-medium max-w-2xl leading-relaxed">
+                    您可以直接上传您现有的 <code className="bg-pink-100/40 dark:bg-pink-950/40 px-1 py-0.5 rounded text-pink-600 font-mono text-2xs">index.release.html</code> 文件，或者直接在下方编辑完 JSON 后，一键打包下载全新的独立 HTML 发布网页。
+                  </p>
+                </div>
+              </div>
+              
+              <div className="flex flex-wrap items-center gap-3 shrink-0">
+                <button
+                  id="btn-upload-html"
+                  type="button"
+                  onClick={() => htmlInputRef.current?.click()}
+                  className="flex items-center space-x-1.5 px-4 py-2.5 text-xs font-bold rounded-2xl border border-pink-200 bg-white hover:bg-pink-50 text-pink-600 dark:border-pink-800 dark:bg-[#251620] dark:text-pink-300 dark:hover:bg-pink-950/20 transition-all shadow-xs cursor-pointer"
+                >
+                  <Upload className="h-4 w-4 shrink-0 text-pink-500" />
+                  <span>上传 index.release.html</span>
+                </button>
+                <input
+                  id="input-html-hidden"
+                  type="file"
+                  ref={htmlInputRef}
+                  onChange={handleHtmlImport}
+                  accept=".html"
+                  className="hidden"
+                />
 
-              <button
-                id="btn-upload-html"
-                type="button"
-                onClick={() => htmlInputRef.current?.click()}
-                className="flex items-center space-x-1.5 px-4 py-2.5 text-xs font-bold rounded-2xl border border-pink-200 bg-white hover:bg-pink-50 text-pink-600 dark:border-pink-800 dark:bg-[#251620] dark:text-pink-300 dark:hover:bg-pink-950/20 transition-all shadow-xs cursor-pointer"
-              >
-                <Upload className="h-4 w-4 shrink-0 text-pink-500" />
-                <span>上传本地 HTML</span>
-              </button>
-              <input
-                id="input-html-hidden"
-                type="file"
-                ref={htmlInputRef}
-                onChange={handleHtmlImport}
-                accept=".html"
-                className="hidden"
-              />
-
-              {uploadedHtmlContent && (
                 <button
                   id="btn-download-html"
                   type="button"
@@ -1186,29 +1181,29 @@ export default function App() {
                   className="flex items-center space-x-1.5 px-5 py-2.5 text-xs font-bold rounded-2xl bg-pink-500 hover:bg-pink-600 text-white transition-all shadow-md cursor-pointer"
                 >
                   <Download className="h-4 w-4 shrink-0" />
-                  <span>下载更新后的 HTML</span>
+                  <span>{uploadedHtmlContent ? "打包并下载 index.release.html" : "下载默认发布版 HTML"}</span>
                 </button>
-              )}
-            </div>
-          </div>
-
-          {/* Uploaded HTML status indicator */}
-          {uploadedHtmlContent ? (
-            <div className="mt-4 flex items-center space-x-2 p-3.5 rounded-2xl bg-green-50/50 border border-green-100 dark:bg-green-950/10 dark:border-green-900/20 text-xs text-green-700 dark:text-green-300">
-              <Check className="h-4 w-4 shrink-0 text-green-500 animate-pulse" />
-              <div className="font-bold flex flex-wrap gap-x-2 gap-y-1">
-                <span>已成功载入 HTML：</span>
-                <span className="font-mono text-green-600 dark:text-green-400 bg-green-100/30 px-1.5 py-0.5 rounded">{uploadedHtmlName}</span>
-                <span>，可在下方表单或源码中直接修改配置 JSON 属性。</span>
               </div>
             </div>
-          ) : (
-            <div className="mt-4 flex items-center space-x-2 p-3.5 rounded-2xl bg-pink-50/20 border border-pink-100/10 text-xs text-gray-400 dark:text-gray-500">
-              <AlertCircle className="h-4 w-4 shrink-0 text-pink-400/60" />
-              <span className="font-medium">当前未载入 HTML 网页模板。上传后将自动提取其中的发布配置。</span>
-            </div>
-          )}
-        </div>
+
+            {/* Uploaded HTML status indicator */}
+            {uploadedHtmlContent ? (
+              <div className="mt-4 flex items-center space-x-2 p-3.5 rounded-2xl bg-green-50/50 border border-green-100 dark:bg-green-950/10 dark:border-green-900/20 text-xs text-green-700 dark:text-green-300">
+                <Check className="h-4 w-4 shrink-0 text-green-500 animate-pulse" />
+                <div className="font-bold flex flex-wrap gap-x-2 gap-y-1">
+                  <span>已成功载入自定义 HTML 模板：</span>
+                  <span className="font-mono text-green-600 dark:text-green-400 bg-green-100/30 px-1.5 py-0.5 rounded">{uploadedHtmlName}</span>
+                  <span>，修改后的 JSON 会自动写入脚本并供您打包下载。</span>
+                </div>
+              </div>
+            ) : (
+              <div className="mt-4 flex items-center space-x-2 p-3.5 rounded-2xl bg-pink-50/15 border border-pink-100/10 text-xs text-gray-500 dark:text-gray-400">
+                <AlertCircle className="h-4 w-4 shrink-0 text-pink-400/80 animate-pulse" />
+                <span className="font-medium">当前正使用内置默认发布版网页框架。你可以随时编辑下方参数，并直接打包下载。</span>
+              </div>
+            )}
+          </div>
+        )}
 
         {/* Templates Selector */}
         <div className="mb-8">

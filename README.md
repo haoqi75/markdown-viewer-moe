@@ -34,6 +34,7 @@
 
 请打开 [tools.html](https://moe520.haoqi75.os.kg/tools.html) 来简单编辑。
 
+**v1.9.3**后，点击上面的 `[>]` （Json编辑器）即可打开编辑器。
 
 ---
 
@@ -99,6 +100,8 @@
 ```
 编辑后保存，可以重命名为`index.html`，打开或上传到服务器。[更多信息](#使用方式)
 
+从 **tools-v1.2.0** 后，若不会编辑也可以使用[简单编辑 config.json 工具](#简单编辑-config.json-工具)来编辑。
+
 ---
 
 ### 本地部署
@@ -126,8 +129,13 @@ pnpm dev
 
 #### 生产构建
 ```bash
+# 构建软件
 pnpm build
 # 代码会生成到 dist/index.html 喔~
+
+# 构建Tools
+pnpm build:tools
+# 代码会生成到 dist/tools.html 喔~
 ```
 
 #### 构建Release版本
@@ -260,7 +268,8 @@ markdown-viewer-moe/
 │   ├── style.css           # 萌系样式
 │   ├── script.js           # 主要逻辑（TOC、渲染、路由）
 │   └── config.json         # 配置文件
-├── dist/                   # 构建输出（仅含 index.html）
+├── dist/                   # 构建输出（包含 index.html、index.release.html、tools.html和tools-vX.X.X.html）
+├── tools/                  # 小白也能编辑内容
 ├── AGENTS.md               # AI Agent提示文件
 ├── gulpfile.js             # Gulp 构建脚本
 ├── package.json            # 项目依赖和脚本
