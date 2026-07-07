@@ -20,7 +20,7 @@ permissions:
 
 jobs:
   release:
-    runs-on: ubuntu-22.04      # 改为具体版本，避免 'ubuntu-latest' 不被识别
+    runs-on: codeberg-medium
 
     steps:
       - name: Get tag name
