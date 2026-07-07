@@ -22,6 +22,9 @@
 > [!NOTE]
 > 此作品为 **AI** 生成，部分代码可能会缺失，我毕竟也不知道如何修复有些问题，所以可能全靠 **AI** 修复，谢谢理解。
 
+仓库源码：https://github.com/haoqi75/markdown-viewer-moe
+备份仓库源码：https://codeberg.org/haoqi75/markdown-viewer-moe
+
 ---
 
 ## 🌐 在线演示
