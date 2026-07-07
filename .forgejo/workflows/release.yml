@@ -20,7 +20,7 @@ permissions:
 
 jobs:
   release:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-22.04      # 改为具体版本，避免 'ubuntu-latest' 不被识别
 
     steps:
       - name: Get tag name
@@ -46,7 +46,7 @@ jobs:
           node-version: "24"
 
       - name: Setup pnpm
-        uses: pnpm/action-setup@v6   # 保留原样，因为该 Action 不依赖 GitHub 特定环境
+        uses: pnpm/action-setup@v6     # 仍可用，通过 npm 安装，不依赖 GitHub
         with:
           version: "11"
 
