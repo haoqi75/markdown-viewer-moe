@@ -10,7 +10,7 @@ permissions:
 
 jobs:
   deploy:
-    runs-on: codeberg-medium   # 或 ubuntu-22.04
+    runs-on: codeberg-medium
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4

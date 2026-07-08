@@ -38,18 +38,18 @@ jobs:
           echo "Tag: $TAG_NAME"
 
       - name: Checkout repository
-        uses: https://codeberg.org/actions/checkout@v4
+        uses: actions/checkout@v4
         with:
           ref: ${{ steps.get_tag.outputs.tag_name }}
           fetch-depth: 0
 
       - name: Setup Node.js
-        uses: https://codeberg.org/actions/setup-node@v4
+        uses: actions/setup-node@v4
         with:
           node-version: "24"
 
       - name: Setup pnpm
-        uses: pnpm/action-setup@v6     # 仍可用，通过 npm 安装，不依赖 GitHub
+        uses: pnpm/action-setup@v6
         with:
           version: "11"
 
@@ -105,19 +105,27 @@ jobs:
             echo "✅ Use charge_description to configure the release body."
           fi
 
+      # ---- 新增：准备待上传的文件 ----
+      - name: Prepare release assets
+        run: |
+          mkdir -p release-assets
+          cp ./dist/index.release.html release-assets/
+          cp ./dist/tools-v*.html release-assets/ || true   # 若不存在则忽略
+
+      # ---- 替换为官方 forgejo-release action ----
       - name: Create Codeberg Release
-        uses: https://codeberg.org/actions/release-action@main   # 或 @v1
+        uses: actions/forgejo-release@v2
         with:
-          tag_name: ${{ steps.get_tag.outputs.tag_name }}
+          url: ${{ forgejo.server_url }}
+          repo: ${{ forgejo.repository }}
+          token: ${{ forge.token }}
+          direction: upload
+          tag: ${{ steps.get_tag.outputs.tag_name }}
           title: "${{ steps.get_tag.outputs.tag_name }}${{ github.event.inputs.changes_name && format(' {0}', github.event.inputs.changes_name) || '' }}"
+          release-notes: "$(cat release_body.md)"
           draft: false
-          body_path: release_body.md
           prerelease: false
-          files: |
-            ./dist/index.release.html
-            ./dist/tools-v*.html
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          release-dir: ./release-assets
 
       - name: Output summary
         run: |
