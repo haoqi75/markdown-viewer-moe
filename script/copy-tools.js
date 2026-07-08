@@ -25,10 +25,10 @@ function fileToDataUri(filePath) {
 }
 
 /**
- * 在 HTML 的 </head> 前注入标签
+ * 在 HTML 的第一个 </head> 之前注入标签（防止误入 script 内的 </head>）
  */
 function injectIntoHead(html, tags) {
-    const headCloseIndex = html.lastIndexOf('</head>');
+    const headCloseIndex = html.indexOf('</head>');  // 只匹配第一个 </head>
     if (headCloseIndex === -1) {
         console.warn('⚠️ HTML 中未找到 </head>，跳过注入。');
         return html;
@@ -53,7 +53,7 @@ if (isRelease) {
         const pkgPath = path.join(projectRoot, 'tools', 'package.json');
         const pkg = JSON.parse(fs.readFileSync(pkgPath, 'utf-8'));
         if (!pkg.version) throw new Error('package.json 中未找到 version 字段');
-        destFileName = `tools-v${pkg.version}.html`;
+        destFileName = `tools-${pkg.version}.html`;
         console.log(`📌 版本：${pkg.version}，输出带版本号的文件`);
     } catch (err) {
         console.error(`❌ 无法读取版本号：${err.message}`);
@@ -84,9 +84,9 @@ if (fs.existsSync(configPath)) {
         const configDir = path.dirname(configPath); // config.json 所在目录（src/）
         const config = JSON.parse(fs.readFileSync(configPath, 'utf-8'));
 
-        // 获取图标配置：优先使用嵌套对象 config.icon，如果不存在则退化为扁平键
+        // 获取图标配置：优先使用嵌套对象 config.icon
         let iconCfg = config.icon || {};
-        // 兼容扁平键（如 "icon.svg" 等），覆盖空对象
+        // 兼容扁平键名
         if (!iconCfg.svg && config['icon.svg']) iconCfg.svg = config['icon.svg'];
         if (!iconCfg.ico && config['icon.ico']) iconCfg.ico = config['icon.ico'];
         if (!iconCfg.apple && config['icon.apple']) iconCfg.apple = config['icon.apple'];
@@ -152,13 +152,20 @@ try {
     process.exit(1);
 }
 
-// 5. 注入图标
+// 5. 注入图标（并验证）
 if (iconTags.length > 0) {
     try {
         let htmlContent = fs.readFileSync(dest, 'utf-8');
         const newHtml = injectIntoHead(htmlContent, iconTags);
         fs.writeFileSync(dest, newHtml, 'utf-8');
-        console.log('🔧 已向 <head> 注入网站图标标签（保留原始格式）');
+
+        // 再次读取并验证每个标签是否存在
+        const verifyContent = fs.readFileSync(dest, 'utf-8');
+        const foundCount = iconTags.filter(tag => verifyContent.includes(tag)).length;
+        console.log(`🔧 已向 <head> 注入 ${foundCount}/${iconTags.length} 个图标标签（已验证）`);
+        iconTags.forEach(tag => {
+            console.log(`   -> ${tag.substring(0, 80)}...`);
+        });
     } catch (err) {
         console.error(`❌ 注入失败：${err.message}`);
         process.exit(1);
