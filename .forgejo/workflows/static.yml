@@ -35,7 +35,7 @@ jobs:
         run: pnpm run build:tools
 
       - name: Deploy to Codeberg Pages
-        uses: https://codeberg.org/actions/pages@v2
+        uses: https://codeberg.org/git-pages/action@v2
         with:
           directory: ./dist
           site: https://${{ forge.repository_owner }}.codeberg.page/markdown-viewer-moe/
