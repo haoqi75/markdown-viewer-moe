@@ -37,6 +37,6 @@ jobs:
       - name: Deploy to Codeberg Pages
         uses: https://codeberg.org/git-pages/action@v2
         with:
-          directory: ./dist
+          source: ./dist
           site: https://${{ forge.repository_owner }}.codeberg.page/markdown-viewer-moe/
           token: ${{ forge.token }}
