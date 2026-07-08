@@ -40,7 +40,7 @@
 
 ## 📝 简单编辑 config.json 工具
 
-请打开 [tools.html](https://moe520.haoqi75.os.kg/tools.html) 来简单编辑。
+请打开 [tools.html](https://moe520.haoqi75.os.kg/tools.html) 或者[备用地址](https://moe520.haoqi75.cn.mt/tools.html)来简单编辑。
 
 **v1.9.3**后，点击上面的 `[>]` （Json编辑器）即可打开编辑器。
 
@@ -132,7 +132,7 @@ pnpm install
 #### 开发模式（自动预览 + 热重载）
 ```bash
 pnpm dev
-# 请手动打开 http://localhost:3001
+# 请手动打开 http://localhost:8520
 ```
 
 #### 生产构建

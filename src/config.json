@@ -18,5 +18,5 @@
         "agents": "https://raw.githubusercontent.com/haoqi75/markdown-viewer-moe/refs/heads/main/AGENTS.md"
     },
     "tocWelcome": "欢迎来到萌·Markdown",
-    "toolsUrl": "https://moe520.haoqi75.os.kg/tools.html"
+    "toolsUrl": "/tools.html"
 }
