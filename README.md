@@ -86,7 +86,7 @@
 
 [![GitHub Release](https://img.shields.io/github/v/release/haoqi75/markdown-viewer-moe?display_name=release&style=for-the-badge)](https://github.com/haoqi75/markdown-viewer-moe/releases)
 
-从**v1.4.0**后，支持直接编辑index.html，从[Releases](https://github.com/haoqi75/markdown-viewer-moe/releases)下载一个叫`index.release.html`的文件，直接使用记事本编辑上面的内容：
+从**v1.4.0**后，支持直接编辑index.html，从 [Releases](https://github.com/haoqi75/markdown-viewer-moe/releases) （或者[备份仓库Release](https://codeberg.org/haoqi75/markdown-viewer-moe/releases)）下载一个叫`index.release.html`的文件，直接使用记事本编辑上面的内容：
 ```html
 <!--
   ╔══════════════════════════════════════════════╗
@@ -270,12 +270,17 @@ Actions文件在：`.forgejo/workflows/static.yml`
 ## 📂 项目结构
 ```tree
 markdown-viewer-moe/
+├── .forgejo/
+│   └── workflows/
+│        ├── release.yml    # 自动发布Release（备份仓库）
+│        └── static.yml     # 自动构建并推送到Codeberg Pages
 ├── .github/
 │   └── workflows/
 │        ├── release.yml    # 自动发布Release
 │        └── static.yml     # 自动构建并推送到GitHub Pages
 ├── images/                  # 图片
 ├── script/
+│   ├── copy-tools.js       # Tools复制准备脚本
 │   └── release.js          # Release版本构建代码
 ├── src/
 │   ├── img/                # 图标文件夹
