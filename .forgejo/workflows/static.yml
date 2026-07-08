@@ -13,10 +13,10 @@ jobs:
     runs-on: codeberg-medium   # 或 ubuntu-22.04
     steps:
       - name: Checkout repository
-        uses: https://codeberg.org/actions/checkout@v4
+        uses: actions/checkout@v4
 
       - name: Setup Node.js
-        uses: https://codeberg.org/actions/setup-node@v4
+        uses: actions/setup-node@v4
         with:
           node-version: "24"
 
@@ -35,7 +35,7 @@ jobs:
         run: pnpm run build:tools
 
       - name: Deploy to Codeberg Pages
-        uses: https://codeberg.org/actions/pages@v1
+        uses: https://codeberg.org/actions/pages@v2
         with:
           directory: ./dist
           site: https://${{ forge.repository_owner }}.codeberg.page/markdown-viewer-moe/
