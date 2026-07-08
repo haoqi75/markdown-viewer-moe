@@ -38,5 +38,6 @@ jobs:
         uses: https://codeberg.org/git-pages/action@v2
         with:
           source: ./dist
-          site: https://${{ forge.repository_owner }}.codeberg.page/markdown-viewer-moe/
+          site: https://moe520.haoqi75.cn.mt
+          server: codeberg.page
           token: ${{ forge.token }}
