@@ -43,6 +43,14 @@ jobs:
           ref: ${{ steps.get_tag.outputs.tag_name }}
           fetch-depth: 0
 
+      # 解决手动触发时 SHA 不匹配的问题
+      - name: Get tag SHA (for manual triggers)
+        id: get_sha
+        run: |
+          SHA=$(git rev-parse ${{ steps.get_tag.outputs.tag_name }})
+          echo "sha=$SHA" >> $GITHUB_OUTPUT
+          echo "Tag SHA: $SHA"
+
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
@@ -104,25 +112,28 @@ jobs:
             echo "${{ github.event.inputs.changes_description }}" > release_body.md
             echo "✅ Use charge_description to configure the release body."
           fi
+          # 将内容存入输出变量，供后续使用
+          echo "body<<EOF" >> $GITHUB_OUTPUT
+          cat release_body.md >> $GITHUB_OUTPUT
+          echo "EOF" >> $GITHUB_OUTPUT
 
-      # ---- 新增：准备待上传的文件 ----
       - name: Prepare release assets
         run: |
           mkdir -p release-assets
           cp ./dist/index.release.html release-assets/
-          cp ./dist/tools-*.html release-assets/ || true   # 若不存在则忽略
+          cp ./dist/tools-*.html release-assets/ || true
 
-      # ---- 替换为官方 forgejo-release action ----
       - name: Create Codeberg Release
         uses: actions/forgejo-release@v2
         with:
           url: ${{ forgejo.server_url }}
           repo: ${{ forgejo.repository }}
-          token: ${{ forge.token }}
+          token: ${{ forge.token }}          # ✅ 改用 forge.token，无需额外配置
           direction: upload
           tag: ${{ steps.get_tag.outputs.tag_name }}
+          sha: ${{ steps.get_sha.outputs.sha }}   # 显式传入标签的 commit SHA
           title: "${{ steps.get_tag.outputs.tag_name }}${{ github.event.inputs.changes_name && format(' {0}', github.event.inputs.changes_name) || '' }}"
-          release-notes: "$(cat release_body.md)"
+          release-notes: ${{ steps.body.outputs.body }}
           draft: false
           prerelease: false
           release-dir: ./release-assets
