@@ -108,6 +108,16 @@ function resolveImage(cfgPath, defPath, label) {
 function build() {
     checkRequiredFiles();
 
+    // ======== 步骤 0：读取 package.json 版本号 ========
+    var pkgVersion = '';
+    try {
+        var pkg = JSON.parse(fs.readFileSync(path.join(__dirname, 'package.json'), 'utf8'));
+        pkgVersion = pkg.version || '';
+        console.log('✅ 读取版本号成功: v' + pkgVersion);
+    } catch (e) {
+        console.warn('⚠️ package.json 版本号读取失败: ' + e.message);
+    }
+
     // ======== 步骤 1：读取 config.json，缺失则用默认值 ========
     var configPath = path.join(srcDir, 'config.json');
     var config;
@@ -160,6 +170,7 @@ function build() {
     // ---- 错误页吉祥物 ----
     var errorMascotUri = toDataUri('img/error.png', 'image/png');
     var extendedConfig = Object.assign({}, config);
+    extendedConfig.version = pkgVersion;
     if (errorMascotUri) {
         extendedConfig.errorMascot = errorMascotUri;
         console.log('✅ 错误页吉祥物已转为 Data URI (img/error.png)');

@@ -625,6 +625,12 @@ document.addEventListener('DOMContentLoaded', function() {
     var footerEl = document.getElementById('footer');
     if (footerEl && CONFIG.footer) {
         footerEl.innerHTML = marked.parse(CONFIG.footer);
+        if (CONFIG.version) {
+            var verEl = document.createElement('div');
+            verEl.className = 'footer-version';
+            verEl.textContent = 'v' + CONFIG.version;
+            footerEl.appendChild(verEl);
+        }
     }
 
     var mascotImg = document.getElementById('mascot-img');
