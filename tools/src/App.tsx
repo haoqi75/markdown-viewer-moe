@@ -18,7 +18,11 @@ import {
   Wrench,
   Sun,
   Moon,
-  Github
+  Github,
+  Lock,
+  Unlock,
+  Copy,
+  Trash2
 } from 'lucide-react';
 
 const extractJsonFromHtml = (htmlContent: string): { json: Record<string, any> | null; error: string | null } => {
@@ -98,6 +102,8 @@ const DEFAULT_RELEASE_HTML = `<!DOCTYPE html>
 </body>
 </html>`;
 
+const APP_VERSION = "__APP_VERSION__".startsWith("__") ? "1.4.0" : "__APP_VERSION__";
+
 export default function App() {
   const [config, setConfig] = useState<Record<string, any>>(templates[0].config);
   const [activeTemplate, setActiveTemplate] = useState<ConfigTemplate>(templates[0]);
@@ -115,6 +121,71 @@ export default function App() {
   // Moe Mascot state
   const [mascotMessage, setMascotMessage] = useState<string>("你好呀！我是你的配置文件助手「小萌」～ 让我们一起轻松配置 config.json 吧！🌸");
   const [mascotExpression, setMascotExpression] = useState<'idle' | 'happy' | 'sad' | 'wink' | 'excited'>('idle');
+
+  // Base64 tool states
+  const [base64Input, setBase64Input] = useState<string>('');
+  const [base64Output, setBase64Output] = useState<string>('');
+
+  const handleBase64Encode = () => {
+    if (!base64Input) {
+      showToast('请输入需要编码的文本哦！', 'info');
+      setMascotMessage('小萌需要先有文本才能帮您加密成 Base64 呀！🌸');
+      setMascotExpression('wink');
+      return;
+    }
+    try {
+      const encoded = btoa(encodeURIComponent(base64Input).replace(/%([0-9A-F]{2})/g, (_, p1) => {
+        return String.fromCharCode(parseInt(p1, 16));
+      }));
+      setBase64Output(encoded);
+      showToast('编码成功！', 'success');
+      setMascotMessage('太棒啦！小萌已经成功帮您把文本加密成 Base64 字符串啦！🔐');
+      setMascotExpression('happy');
+    } catch (err: any) {
+      showToast(`编码失败: ${err.message}`, 'error');
+      setMascotMessage('呜呜，编码好像出错了，请检查输入是否正确～');
+      setMascotExpression('sad');
+    }
+  };
+
+  const handleBase64Decode = () => {
+    if (!base64Input) {
+      showToast('请输入需要解码的 Base64 文本哦！', 'info');
+      setMascotMessage('先输入需要解密的 Base64 字符串吧，小萌在这里等着哦！🌸');
+      setMascotExpression('wink');
+      return;
+    }
+    try {
+      const decoded = decodeURIComponent(Array.prototype.map.call(atob(base64Input.trim()), (c: any) => {
+        return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
+      }).join(''));
+      setBase64Output(decoded);
+      showToast('解码成功！', 'success');
+      setMascotMessage('解密成功！小萌已经把神奇的 Base64 还原成普通文本啦！🔓');
+      setMascotExpression('excited');
+    } catch (err: any) {
+      showToast(`解码失败，可能不是合法的 Base64 格式！`, 'error');
+      setMascotMessage('唔... 这段文本好像不是标准的 Base64 格式，小萌解不开呢... 🤕');
+      setMascotExpression('sad');
+    }
+  };
+
+  const handleCopyBase64Result = () => {
+    if (!base64Output) {
+      showToast('没有可复制的结果哦！', 'info');
+      return;
+    }
+    navigator.clipboard.writeText(base64Output);
+    showToast('结果已成功复制到剪贴板！', 'success');
+    setMascotMessage('已经成功帮您复制到剪贴板啦，快去粘贴使用吧！✨');
+    setMascotExpression('happy');
+  };
+
+  const handleClearBase64 = () => {
+    setBase64Input('');
+    setBase64Output('');
+    showToast('已清空输入和输出！', 'success');
+  };
 
   const showToast = (message: string, type: 'success' | 'error' | 'info' = 'success') => {
     setToast({ message, type });
@@ -244,9 +315,10 @@ export default function App() {
 
   // Pack edited config back and download index.release.html
   const handleDownloadHtml = () => {
-    const htmlToPack = uploadedHtmlContent || DEFAULT_RELEASE_HTML;
-    if (!htmlToPack) {
-      showToast('当前无可用 HTML 模板！', 'error');
+    if (!uploadedHtmlContent) {
+      showToast('⚠️ 下载失败：必须先上传 index.release.html 文件后才可以进行打包下载！', 'error');
+      setMascotMessage("哎呀！你还没有上传 index.release.html 呢～ 必须先上传已有的 HTML 文件，小萌才能帮你把新配置打包进去并提供下载哦！🌸");
+      setMascotExpression('sad');
       return;
     }
     if (!validation.isValid) {
@@ -257,7 +329,7 @@ export default function App() {
     }
 
     try {
-      const updatedHtml = injectJsonToHtml(htmlToPack, config);
+      const updatedHtml = injectJsonToHtml(uploadedHtmlContent, config);
       const blob = new Blob([updatedHtml], { type: 'text/html;charset=utf-8' });
       const downloadAnchor = document.createElement('a');
       downloadAnchor.setAttribute("href", URL.createObjectURL(blob));
@@ -1143,14 +1215,14 @@ export default function App() {
             <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-4">
               <div className="flex items-start space-x-3.5">
                 <div className="p-2.5 bg-pink-100 dark:bg-pink-950/80 rounded-2xl shrink-0 text-pink-500">
-                  <Layers className="h-5 w-5 animate-pulse" />
+                  <Layers className="h-5 w-5" />
                 </div>
                 <div>
                   <h3 className="text-sm font-black text-[#4a353d] dark:text-white flex items-center gap-1.5">
-                    📦 index.release.html 预发布端配置工具 (已激活)
+                    📦 index.release.html 预发布端配置工具 (v{APP_VERSION})
                   </h3>
                   <p className="mt-1 text-xs text-gray-500 dark:text-gray-300 font-medium max-w-2xl leading-relaxed">
-                    您可以直接上传您现有的 <code className="bg-pink-100/40 dark:bg-pink-950/40 px-1 py-0.5 rounded text-pink-600 font-mono text-2xs">index.release.html</code> 文件，或者直接在下方编辑完 JSON 后，一键打包下载全新的独立 HTML 发布网页。
+                    必须先在右侧上传您现有的 <code className="bg-pink-100/40 dark:bg-pink-950/40 px-1 py-0.5 rounded text-pink-600 font-mono text-2xs">index.release.html</code> 文件，系统自动提取其中 <code className="bg-pink-100/40 dark:bg-pink-950/40 px-1 py-0.5 rounded text-pink-600 font-mono text-2xs">id="release-config"</code> 的 JSON 后方能允许重新打包下载。
                   </p>
                 </div>
               </div>
@@ -1178,10 +1250,15 @@ export default function App() {
                   id="btn-download-html"
                   type="button"
                   onClick={handleDownloadHtml}
-                  className="flex items-center space-x-1.5 px-5 py-2.5 text-xs font-bold rounded-2xl bg-pink-500 hover:bg-pink-600 text-white transition-all shadow-md cursor-pointer"
+                  disabled={!uploadedHtmlContent}
+                  className={`flex items-center space-x-1.5 px-5 py-2.5 text-xs font-bold rounded-2xl transition-all shadow-md ${
+                    uploadedHtmlContent 
+                      ? "bg-pink-500 hover:bg-pink-600 text-white cursor-pointer" 
+                      : "bg-gray-100 dark:bg-gray-800 text-gray-400 dark:text-gray-500 cursor-not-allowed shadow-none"
+                  }`}
                 >
                   <Download className="h-4 w-4 shrink-0" />
-                  <span>{uploadedHtmlContent ? "打包并下载 index.release.html" : "下载默认发布版 HTML"}</span>
+                  <span>打包并下载 index.release.html</span>
                 </button>
               </div>
             </div>
@@ -1191,15 +1268,15 @@ export default function App() {
               <div className="mt-4 flex items-center space-x-2 p-3.5 rounded-2xl bg-green-50/50 border border-green-100 dark:bg-green-950/10 dark:border-green-900/20 text-xs text-green-700 dark:text-green-300">
                 <Check className="h-4 w-4 shrink-0 text-green-500 animate-pulse" />
                 <div className="font-bold flex flex-wrap gap-x-2 gap-y-1">
-                  <span>已成功载入自定义 HTML 模板：</span>
+                  <span>已成功载入 HTML 模板：</span>
                   <span className="font-mono text-green-600 dark:text-green-400 bg-green-100/30 px-1.5 py-0.5 rounded">{uploadedHtmlName}</span>
-                  <span>，修改后的 JSON 会自动写入脚本并供您打包下载。</span>
+                  <span>，修改后的配置 JSON 将打包注入其中并开放下载。</span>
                 </div>
               </div>
             ) : (
-              <div className="mt-4 flex items-center space-x-2 p-3.5 rounded-2xl bg-pink-50/15 border border-pink-100/10 text-xs text-gray-500 dark:text-gray-400">
-                <AlertCircle className="h-4 w-4 shrink-0 text-pink-400/80 animate-pulse" />
-                <span className="font-medium">当前正使用内置默认发布版网页框架。你可以随时编辑下方参数，并直接打包下载。</span>
+              <div className="mt-4 flex items-center space-x-2 p-3.5 rounded-2xl bg-amber-50/20 border border-amber-200/20 text-xs text-amber-700 dark:text-amber-400">
+                <AlertCircle className="h-4 w-4 shrink-0 text-amber-500 animate-pulse" />
+                <span className="font-bold">⚠️ 请先上传 index.release.html 文件，仅上传或修改 config.json 无法下载打包文件。</span>
               </div>
             )}
           </div>
@@ -1267,9 +1344,109 @@ export default function App() {
           )}
         </div>
 
+        {/* Base64 Encryption / Decryption Tool */}
+        <div className="mt-12 bg-white/95 dark:bg-[#251620]/95 border-2 border-pink-100/50 dark:border-pink-900/30 rounded-3xl p-6 shadow-md transition-all duration-300">
+          <div className="flex items-center space-x-2.5 mb-5 pb-3 border-b border-pink-50/50 dark:border-pink-950/20">
+            <div className="p-2 bg-pink-100 dark:bg-pink-950/80 rounded-2xl text-pink-500 shrink-0">
+              <Lock className="h-5 w-5" />
+            </div>
+            <div>
+              <h3 className="text-sm font-black text-[#4a353d] dark:text-white flex items-center gap-1.5">
+                🔐 Base64 文本加解密小工具
+              </h3>
+              <p className="mt-0.5 text-xs text-gray-500 dark:text-gray-400 font-medium">
+                随时编码或解码特殊配置字段（支持完整中文/Unicode，安全且防乱码）
+              </p>
+            </div>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+            {/* Input panel */}
+            <div className="flex flex-col">
+              <label className="text-xs font-bold text-gray-500 dark:text-gray-400 mb-2 flex justify-between items-center">
+                <span>📝 输入原文 / 密文 (Input Text)</span>
+                {base64Input && (
+                  <span className="font-mono text-2xs text-gray-400 dark:text-gray-500 bg-gray-100 dark:bg-gray-800 px-1.5 py-0.5 rounded">
+                    {base64Input.length} 字符
+                  </span>
+                )}
+              </label>
+              <textarea
+                value={base64Input}
+                onChange={(e) => setBase64Input(e.target.value)}
+                placeholder="在此处输入待加密的普通文本，或粘贴需要解密的 Base64 字符串..."
+                className="w-full h-32 px-4 py-3 text-xs font-medium rounded-2xl border border-pink-100 dark:border-pink-950/40 bg-pink-50/10 dark:bg-transparent text-gray-700 dark:text-gray-200 placeholder-gray-400 dark:placeholder-gray-600 focus:outline-hidden focus:border-pink-400 focus:ring-1 focus:ring-pink-400 resize-none transition-all"
+              />
+              
+              <div className="mt-3 flex flex-wrap gap-2">
+                <button
+                  type="button"
+                  onClick={handleBase64Encode}
+                  className="flex-1 flex items-center justify-center space-x-1.5 px-3 py-2.5 text-xs font-bold rounded-2xl bg-pink-500 hover:bg-pink-600 text-white transition-all shadow-sm cursor-pointer"
+                >
+                  <Lock className="h-3.5 w-3.5 shrink-0" />
+                  <span>加密 (Encode)</span>
+                </button>
+                
+                <button
+                  type="button"
+                  onClick={handleBase64Decode}
+                  className="flex-1 flex items-center justify-center space-x-1.5 px-3 py-2.5 text-xs font-bold rounded-2xl bg-white hover:bg-pink-50 border border-pink-200 text-pink-600 dark:border-pink-800 dark:bg-[#251620] dark:text-pink-300 dark:hover:bg-pink-950/20 transition-all shadow-xs cursor-pointer"
+                >
+                  <Unlock className="h-3.5 w-3.5 shrink-0 text-pink-500" />
+                  <span>解密 (Decode)</span>
+                </button>
+
+                <button
+                  type="button"
+                  onClick={handleClearBase64}
+                  title="清空"
+                  className="p-2.5 text-xs font-bold rounded-2xl bg-gray-50 hover:bg-gray-100 border border-gray-200 text-gray-400 dark:border-gray-800 dark:bg-[#251620]/50 dark:text-gray-500 dark:hover:bg-gray-850 transition-all cursor-pointer"
+                >
+                  <Trash2 className="h-4 w-4 shrink-0" />
+                </button>
+              </div>
+            </div>
+
+            {/* Output panel */}
+            <div className="flex flex-col">
+              <label className="text-xs font-bold text-gray-500 dark:text-gray-400 mb-2 flex justify-between items-center">
+                <span>✨ 运算输出结果 (Output Result)</span>
+                {base64Output && (
+                  <span className="font-mono text-2xs text-gray-400 dark:text-gray-500 bg-gray-100 dark:bg-gray-800 px-1.5 py-0.5 rounded">
+                    {base64Output.length} 字符
+                  </span>
+                )}
+              </label>
+              <textarea
+                readOnly
+                value={base64Output}
+                placeholder="运算结果将显示在这里..."
+                className="w-full h-32 px-4 py-3 text-xs font-mono rounded-2xl border border-pink-100 dark:border-pink-950/40 bg-gray-50/30 dark:bg-gray-900/10 text-slate-800 dark:text-slate-100 placeholder-gray-400 dark:placeholder-gray-600 focus:outline-hidden resize-none"
+              />
+
+              <div className="mt-3 flex">
+                <button
+                  type="button"
+                  onClick={handleCopyBase64Result}
+                  disabled={!base64Output}
+                  className={`w-full flex items-center justify-center space-x-1.5 px-4 py-2.5 text-xs font-bold rounded-2xl transition-all shadow-sm ${
+                    base64Output 
+                      ? "bg-emerald-500 hover:bg-emerald-600 text-white cursor-pointer" 
+                      : "bg-gray-100 dark:bg-gray-800 text-gray-400 dark:text-gray-500 cursor-not-allowed shadow-none"
+                  }`}
+                >
+                  <Copy className="h-3.5 w-3.5 shrink-0" />
+                  <span>复制结果 (Copy Result)</span>
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+
         {/* Footer */}
         <footer className={`mt-16 pt-6 border-t text-center text-xs text-[#a3808c] dark:text-[#735862] ${isDarkMode ? 'border-pink-950/20' : 'border-pink-100/50'}`}>
-          <p>© 2026 🌸 小白配置文件简易生成编辑器 · 萌化极简版 🌸 所有配置均在浏览器本地保存解析，100% 安全隐私。</p>
+          <p>© 2026 🌸 小白配置文件简易生成编辑器 · 萌化极简版 v{APP_VERSION} 🌸 所有配置均在浏览器本地保存解析，100% 安全隐私。</p>
           <div className="mt-2.5 flex justify-center space-x-3 text-pink-500/60 dark:text-pink-400/40 font-semibold">
             <span>支持格式自动转换</span>
             <span>•</span>

@@ -17,6 +17,11 @@ function buildSingleHtml(cb) {
 
     console.log('编译成功！正在将 JS 和 CSS 文件注入单个 tools.html...');
 
+    const pkgPath = path.join(process.cwd(), 'package.json');
+    const pkg = JSON.parse(fs.readFileSync(pkgPath, 'utf-8'));
+    const version = pkg.version || '1.3.1';
+    console.log(`读取 package.json 版本号: ${version}`);
+
     const distPath = path.join(process.cwd(), 'dist');
     const indexPath = path.join(distPath, 'index.html');
     
@@ -74,6 +79,9 @@ function buildSingleHtml(cb) {
     }
 
     // Replace script tags with inline <script type="module">
+    jsContent = jsContent.split('__APP_VERSION__').join(version);
+    htmlContent = htmlContent.split('__APP_VERSION__').join(version);
+
     htmlContent = htmlContent.replace(jsRegex, '');
     htmlContent = htmlContent.replace('</body>', `<script type="module">${jsContent}</script>\n</body>`);
 

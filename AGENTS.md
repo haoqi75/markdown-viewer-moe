@@ -3,14 +3,28 @@
 ## Commands
 
 ```bash
-pnpm install            # install deps (pnpm 11+, Node 24+)
+pnpm install            # install deps (pnpm 11+, Node 24+). Run at repo root — workspace installs tools/ too
 pnpm build              # gulp build → dist/index.html
-pnpm dev                # build + http-server on :8520
+pnpm dev                # clean + build + browser-sync watch on :8520 (NOT http-server)
 pnpm build:release      # build + node script/release.js → dist/index.release.html
 node script/release.js  # standalone: dist/index.html → dist/index.release.html
+
+# tools/ workspace (moe-json-editor, React/Vite/TS config editor)
+pnpm build:tools        # tools vite build → single tools.html, then copy to dist/tools.html
+pnpm build:tools --release   # names output dist/tools-<tools-version>.html (from tools/package.json)
+pnpm dev:tools          # vite dev on :3000
+pnpm --filter moe-json-editor lint   # tsc --noEmit (only typecheck in the repo; there is no test suite)
 ```
 
-## Architecture
+There are NO tests, no linter for the root package, and no formatter. `tsc --noEmit` in `tools/` is the only static check.
+
+## Repo layout (pnpm workspace)
+
+Two independent apps in one workspace (`pnpm-workspace.yaml` → `packages: ['tools']`):
+- root = single-file Markdown viewer (vanilla JS + gulp)
+- `tools/` = `moe-json-editor`, a React 19 + Vite 6 + Tailwind 4 SPA that generates `src/config.json`
+
+## Architecture (root viewer)
 
 Single-file Markdown viewer. `src/` → gulp → `dist/index.html` (all assets inlined as data URIs).
 
@@ -62,11 +76,17 @@ Order matters — don't reorder:
 - Scroll spy (`IntersectionObserver`) suppressed for 2s after activation to avoid overwriting init hash
 - `breaks: false` in `marked.parse()` — matches GitHub README rendering (single LF = space, not `<br>`)
 
-## Release workflow (`.github/workflows/release.yml`)
+## tools/ build pipeline (`tools/gulpfile.js`)
 
-- Triggered automatically on `push tags: ['v*']` or manually via `workflow_dispatch`
-- Runs `pnpm build:release` → uploads `dist/index.release.html` to GitHub Releases
-- Release body auto-generated from tag annotation
+- `build:html` (gulp) runs `vite build`, then inlines all `/assets/*.css` and `/assets/*.js` into one `dist/index.html`, inlines `public/icon.png` as base64, and replaces `__APP_VERSION__` with `tools/package.json` version → `tools/dist/tools.html`
+- `script/copy-tools.js` then copies it to root `dist/tools.html` (or `dist/tools-<version>.html` with `--release`) and injects favicon `<link>` tags from `src/config.json`
+
+## CI workflows (mirrored in `.github/` and `.forgejo/`)
+
+Both dirs contain identical `release.yml` + `static.yml`. Keep them in sync when editing either.
+
+- `release.yml`: on `push tags: ['v*']` or `workflow_dispatch` → `build:release` + `build:tools --release` → uploads `dist/index.release.html` and `dist/tools-v*.html` to Releases. Body from tag annotation.
+- `static.yml`: on `push` to `main` → `build` + `build:tools` → deploys `dist/` to GitHub Pages.
 
 ## Image handling interactions
 
