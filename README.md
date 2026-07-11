@@ -175,6 +175,23 @@ Actions文件在：`.github/workflows/static.yml`
 
 Actions文件在：`.forgejo/workflows/static.yml`
 
+1. **Fork** 和 **⭐Star** 此仓库。
+2. 在`设置`->`仓库功能`->`概览`里面找到**使用Forgejo Actions启用集成CI/CD管道**并开启它。
+3. 编辑`src/config.json`，把内容替换成你自己想要的。
+4. 编辑`.forgejo/workflows/static.yml`里面的内容
+    ```yaml
+    // 在37行找到并替换一下代码
+    - name: Deploy to Codeberg Pages
+        uses: https://codeberg.org/git-pages/action@v2
+        with:
+          source: ./dist
+          site: https://${{ forge.repository_owner }}.codeberg.page/markdown-viewer-moe/
+          token: ${{ forge.token }}
+    ```
+5. 转到`Actions`，开启它，在左菜单里找到`Build and deploy to Codeberg Pages`。
+    * 手动触发：点击 **Run Workflow**。
+    * 自动触发：每当更改任何文件会自动触发。
+
 ---
 
 ## 🌐如何使用
