@@ -53,7 +53,7 @@ if (isRelease) {
         const pkgPath = path.join(projectRoot, 'tools', 'package.json');
         const pkg = JSON.parse(fs.readFileSync(pkgPath, 'utf-8'));
         if (!pkg.version) throw new Error('package.json 中未找到 version 字段');
-        destFileName = `tools-${pkg.version}.html`;
+        destFileName = `tools-v${pkg.version}.html`;
         console.log(`📌 版本：${pkg.version}，输出带版本号的文件`);
     } catch (err) {
         console.error(`❌ 无法读取版本号：${err.message}`);
