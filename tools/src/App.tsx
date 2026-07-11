@@ -102,7 +102,7 @@ const DEFAULT_RELEASE_HTML = `<!DOCTYPE html>
 </body>
 </html>`;
 
-const APP_VERSION = "__APP_VERSION__".startsWith("__") ? "1.4.0" : "__APP_VERSION__";
+const APP_VERSION = "__APP_VERSION__".startsWith("__") ? "1.4.1" : "__APP_VERSION__";
 
 export default function App() {
   const [config, setConfig] = useState<Record<string, any>>(templates[0].config);

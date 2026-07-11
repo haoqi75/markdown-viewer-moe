@@ -1,1 +1,7 @@
+@import url('https://fonts.googleapis.com/css2?family=Fredoka:wght@400;500;600;700&family=ZCOOL+KuaiLe&display=swap');
 @import "tailwindcss";
+
+@theme {
+  --font-sans: "Fredoka", "ZCOOL KuaiLe", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "Apple Color Emoji", "Segoe UI Emoji", sans-serif;
+  --font-mono: "Fredoka", "ZCOOL KuaiLe", ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+}
