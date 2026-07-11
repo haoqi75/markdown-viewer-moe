@@ -628,7 +628,7 @@ document.addEventListener('DOMContentLoaded', function() {
         if (CONFIG.version) {
             var verEl = document.createElement('div');
             verEl.className = 'footer-version';
-            verEl.textContent = 'v' + CONFIG.version;
+            verEl.textContent = 'v' + CONFIG.version + (CONFIG.gitHash ? '(' + CONFIG.gitHash + ')' : '');
             footerEl.appendChild(verEl);
         }
     }

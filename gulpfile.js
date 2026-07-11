@@ -118,6 +118,17 @@ function build() {
         console.warn('⚠️ package.json 版本号读取失败: ' + e.message);
     }
 
+    // ======== 读取 Git 更改号（短 hash）========
+    var gitHash = '';
+    try {
+        gitHash = require('child_process').execSync('git rev-parse --short HEAD', {
+            cwd: __dirname
+        }).toString().trim();
+        console.log('✅ 读取 Git 更改号成功: ' + gitHash);
+    } catch (e) {
+        console.warn('⚠️ Git 更改号读取失败: ' + e.message);
+    }
+
     // ======== 步骤 1：读取 config.json，缺失则用默认值 ========
     var configPath = path.join(srcDir, 'config.json');
     var config;
@@ -171,6 +182,7 @@ function build() {
     var errorMascotUri = toDataUri('img/error.png', 'image/png');
     var extendedConfig = Object.assign({}, config);
     extendedConfig.version = pkgVersion;
+    extendedConfig.gitHash = gitHash;
     if (errorMascotUri) {
         extendedConfig.errorMascot = errorMascotUri;
         console.log('✅ 错误页吉祥物已转为 Data URI (img/error.png)');
