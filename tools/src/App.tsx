@@ -102,7 +102,7 @@ const DEFAULT_RELEASE_HTML = `<!DOCTYPE html>
 </body>
 </html>`;
 
-const APP_VERSION = "__APP_VERSION__".startsWith("__") ? "1.4.1" : "__APP_VERSION__";
+const APP_VERSION = "__APP_VERSION__".startsWith("__") ? "1.4.2" : "__APP_VERSION__";
 
 export default function App() {
   const [config, setConfig] = useState<Record<string, any>>(templates[0].config);
@@ -1453,6 +1453,17 @@ export default function App() {
             <span>自动匹配属性类型</span>
             <span>•</span>
             <span>一键保存与下载 config.json</span>
+          </div>
+          <div className="mt-3.5 flex justify-center">
+            <a 
+              href="https://github.com/haoqi75/markdown-viewer-moe" 
+              target="_blank" 
+              rel="noopener noreferrer"
+              className="inline-flex items-center space-x-1.5 px-3.5 py-1.5 rounded-2xl bg-pink-50/50 hover:bg-pink-100 text-pink-600 dark:bg-pink-950/20 dark:hover:bg-pink-900/30 dark:text-pink-400 transition-all text-xs font-bold border border-pink-100/30 dark:border-pink-900/20 cursor-pointer shadow-xs"
+            >
+              <Github className="h-3.5 w-3.5 shrink-0" />
+              <span>GitHub 仓库 (haoqi75)</span>
+            </a>
           </div>
         </footer>
       </div>

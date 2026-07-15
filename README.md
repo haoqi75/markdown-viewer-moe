@@ -44,6 +44,9 @@
 
 **v1.9.3**后，点击上面的 `[>]` （Json编辑器）即可打开编辑器。
 
+- [Tools帮助](https://moe520.haoqi75.os.kg/?p=tools) 或 [备用](https://moe520.haoqi75.cn.mt/?p=tools)
+- [点我直接查看Tools README](tools/README.md)
+
 ---
 
 ## ✨ 特色
