@@ -23,7 +23,7 @@ permissions:
 
 jobs:
   release:
-    runs-on: codeberg-medium
+    runs-on: codeberg-tiny
 
     steps:
       - name: Get tag name

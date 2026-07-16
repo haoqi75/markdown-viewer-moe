@@ -10,7 +10,7 @@ permissions:
 
 jobs:
   deploy:
-    runs-on: codeberg-medium
+    runs-on: codeberg-tiny
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
