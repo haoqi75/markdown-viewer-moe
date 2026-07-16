@@ -24,7 +24,7 @@ permissions:
 jobs:
   release:
     runs-on: codeberg-small
-
+    name: Build to Codeberg Releases
     steps:
       - name: Get tag name
         id: get_tag

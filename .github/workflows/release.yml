@@ -21,7 +21,7 @@ permissions:
 jobs:
   release:
     runs-on: ubuntu-latest
-    
+    name: Build to GitHub Releases
     steps:
       - name: Get tag name
         id: get_tag
