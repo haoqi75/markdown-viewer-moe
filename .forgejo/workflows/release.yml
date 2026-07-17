@@ -17,9 +17,8 @@ on:
         description: 发布内容
         type: string
 
-permissions:
-  contents: write
-  id-token: write
+# 这个就是Permissions
+enable-openid-connect: true
 
 jobs:
   release:

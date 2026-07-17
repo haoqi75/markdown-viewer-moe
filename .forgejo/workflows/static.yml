@@ -5,8 +5,8 @@ on:
     branches: ["main"]
   workflow_dispatch:
 
-permissions:
-  contents: write   # 需要推送至 pages 分支
+# 这个就是Permissions
+enable-openid-connect: true   # 需要推送至 pages 分支
 
 jobs:
   deploy:
