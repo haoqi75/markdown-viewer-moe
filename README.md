@@ -333,9 +333,9 @@ markdown-viewer-moe/
 
 <a href="https://www.star-history.com/?repos=haoqi75%2Fmarkdown-viewer-moe&type=timeline&legend=bottom-right">
  <picture>
-   <source media="(prefers-color-scheme: dark)" srcset="https://api.star-history.com/chart?repos=haoqi75/markdown-viewer-moe&type=timeline&theme=dark&legend=bottom-right" />
-   <source media="(prefers-color-scheme: light)" srcset="https://api.star-history.com/chart?repos=haoqi75/markdown-viewer-moe&type=timeline&legend=bottom-right" />
-   <img alt="Star History Chart" src="https://api.star-history.com/chart?repos=haoqi75/markdown-viewer-moe&type=timeline&legend=bottom-right" />
+   <source media="(prefers-color-scheme: dark)" srcset="https://api.star-history.com/chart?repos=haoqi75/markdown-viewer-moe&type=timeline&theme=dark&legend=bottom-right&sealed_token=Nbl8YbPVzh-7buprJs8AdTtRXuklRzEtYzHrQR5Gw14QSGmrpH8QanhKTRoagk8ohIc5o776_-dTIaeKnHsaGFbrGiEaikSslwHDhA6zUc_gAHbTK_W_1ZLQDadXT29CCSr6T3DgLKECZBsVSCrfTCSei5u2JuQ77g8NEfMhY2v0NcrocXvMF87ziLIT" />
+   <source media="(prefers-color-scheme: light)" srcset="https://api.star-history.com/chart?repos=haoqi75/markdown-viewer-moe&type=timeline&legend=bottom-right&sealed_token=Nbl8YbPVzh-7buprJs8AdTtRXuklRzEtYzHrQR5Gw14QSGmrpH8QanhKTRoagk8ohIc5o776_-dTIaeKnHsaGFbrGiEaikSslwHDhA6zUc_gAHbTK_W_1ZLQDadXT29CCSr6T3DgLKECZBsVSCrfTCSei5u2JuQ77g8NEfMhY2v0NcrocXvMF87ziLIT" />
+   <img alt="Star History Chart" src="https://api.star-history.com/chart?repos=haoqi75/markdown-viewer-moe&type=timeline&legend=bottom-right&sealed_token=Nbl8YbPVzh-7buprJs8AdTtRXuklRzEtYzHrQR5Gw14QSGmrpH8QanhKTRoagk8ohIc5o776_-dTIaeKnHsaGFbrGiEaikSslwHDhA6zUc_gAHbTK_W_1ZLQDadXT29CCSr6T3DgLKECZBsVSCrfTCSei5u2JuQ77g8NEfMhY2v0NcrocXvMF87ziLIT" />
  </picture>
 </a>
 
