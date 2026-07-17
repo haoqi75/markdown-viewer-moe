@@ -24,7 +24,9 @@ const DEFAULTS = {
     defaultUrl: 'https://raw.githubusercontent.com/haoqi75/markdown-viewer-moe/refs/heads/main/README.md',
     aliases: {},
     tocWelcome: '欢迎来到萌·Markdown',
-    toolsUrl: 'https://moe520.haoqi75.os.kg/tools.html'
+    toolsUrl: 'https://moe520.haoqi75.os.kg/tools.html',
+    headInject: '',
+    bodyInject: ''
 };
 
 function getMimeType(filePath) {
@@ -219,6 +221,8 @@ function build() {
         .pipe(replace(/src="logo-placeholder"/g, 'src="' + logoSrc + '"'))
         .pipe(replace(/src="mascot-placeholder"/g, 'src="' + mascotSrc + '"'))
         .pipe(replace(/src="sit-down-placeholder"/g, 'src="' + sitDownUri + '"'))
+        .pipe(replace(/<head-inject><\/head-inject>/g, config.headInject || ''))
+        .pipe(replace(/<body-inject><\/body-inject>/g, config.bodyInject || ''))
         .pipe(replace(/<link rel="manifest" href="[^"]*">/g, ''))
         .pipe(replace(/<link[^>]*href="[^"]*style\.css"[^>]*>/gi, '<style>' + minifiedCss + '</style>'))
         .pipe(replace(/<script[^>]*src="[^"]*script\.js"[^>]*><\/script>/gi, '<script>' + minifiedJs + '</script>'))

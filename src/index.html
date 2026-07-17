@@ -20,6 +20,8 @@
 
     <config-placeholder></config-placeholder>
     <link rel="stylesheet" href="style.css">
+    <!-- head-inject: config.headInject 内容注入到此（</head> 之前） -->
+    <head-inject></head-inject>
 </head>
 <body>
     <!-- 浮动装饰 -->
@@ -78,5 +80,7 @@
     </div>
 
     <script src="script.js"></script>
+    <!-- body-inject: config.bodyInject 内容注入到此（</body> 之前） -->
+    <body-inject></body-inject>
 </body>
 </html>
