@@ -48,12 +48,9 @@ jobs:
       - name: Install Dependencies
         run: pnpm install
         
-      - name: Build page
+      - name: Build page and tools
         run: pnpm run build
-        
-      - name: Build tools
-        run: pnpm run build:tools
-        
+      
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:

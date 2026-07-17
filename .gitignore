@@ -3,3 +3,5 @@ dist/
 .DS_Store
 *.log
 session-ses*
+bun.lock
+package-lock.json

@@ -29,11 +29,8 @@ jobs:
       - name: Install Dependencies
         run: pnpm install
 
-      - name: Build page
+      - name: Build page and tools
         run: pnpm run build
-
-      - name: Build tools
-        run: pnpm run build:tools
 
       - name: Deploy to Codeberg Pages
         uses: https://codeberg.org/git-pages/action@v2
