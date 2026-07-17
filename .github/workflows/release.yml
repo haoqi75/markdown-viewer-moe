@@ -72,9 +72,8 @@ jobs:
         id: body
         run: |
           if [ "${{ github.event_name }}" = "push" ]; then
-            # 从 tag annotation 或最近的 commit 获取描述
             TAG_MSG=$(git tag -l --format='%(contents)' ${{ steps.get_tag.outputs.tag_name }})
-            COMMIT_MSG=$(git log -1 --pretty=%B ${{ steps.get_tag.outputs.tag_name }})
+            PREV_TAG=$(git describe --tags --abbrev=0 ${{ steps.get_tag.outputs.tag_name }}^ 2>/dev/null || echo "")
             {
               echo "## 📦 构建信息"
               echo ""
@@ -84,20 +83,29 @@ jobs:
               echo "**Tools version:** ${{ steps.get_tools_version.outputs.tools_version }}"
               echo ""
               if [ -n "$TAG_MSG" ]; then
-                echo "## 📝 更新内容"
+                echo "## 📝 版本说明"
                 echo ""
                 echo "$TAG_MSG"
-              else
-                echo "## 📝 更新内容"
                 echo ""
-                echo "$COMMIT_MSG"
               fi
+              echo "## 📋 更改内容"
+              echo ""
+              if [ -n "$PREV_TAG" ]; then
+                echo "从 $PREV_TAG 到 ${{ steps.get_tag.outputs.tag_name }} 的所有更改:"
+                echo ""
+                git log --pretty=format:"- %s (%h)" $PREV_TAG..${{ steps.get_tag.outputs.tag_name }}
+              else
+                echo "首个版本，所有历史提交:"
+                echo ""
+                git log --pretty=format:"- %s (%h)" ${{ steps.get_tag.outputs.tag_name }}
+              fi
+              echo ""
               echo ""
               echo "## 📥 下载"
               echo "下载 \`index.release.html\`，用记事本编辑顶部 JSON 即可自定义 defaultUrl 和 aliases。"
               echo "下载 \`tools-vX.X.X.html\` 可以下载config.json编辑工具。"
             } > release_body.md
-            echo "✅ Use commit to synthesize the release body."
+            echo "✅ Use git log to synthesize the release body."
           else
             echo "${{ github.event.inputs.changes_description }}" > release_body.md
             echo "✅ Use charge_description to configure the release body."
