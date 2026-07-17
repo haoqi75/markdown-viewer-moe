@@ -45,9 +45,9 @@ function buildSingleHtml(cb) {
       }
     }
 
-    // Replace the link stylesheet tag(s) with an inline <style> block
+    // Replace the link stylesheet tag(s) with an inline <style> block using a function to avoid special "$" char replacement issue
     htmlContent = htmlContent.replace(cssRegex, '');
-    htmlContent = htmlContent.replace('</head>', `<style>${cssContent}</style>\n</head>`);
+    htmlContent = htmlContent.replace('</head>', () => `<style>${cssContent}</style>\n</head>`);
 
     // Find and inline script tags
     // Matches patterns like: <script type="module" crossorigin src="/assets/index-ChT_X6Z2.js"></script>
@@ -83,7 +83,7 @@ function buildSingleHtml(cb) {
     htmlContent = htmlContent.split('__APP_VERSION__').join(version);
 
     htmlContent = htmlContent.replace(jsRegex, '');
-    htmlContent = htmlContent.replace('</body>', `<script type="module">${jsContent}</script>\n</body>`);
+    htmlContent = htmlContent.replace('</body>', () => `<script type="module">${jsContent}</script>\n</body>`);
 
     // Write to tools.html in the dist folder
     const outputPath = path.join(distPath, 'tools.html');

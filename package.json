@@ -1,6 +1,6 @@
 {
   "name": "markdown-viewer-moe",
-  "version": "1.10.0",
+  "version": "1.10.1",
   "description": "由AI生成的Moe Markdown查看器",
   "scripts": {
     "build": "run-s build:page build:tools",
