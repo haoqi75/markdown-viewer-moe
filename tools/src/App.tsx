@@ -22,7 +22,10 @@ import {
   Lock,
   Unlock,
   Copy,
-  Trash2
+  Trash2,
+  Link,
+  ExternalLink,
+  Globe
 } from 'lucide-react';
 
 const extractJsonFromHtml = (htmlContent: string): { json: Record<string, any> | null; error: string | null } => {
@@ -102,7 +105,7 @@ const DEFAULT_RELEASE_HTML = `<!DOCTYPE html>
 </body>
 </html>`;
 
-const APP_VERSION = "__APP_VERSION__".startsWith("__") ? "1.4.2" : "__APP_VERSION__";
+const APP_VERSION = "__APP_VERSION__".startsWith("__") ? "1.4.3" : "__APP_VERSION__";
 
 export default function App() {
   const [config, setConfig] = useState<Record<string, any>>(templates[0].config);
@@ -125,6 +128,72 @@ export default function App() {
   // Base64 tool states
   const [base64Input, setBase64Input] = useState<string>('');
   const [base64Output, setBase64Output] = useState<string>('');
+
+  // Markdown Link Generator states (v1.4.3)
+  const [base64ToolMode, setBase64ToolMode] = useState<'link' | 'text'>('link');
+  const [markdownUrl, setMarkdownUrl] = useState<string>('');
+  const [prefixPreset, setPrefixPreset] = useState<'kg' | 'mt' | 'custom'>('kg');
+  const [customPrefix, setCustomPrefix] = useState<string>('http://127.0.0.1:8520/');
+  const [generatedMoeUrl, setGeneratedMoeUrl] = useState<string>('');
+
+  const handleGenerateMoeUrl = (urlToUse?: string, presetToUse?: string, customToUse?: string) => {
+    const rawUrl = urlToUse !== undefined ? urlToUse : markdownUrl;
+    const preset = presetToUse !== undefined ? presetToUse : prefixPreset;
+    const custom = customToUse !== undefined ? customToUse : customPrefix;
+
+    if (!rawUrl.trim()) {
+      showToast('请输入 Markdown 原始 Raw 链接哦！', 'info');
+      setMascotMessage('小萌需要先有 Markdown 原始链接，才能帮您合成为加密链接呀！🌸');
+      setMascotExpression('wink');
+      return;
+    }
+
+    try {
+      // Safe base64 encoding supporting UTF-8
+      const encoded = btoa(encodeURIComponent(rawUrl.trim()).replace(/%([0-9A-F]{2})/g, (_, p1) => {
+        return String.fromCharCode(parseInt(p1, 16));
+      }));
+
+      let prefix = 'https://moe520.haoqi75.os.kg/';
+      if (preset === 'mt') {
+        prefix = 'https://moe520.haoqi75.cn.mt/';
+      } else if (preset === 'custom') {
+        prefix = custom.trim();
+      }
+
+      // Ensure prefix ends with / if it doesn't have query params
+      if (prefix && !prefix.endsWith('/') && !prefix.includes('?')) {
+        prefix += '/';
+      }
+
+      const finalUrl = `${prefix}?md=${encoded}`;
+      setGeneratedMoeUrl(finalUrl);
+      showToast('链接合成成功！', 'success');
+      setMascotMessage('太棒啦！小萌已经成功帮您合成了 Markdown Viewer 的加密加载链接！✨ 直接点击可以预览或复制哦！🌸');
+      setMascotExpression('excited');
+    } catch (err: any) {
+      showToast(`生成失败: ${err.message}`, 'error');
+      setMascotMessage('唔，生成链接时出错了，请检查输入链接是否正确～🤕');
+      setMascotExpression('sad');
+    }
+  };
+
+  const handleCopyMoeUrl = () => {
+    if (!generatedMoeUrl) {
+      showToast('没有可复制的链接哦！', 'info');
+      return;
+    }
+    navigator.clipboard.writeText(generatedMoeUrl);
+    showToast('链接已成功复制到剪贴板！', 'success');
+    setMascotMessage('已经成功帮您复制好完整链接啦，快去粘贴或分享吧！🌸');
+    setMascotExpression('happy');
+  };
+
+  const handleClearMoeUrl = () => {
+    setMarkdownUrl('');
+    setGeneratedMoeUrl('');
+    showToast('已清空链接生成器！', 'success');
+  };
 
   const handleBase64Encode = () => {
     if (!base64Input) {
@@ -1344,104 +1413,314 @@ export default function App() {
           )}
         </div>
 
-        {/* Base64 Encryption / Decryption Tool */}
+        {/* Base64 & Markdown Link Helper Tool */}
         <div className="mt-12 bg-white/95 dark:bg-[#251620]/95 border-2 border-pink-100/50 dark:border-pink-900/30 rounded-3xl p-6 shadow-md transition-all duration-300">
-          <div className="flex items-center space-x-2.5 mb-5 pb-3 border-b border-pink-50/50 dark:border-pink-950/20">
-            <div className="p-2 bg-pink-100 dark:bg-pink-950/80 rounded-2xl text-pink-500 shrink-0">
-              <Lock className="h-5 w-5" />
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-5 pb-4 border-b border-pink-50/50 dark:border-pink-950/20">
+            <div className="flex items-center space-x-2.5">
+              <div className="p-2 bg-pink-100 dark:bg-pink-950/80 rounded-2xl text-pink-500 shrink-0 animate-bounce-slow">
+                <Lock className="h-5 w-5" />
+              </div>
+              <div>
+                <h3 className="text-sm font-black text-[#4a353d] dark:text-white flex items-center gap-1.5">
+                  🔐 Base64 ＆ Markdown 链接助手 (v1.4.3)
+                </h3>
+                <p className="mt-0.5 text-xs text-gray-500 dark:text-gray-400 font-medium">
+                  快速加密转换原始 Markdown 链接防参数乱码，或对配置值进行 Base64 加解密
+                </p>
+              </div>
             </div>
-            <div>
-              <h3 className="text-sm font-black text-[#4a353d] dark:text-white flex items-center gap-1.5">
-                🔐 Base64 文本加解密小工具
-              </h3>
-              <p className="mt-0.5 text-xs text-gray-500 dark:text-gray-400 font-medium">
-                随时编码或解码特殊配置字段（支持完整中文/Unicode，安全且防乱码）
-              </p>
+            
+            {/* Cute Tab Buttons */}
+            <div className="flex bg-pink-50/50 dark:bg-pink-950/30 p-1 rounded-2xl border border-pink-100/30 dark:border-pink-900/20 shrink-0">
+              <button
+                type="button"
+                onClick={() => setBase64ToolMode('link')}
+                className={`px-3.5 py-1.5 text-xs font-bold rounded-xl transition-all cursor-pointer ${
+                  base64ToolMode === 'link'
+                    ? "bg-pink-500 text-white shadow-xs"
+                    : "text-gray-500 dark:text-gray-400 hover:text-pink-500"
+                }`}
+              >
+                🔗 专属链接生成
+              </button>
+              <button
+                type="button"
+                onClick={() => setBase64ToolMode('text')}
+                className={`px-3.5 py-1.5 text-xs font-bold rounded-xl transition-all cursor-pointer ${
+                  base64ToolMode === 'text'
+                    ? "bg-pink-500 text-white shadow-xs"
+                    : "text-gray-500 dark:text-gray-400 hover:text-pink-500"
+                }`}
+              >
+                🔐 通用加解密
+              </button>
             </div>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
-            {/* Input panel */}
-            <div className="flex flex-col">
-              <label className="text-xs font-bold text-gray-500 dark:text-gray-400 mb-2 flex justify-between items-center">
-                <span>📝 输入原文 / 密文 (Input Text)</span>
-                {base64Input && (
-                  <span className="font-mono text-2xs text-gray-400 dark:text-gray-500 bg-gray-100 dark:bg-gray-800 px-1.5 py-0.5 rounded">
-                    {base64Input.length} 字符
-                  </span>
+          {base64ToolMode === 'link' ? (
+            /* Tab 1: Markdown Link Builder */
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-5 animate-fade-in">
+              {/* Parameter Settings */}
+              <div className="flex flex-col">
+                <label className="text-xs font-bold text-[#4a353d] dark:text-gray-300 mb-2 flex justify-between items-center">
+                  <span>📝 输入 Markdown 原始 Raw 链接 (Markdown URL)</span>
+                  <span className="text-pink-500 font-bold">必填</span>
+                </label>
+                <textarea
+                  value={markdownUrl}
+                  onChange={(e) => {
+                    setMarkdownUrl(e.target.value);
+                    // Live preview / generate support
+                    if (e.target.value.trim()) {
+                      handleGenerateMoeUrl(e.target.value, prefixPreset, customPrefix);
+                    } else {
+                      setGeneratedMoeUrl('');
+                    }
+                  }}
+                  placeholder="在此输入或粘贴原始的 Markdown 文件直链，例如：
+https://raw.githubusercontent.com/haoqi75/markdown-viewer-moe/main/README.md"
+                  className="w-full h-24 px-4 py-3 text-xs font-medium rounded-2xl border border-pink-100 dark:border-pink-950/40 bg-pink-50/10 dark:bg-transparent text-gray-700 dark:text-gray-200 placeholder-gray-400 dark:placeholder-gray-600 focus:outline-hidden focus:border-pink-400 focus:ring-1 focus:ring-pink-400 resize-none transition-all"
+                />
+
+                <div className="mt-4">
+                  <label className="text-xs font-bold text-[#4a353d] dark:text-gray-300 mb-2.5 block">
+                    🌐 选择载入网关 (Viewer Gateway Prefix)
+                  </label>
+                  <div className="grid grid-cols-1 sm:grid-cols-3 gap-2.5">
+                    <button
+                      type="button"
+                      onClick={() => {
+                        setPrefixPreset('kg');
+                        handleGenerateMoeUrl(markdownUrl, 'kg', customPrefix);
+                      }}
+                      className={`px-3 py-2 text-3xs sm:text-2xs font-bold rounded-xl border text-left transition-all ${
+                        prefixPreset === 'kg'
+                          ? "border-pink-400 bg-pink-500/10 text-pink-600 dark:text-pink-300 dark:border-pink-600"
+                          : "border-pink-100/50 dark:border-pink-950/40 hover:bg-pink-50/30 text-gray-600 dark:text-gray-400"
+                      }`}
+                    >
+                      <div className="font-bold flex items-center gap-1">
+                        <Globe className="h-3 w-3 shrink-0 text-pink-500" />
+                        <span>主线路 (.os.kg)</span>
+                      </div>
+                      <div className="text-4xs text-gray-400 mt-0.5 font-mono truncate">moe520.haoqi75.os.kg</div>
+                    </button>
+
+                    <button
+                      type="button"
+                      onClick={() => {
+                        setPrefixPreset('mt');
+                        handleGenerateMoeUrl(markdownUrl, 'mt', customPrefix);
+                      }}
+                      className={`px-3 py-2 text-3xs sm:text-2xs font-bold rounded-xl border text-left transition-all ${
+                        prefixPreset === 'mt'
+                          ? "border-pink-400 bg-pink-500/10 text-pink-600 dark:text-pink-300 dark:border-pink-600"
+                          : "border-pink-100/50 dark:border-pink-950/40 hover:bg-pink-50/30 text-gray-600 dark:text-gray-400"
+                      }`}
+                    >
+                      <div className="font-bold flex items-center gap-1">
+                        <Globe className="h-3 w-3 shrink-0 text-pink-500" />
+                        <span>备用线路 (.cn.mt)</span>
+                      </div>
+                      <div className="text-4xs text-gray-400 mt-0.5 font-mono truncate">moe520.haoqi75.cn.mt</div>
+                    </button>
+
+                    <button
+                      type="button"
+                      onClick={() => {
+                        setPrefixPreset('custom');
+                        handleGenerateMoeUrl(markdownUrl, 'custom', customPrefix);
+                      }}
+                      className={`px-3 py-2 text-3xs sm:text-2xs font-bold rounded-xl border text-left transition-all ${
+                        prefixPreset === 'custom'
+                          ? "border-pink-400 bg-pink-500/10 text-pink-600 dark:text-pink-300 dark:border-pink-600"
+                          : "border-pink-100/50 dark:border-pink-950/40 hover:bg-pink-50/30 text-gray-600 dark:text-gray-400"
+                      }`}
+                    >
+                      <div className="font-bold flex items-center gap-1">
+                        <Sparkles className="h-3 w-3 shrink-0 text-pink-500" />
+                        <span>自定义前缀</span>
+                      </div>
+                      <div className="text-4xs text-gray-400 mt-0.5 font-mono truncate">手动输入特定前缀</div>
+                    </button>
+                  </div>
+                </div>
+
+                {prefixPreset === 'custom' && (
+                  <div className="mt-3 animate-fade-in">
+                    <input
+                      type="text"
+                      value={customPrefix}
+                      onChange={(e) => {
+                        setCustomPrefix(e.target.value);
+                        handleGenerateMoeUrl(markdownUrl, 'custom', e.target.value);
+                      }}
+                      placeholder="请输入前缀，例如 http://localhost:3000/"
+                      className="w-full px-3.5 py-2 text-xs font-mono rounded-xl border border-pink-100 dark:border-pink-950/40 bg-transparent text-gray-700 dark:text-gray-200 focus:outline-hidden focus:border-pink-400 focus:ring-1 focus:ring-pink-400"
+                    />
+                  </div>
                 )}
-              </label>
-              <textarea
-                value={base64Input}
-                onChange={(e) => setBase64Input(e.target.value)}
-                placeholder="在此处输入待加密的普通文本，或粘贴需要解密的 Base64 字符串..."
-                className="w-full h-32 px-4 py-3 text-xs font-medium rounded-2xl border border-pink-100 dark:border-pink-950/40 bg-pink-50/10 dark:bg-transparent text-gray-700 dark:text-gray-200 placeholder-gray-400 dark:placeholder-gray-600 focus:outline-hidden focus:border-pink-400 focus:ring-1 focus:ring-pink-400 resize-none transition-all"
-              />
-              
-              <div className="mt-3 flex flex-wrap gap-2">
-                <button
-                  type="button"
-                  onClick={handleBase64Encode}
-                  className="flex-1 flex items-center justify-center space-x-1.5 px-3 py-2.5 text-xs font-bold rounded-2xl bg-pink-500 hover:bg-pink-600 text-white transition-all shadow-sm cursor-pointer"
-                >
-                  <Lock className="h-3.5 w-3.5 shrink-0" />
-                  <span>加密 (Encode)</span>
-                </button>
+
+                <div className="mt-4 flex gap-2">
+                  <button
+                    type="button"
+                    onClick={() => handleGenerateMoeUrl()}
+                    className="flex-1 flex items-center justify-center space-x-1.5 px-3 py-2.5 text-xs font-bold rounded-2xl bg-pink-500 hover:bg-pink-600 text-white transition-all shadow-sm cursor-pointer"
+                  >
+                    <Sparkles className="h-3.5 w-3.5 shrink-0" />
+                    <span>合成加密链接</span>
+                  </button>
+                  <button
+                    type="button"
+                    onClick={handleClearMoeUrl}
+                    className="p-2.5 text-xs font-bold rounded-2xl bg-gray-50 hover:bg-gray-100 border border-gray-200 text-gray-400 dark:border-gray-800 dark:bg-[#251620]/50 dark:text-gray-500 dark:hover:bg-gray-850 transition-all cursor-pointer"
+                    title="清空"
+                  >
+                    <Trash2 className="h-4 w-4 shrink-0" />
+                  </button>
+                </div>
+              </div>
+
+              {/* Synthesized Output */}
+              <div className="flex flex-col">
+                <label className="text-xs font-bold text-gray-500 dark:text-gray-400 mb-2 flex justify-between items-center">
+                  <span>✨ 专属合成链接 (Moe Encrypted Link)</span>
+                  {generatedMoeUrl && (
+                    <span className="font-mono text-2xs text-gray-400 dark:text-gray-500 bg-gray-100 dark:bg-gray-800 px-1.5 py-0.5 rounded">
+                      安全避开 & 和 ?
+                    </span>
+                  )}
+                </label>
+                <textarea
+                  readOnly
+                  value={generatedMoeUrl}
+                  placeholder="在左侧输入 Markdown 原始直链后，系统将在此处自动生成对应的专属加密加载链接..."
+                  className="w-full h-32 px-4 py-3 text-xs font-mono rounded-2xl border border-pink-100 dark:border-pink-950/40 bg-gray-50/30 dark:bg-gray-900/10 text-slate-800 dark:text-slate-100 placeholder-gray-400 dark:placeholder-gray-600 focus:outline-hidden resize-none"
+                />
+
+                <div className="mt-4 grid grid-cols-2 gap-3.5">
+                  <button
+                    type="button"
+                    onClick={handleCopyMoeUrl}
+                    disabled={!generatedMoeUrl}
+                    className={`flex items-center justify-center space-x-1.5 px-4 py-2.5 text-xs font-bold rounded-2xl transition-all shadow-sm ${
+                      generatedMoeUrl 
+                        ? "bg-emerald-500 hover:bg-emerald-600 text-white cursor-pointer" 
+                        : "bg-gray-100 dark:bg-gray-800 text-gray-400 dark:text-gray-500 cursor-not-allowed shadow-none"
+                    }`}
+                  >
+                    <Copy className="h-3.5 w-3.5 shrink-0" />
+                    <span>复制合成链接</span>
+                  </button>
+
+                  {generatedMoeUrl ? (
+                    <a
+                      href={generatedMoeUrl}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="flex items-center justify-center space-x-1.5 px-4 py-2.5 text-xs font-bold rounded-2xl bg-pink-500 hover:bg-pink-600 text-white transition-all shadow-sm cursor-pointer"
+                    >
+                      <ExternalLink className="h-3.5 w-3.5 shrink-0" />
+                      <span>立即打开测试</span>
+                    </a>
+                  ) : (
+                    <button
+                      type="button"
+                      disabled
+                      className="flex items-center justify-center space-x-1.5 px-4 py-2.5 text-xs font-bold rounded-2xl bg-gray-100 dark:bg-gray-800 text-gray-400 dark:text-gray-500 cursor-not-allowed shadow-none"
+                    >
+                      <ExternalLink className="h-3.5 w-3.5 shrink-0" />
+                      <span>未生成无法打开</span>
+                    </button>
+                  )}
+                </div>
+              </div>
+            </div>
+          ) : (
+            /* Tab 2: General Base64 Encrypt/Decrypt */
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-5 animate-fade-in">
+              {/* Input panel */}
+              <div className="flex flex-col">
+                <label className="text-xs font-bold text-gray-500 dark:text-gray-400 mb-2 flex justify-between items-center">
+                  <span>📝 输入原文 / 密文 (Input Text)</span>
+                  {base64Input && (
+                    <span className="font-mono text-2xs text-gray-400 dark:text-gray-500 bg-gray-100 dark:bg-gray-800 px-1.5 py-0.5 rounded">
+                      {base64Input.length} 字符
+                    </span>
+                  )}
+                </label>
+                <textarea
+                  value={base64Input}
+                  onChange={(e) => setBase64Input(e.target.value)}
+                  placeholder="在此处输入待加密的普通文本，或粘贴需要解密的 Base64 字符串..."
+                  className="w-full h-32 px-4 py-3 text-xs font-medium rounded-2xl border border-pink-100 dark:border-pink-950/40 bg-pink-50/10 dark:bg-transparent text-gray-700 dark:text-gray-200 placeholder-gray-400 dark:placeholder-gray-600 focus:outline-hidden focus:border-pink-400 focus:ring-1 focus:ring-pink-400 resize-none transition-all"
+                />
                 
-                <button
-                  type="button"
-                  onClick={handleBase64Decode}
-                  className="flex-1 flex items-center justify-center space-x-1.5 px-3 py-2.5 text-xs font-bold rounded-2xl bg-white hover:bg-pink-50 border border-pink-200 text-pink-600 dark:border-pink-800 dark:bg-[#251620] dark:text-pink-300 dark:hover:bg-pink-950/20 transition-all shadow-xs cursor-pointer"
-                >
-                  <Unlock className="h-3.5 w-3.5 shrink-0 text-pink-500" />
-                  <span>解密 (Decode)</span>
-                </button>
+                <div className="mt-3 flex flex-wrap gap-2">
+                  <button
+                    type="button"
+                    onClick={handleBase64Encode}
+                    className="flex-1 flex items-center justify-center space-x-1.5 px-3 py-2.5 text-xs font-bold rounded-2xl bg-pink-500 hover:bg-pink-600 text-white transition-all shadow-sm cursor-pointer"
+                  >
+                    <Lock className="h-3.5 w-3.5 shrink-0" />
+                    <span>加密 (Encode)</span>
+                  </button>
+                  
+                  <button
+                    type="button"
+                    onClick={handleBase64Decode}
+                    className="flex-1 flex items-center justify-center space-x-1.5 px-3 py-2.5 text-xs font-bold rounded-2xl bg-white hover:bg-pink-50 border border-pink-200 text-pink-600 dark:border-pink-800 dark:bg-[#251620] dark:text-pink-300 dark:hover:bg-pink-950/20 transition-all shadow-xs cursor-pointer"
+                  >
+                    <Unlock className="h-3.5 w-3.5 shrink-0 text-pink-500" />
+                    <span>解密 (Decode)</span>
+                  </button>
 
-                <button
-                  type="button"
-                  onClick={handleClearBase64}
-                  title="清空"
-                  className="p-2.5 text-xs font-bold rounded-2xl bg-gray-50 hover:bg-gray-100 border border-gray-200 text-gray-400 dark:border-gray-800 dark:bg-[#251620]/50 dark:text-gray-500 dark:hover:bg-gray-850 transition-all cursor-pointer"
-                >
-                  <Trash2 className="h-4 w-4 shrink-0" />
-                </button>
+                  <button
+                    type="button"
+                    onClick={handleClearBase64}
+                    title="清空"
+                    className="p-2.5 text-xs font-bold rounded-2xl bg-gray-50 hover:bg-gray-100 border border-gray-200 text-gray-400 dark:border-gray-800 dark:bg-[#251620]/50 dark:text-gray-500 dark:hover:bg-gray-850 transition-all cursor-pointer"
+                  >
+                    <Trash2 className="h-4 w-4 shrink-0" />
+                  </button>
+                </div>
+              </div>
+
+              {/* Output panel */}
+              <div className="flex flex-col">
+                <label className="text-xs font-bold text-gray-500 dark:text-gray-400 mb-2 flex justify-between items-center">
+                  <span>✨ 运算输出结果 (Output Result)</span>
+                  {base64Output && (
+                    <span className="font-mono text-2xs text-gray-400 dark:text-gray-500 bg-gray-100 dark:bg-gray-800 px-1.5 py-0.5 rounded">
+                      {base64Output.length} 字符
+                    </span>
+                  )}
+                </label>
+                <textarea
+                  readOnly
+                  value={base64Output}
+                  placeholder="运算结果将显示在这里..."
+                  className="w-full h-32 px-4 py-3 text-xs font-mono rounded-2xl border border-pink-100 dark:border-pink-950/40 bg-gray-50/30 dark:bg-gray-900/10 text-slate-800 dark:text-slate-100 placeholder-gray-400 dark:placeholder-gray-600 focus:outline-hidden resize-none"
+                />
+
+                <div className="mt-3 flex">
+                  <button
+                    type="button"
+                    onClick={handleCopyBase64Result}
+                    disabled={!base64Output}
+                    className={`w-full flex items-center justify-center space-x-1.5 px-4 py-2.5 text-xs font-bold rounded-2xl transition-all shadow-sm ${
+                      base64Output 
+                        ? "bg-emerald-500 hover:bg-emerald-600 text-white cursor-pointer" 
+                        : "bg-gray-100 dark:bg-gray-800 text-gray-400 dark:text-gray-500 cursor-not-allowed shadow-none"
+                    }`}
+                  >
+                    <Copy className="h-3.5 w-3.5 shrink-0" />
+                    <span>复制结果 (Copy Result)</span>
+                  </button>
+                </div>
               </div>
             </div>
-
-            {/* Output panel */}
-            <div className="flex flex-col">
-              <label className="text-xs font-bold text-gray-500 dark:text-gray-400 mb-2 flex justify-between items-center">
-                <span>✨ 运算输出结果 (Output Result)</span>
-                {base64Output && (
-                  <span className="font-mono text-2xs text-gray-400 dark:text-gray-500 bg-gray-100 dark:bg-gray-800 px-1.5 py-0.5 rounded">
-                    {base64Output.length} 字符
-                  </span>
-                )}
-              </label>
-              <textarea
-                readOnly
-                value={base64Output}
-                placeholder="运算结果将显示在这里..."
-                className="w-full h-32 px-4 py-3 text-xs font-mono rounded-2xl border border-pink-100 dark:border-pink-950/40 bg-gray-50/30 dark:bg-gray-900/10 text-slate-800 dark:text-slate-100 placeholder-gray-400 dark:placeholder-gray-600 focus:outline-hidden resize-none"
-              />
-
-              <div className="mt-3 flex">
-                <button
-                  type="button"
-                  onClick={handleCopyBase64Result}
-                  disabled={!base64Output}
-                  className={`w-full flex items-center justify-center space-x-1.5 px-4 py-2.5 text-xs font-bold rounded-2xl transition-all shadow-sm ${
-                    base64Output 
-                      ? "bg-emerald-500 hover:bg-emerald-600 text-white cursor-pointer" 
-                      : "bg-gray-100 dark:bg-gray-800 text-gray-400 dark:text-gray-500 cursor-not-allowed shadow-none"
-                  }`}
-                >
-                  <Copy className="h-3.5 w-3.5 shrink-0" />
-                  <span>复制结果 (Copy Result)</span>
-                </button>
-              </div>
-            </div>
-          </div>
+          )}
         </div>
 
         {/* Footer */}

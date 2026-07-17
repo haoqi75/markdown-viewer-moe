@@ -1,6 +1,6 @@
 # 🌸 萌·Markdown 配置文件生成器 (Moe JSON Editor) 🌸
 
-[![Version](https://img.shields.io/badge/version-1.4.2-pink.svg)](https://github.com/haoqi75/markdown-viewer-moe)
+[![Version](https://img.shields.io/badge/version-1.4.3-pink.svg)](https://github.com/haoqi75/markdown-viewer-moe)
 [![License](https://img.shields.io/badge/license-MIT-blue.svg)](https://github.com/haoqi75/markdown-viewer-moe)
 [![Platform](https://img.shields.io/badge/platform-Web-emerald.svg)](https://github.com/haoqi75/markdown-viewer-moe)
 
@@ -33,10 +33,15 @@
 * **配置打包机制 (v1.3.1+ 限制)**: 允许在右侧修改、调整配置 JSON。修改后只需点击一键打包，更新后的配置会**精准写回**模板，并让你下载全新的、即刻可部署上线的 `index.release.html`！
 * *注：为确保数据安全，你必须先上传一次已有 HTML 模板作为模板框架，才可以执行下载。仅上传 `config.json` 时将显示温馨提示并禁用下载。*
 
-### 3. 🔐 强大的 Base64 文本加解密小工具
-在配置诸如私有 API 秘钥、自定义图标、敏感 Markdown 链接或特定资源链接时，经常需要对字符串进行 Base64 编解码。工具内置此项功能：
-* **完全支持 Unicode / 中文**: 专门针对中文乱码问题进行了算法调优，使用 `btoa(encodeURIComponent(...))` 安全机制，确保无论中文还是特殊符号都能完美加解密。
-* **快捷一键复制**: 结果框配备有防空检测的一键复制按钮，极速拿到密文粘贴至对应的 JSON 配置字段中。
+### 3. 🔐 Base64 ＆ Markdown 专属链接生成助手 (v1.4.3 新增)
+专为 Markdown 订阅或配置场景设计的链式转换与加解密中心，包含两个大模式：
+* **🔗 Markdown 专属链接生成器**: 输入自定义的 Markdown 原始 Raw 链接（支持带复杂 Query 参数的 URL），自动对链接进行安全的 Base64 转换。通过将 URL 参数隐藏，能够有效防范浏览器或服务器对 `&` 和 `?` 带来的截断和解析乱码。
+* **🌐 多线路/自适应网关绑定**: 预设支持多线路绑定，也支持任意手动输入：
+  - 主线路：`https://moe520.haoqi75.os.kg/`
+  - 备用线路：`https://moe520.haoqi75.cn.mt/`
+  - 自定义前缀：用户可任意定义和自定义域名、前缀或调试端口。
+* **⚡ 极速打开与复制**: 生成后可直接点击「立即打开测试」在浏览器新窗口中预览该 Markdown 原文，或者一键复制最终合成的完整加载 URL。
+* **🔐 通用 Base64 加解密**: 专门针对中文乱码问题进行了算法调优，使用 `btoa(encodeURIComponent(...))` 安全编解码机制，保证任何特殊符号或中文字符集能完美加解密而不丢失。
 
 ### 4. 📳 移动端适配与主题整合 (v1.4.1+)
 * **多媒介主题颜色定制**: 加入 `<meta name="theme-color">`，使在移动端浏览器（Safari、Chrome 等）或渐进式 Web 应用（PWA）环境下，顶部状态栏和系统边框会根据设备本身的黑夜/白日主题自适应变色，极致流畅。
