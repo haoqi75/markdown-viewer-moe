@@ -20,12 +20,15 @@ export const templates: ConfigTemplate[] = [
       },
       footer: "[萌·Markdown](https://github.com/haoqi75/markdown-viewer-moe) | 由 ApHeQua758 与 AI 创建",
       mascot: "img/mascot.png",
-      defaultUrl: "https://raw.githubusercontent.com/haoqi75/markdown-viewer-moe/refs/heads/main/README.md",
+      defaultUrl: "https://your-default-api.com/raw/index.md",
       aliases: {
-        page: "https://cp.qtdt.qzz.io/api/raw/index",
-        agents: "https://raw.githubusercontent.com/haoqi75/markdown-viewer-moe/refs/heads/main/AGENTS.md"
+        test: "https://another-api.com/raw/rypa",
+        docs: "https://docs.example.com/readme.md"
       },
-      tocWelcome: "欢迎来到萌·Markdown"
+      tocWelcome: "欢迎来到萌·Markdown",
+      toolsUrl: "./tools.html",
+      headInject: "",
+      bodyInject: ""
     },
     schema: [
       {
@@ -57,16 +60,25 @@ export const templates: ConfigTemplate[] = [
         icon: 'Zap',
         fields: [
           { key: 'defaultUrl', label: '默认 Markdown 地址', type: 'string', description: '预览器启动时默认拉取并解析的 Markdown 原始文件链接' },
-          { key: 'mascot', label: '看板娘/吉祥物路径', type: 'string', description: '右下角悬浮悬停的萌系看板娘或吉祥物图片路径/网络链接' }
+          { key: 'mascot', label: '看板娘/吉祥物路径', type: 'string', description: '右下角悬浮悬停的萌系看板娘或吉祥物图片路径/网络链接' },
+          { key: 'toolsUrl', label: '工具箱相对地址 (toolsUrl)', type: 'string', description: '一键配置工具的相对路径或网页链接，例如: ./tools.html' }
         ]
       },
       {
         name: '🎨 路由与别名映射 (Aliases)',
-        description: '简短路由到原始 Markdown 文件的别名映射表。',
+        description: '简短路由到原始 Markdown 文件的别名映射表。您可以自由添加、修改或删除自定义别名。',
         icon: 'Route',
         fields: [
-          { key: 'aliases.page', label: '首页别名 (page)', type: 'string', description: '首页所对应的原始 Markdown 文件网络路径' },
-          { key: 'aliases.agents', label: 'AGENTS 别名 (agents)', type: 'string', description: 'AGENTS 规范说明书对应的 Markdown 原始链接' }
+          { key: 'aliases', label: '别名映射表 (aliases)', type: 'object', description: '定义特定别名路由对应的 Markdown 直链。例如：添加别名 test，即可通过 /#test 或 ?id=test 快速访问！' }
+        ]
+      },
+      {
+        name: '⚙️ 高级自定义与注入 (Inject)',
+        description: '在生成的预览页面中插入自定义的头部（如 meta、css）与尾部（如 js 脚本）代码。',
+        icon: 'Sliders',
+        fields: [
+          { key: 'headInject', label: '头部 HTML 注入 (headInject)', type: 'textarea', description: '注入到 <head> 标签末尾 of 自定义 HTML 代码（多用于样式或额外 meta）' },
+          { key: 'bodyInject', label: '尾部 HTML 注入 (bodyInject)', type: 'textarea', description: '注入到 <body> 标签末尾 of 自定义 HTML 代码（多用于统计、自定义脚本）' }
         ]
       }
     ]
@@ -86,12 +98,11 @@ export const templates: ConfigTemplate[] = [
     schema: [
       {
         name: '⚙️ 基础设置 (Basic Settings)',
-        description: '配置最核心的数据源与路由别名映射表。',
+        description: '配置最核心的数据源与路由别名映射表。您可以自由添加、修改或删除自定义别名。',
         icon: 'Sliders',
         fields: [
           { key: 'defaultUrl', label: '默认 Markdown 地址 (defaultUrl)', type: 'string', description: '预览器默认加载的 Markdown 原始文件链接' },
-          { key: 'aliases.test', label: '测试别名映射 (test)', type: 'string', description: '访问 /#test 时指向的 Markdown 原始链接' },
-          { key: 'aliases.docs', label: '文档别名映射 (docs)', type: 'string', description: '访问 /#docs 时指向的 Markdown 原始链接' }
+          { key: 'aliases', label: '别名映射表 (aliases)', type: 'object', description: '定义特定别名路由对应的 Markdown 直链。例如：添加别名 test，即可通过 /#test 或 ?id=test 快速访问！' }
         ]
       }
     ]

@@ -140,6 +140,10 @@ export const FormGenerator: React.FC<FormGeneratorProps> = ({ config, schema, on
   const [newItemObject, setNewItemObject] = useState<Record<string, any>>({});
   const [expandedArrayItems, setExpandedArrayItems] = useState<Record<string, boolean>>({});
 
+  // Object key-value temporary states
+  const [newKeyInputs, setNewKeyInputs] = useState<Record<string, string>>({});
+  const [newValueInputs, setNewValueInputs] = useState<Record<string, string>>({});
+
   const toggleHelp = (key: string) => {
     setShowHelp(prev => ({ ...prev, [key]: !prev[key] }));
   };
@@ -457,6 +461,106 @@ export const FormGenerator: React.FC<FormGeneratorProps> = ({ config, schema, on
             )}
           </div>
         );
+      
+      case 'object': {
+        const dictionary = value || {};
+        const entries = Object.entries(dictionary);
+        const newKey = newKeyInputs[field.key] || '';
+        const newVal = newValueInputs[field.key] || '';
+
+        const handleAddPair = () => {
+          if (!newKey.trim()) {
+            return;
+          }
+          const updatedDict = {
+            ...dictionary,
+            [newKey.trim()]: newVal.trim()
+          };
+          handleFieldChange(field.key, updatedDict);
+          // clear inputs for this field
+          setNewKeyInputs(prev => ({ ...prev, [field.key]: '' }));
+          setNewValueInputs(prev => ({ ...prev, [field.key]: '' }));
+        };
+
+        const handleRemoveKey = (k: string) => {
+          const updatedDict = { ...dictionary };
+          delete updatedDict[k];
+          handleFieldChange(field.key, updatedDict);
+        };
+
+        const handleUpdateValue = (k: string, v: string) => {
+          const updatedDict = {
+            ...dictionary,
+            [k]: v
+          };
+          handleFieldChange(field.key, updatedDict);
+        };
+
+        return (
+          <div className="space-y-3 p-4 rounded-2xl border border-pink-100/60 dark:border-pink-900/20 bg-pink-50/10 dark:bg-transparent">
+            {entries.length > 0 ? (
+              <div className="space-y-2.5 max-h-60 overflow-y-auto pr-1">
+                {entries.map(([k, v]) => (
+                  <div key={k} className="flex items-center gap-2">
+                    <span className="w-1/4 px-3 py-1.5 text-xs font-mono font-bold bg-pink-100/40 dark:bg-pink-950/40 text-pink-700 dark:text-pink-300 rounded-xl truncate" title={k}>
+                      {k}
+                    </span>
+                    <input
+                      type="text"
+                      value={String(v)}
+                      onChange={(e) => handleUpdateValue(k, e.target.value)}
+                      className="flex-1 rounded-xl border border-pink-100 bg-white px-3.5 py-1.5 text-xs text-[#4a353d] focus:border-pink-400 focus:outline-none focus:ring-1 focus:ring-pink-400 dark:border-pink-900/40 dark:bg-gray-800 dark:text-white"
+                      placeholder="对应的直链地址..."
+                    />
+                    <button
+                      type="button"
+                      onClick={() => handleRemoveKey(k)}
+                      className="p-2 text-gray-400 hover:text-red-500 hover:bg-red-50 dark:hover:bg-red-950/20 rounded-xl transition-colors shrink-0 cursor-pointer"
+                      title="删除该别名"
+                    >
+                      <Trash2 className="h-4 w-4" />
+                    </button>
+                  </div>
+                ))}
+              </div>
+            ) : (
+              <div className="text-xs text-gray-400 dark:text-gray-500 italic pb-1">暂无任何别名映射记录，请在下方添加</div>
+            )}
+
+            {/* Addition Form */}
+            <div className="flex flex-col sm:flex-row gap-2 border-t border-dashed border-pink-100/50 dark:border-pink-950/20 pt-3">
+              <input
+                type="text"
+                value={newKey}
+                onChange={(e) => setNewKeyInputs(prev => ({ ...prev, [field.key]: e.target.value }))}
+                placeholder="新别名 (如 page)"
+                className="w-full sm:w-1/3 rounded-xl border border-pink-100 bg-white px-3.5 py-1.5 text-xs font-bold text-gray-900 focus:border-pink-400 focus:outline-none focus:ring-1 focus:ring-pink-400 dark:border-pink-900/40 dark:bg-gray-800 dark:text-white font-mono"
+              />
+              <input
+                type="text"
+                value={newVal}
+                onChange={(e) => setNewValueInputs(prev => ({ ...prev, [field.key]: e.target.value }))}
+                placeholder="Markdown 原始文件直链 (https://...)"
+                className="flex-1 rounded-xl border border-pink-100 bg-white px-3.5 py-1.5 text-xs text-gray-900 focus:border-pink-400 focus:outline-none focus:ring-1 focus:ring-pink-400 dark:border-pink-900/40 dark:bg-gray-800 dark:text-white"
+                onKeyDown={(e) => {
+                  if (e.key === 'Enter') {
+                    e.preventDefault();
+                    handleAddPair();
+                  }
+                }}
+              />
+              <button
+                type="button"
+                onClick={handleAddPair}
+                className="flex items-center justify-center space-x-1 px-4 py-1.5 text-xs font-bold rounded-xl bg-pink-500 hover:bg-pink-600 text-white transition-all shadow-xs shrink-0 cursor-pointer"
+              >
+                <Plus className="h-3.5 w-3.5 shrink-0" />
+                <span>添加别名</span>
+              </button>
+            </div>
+          </div>
+        );
+      }
 
       default:
         return (
