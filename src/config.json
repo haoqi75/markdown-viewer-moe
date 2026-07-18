@@ -19,7 +19,7 @@
         "tools": "https://raw.githubusercontent.com/haoqi75/markdown-viewer-moe/refs/heads/main/tools/README.md"
     },
     "tocWelcome": "欢迎来到萌·Markdown",
-    "toolsUrl": "/tools.html",
+    "toolsUrl": "./tools.html",
     "headInject": "",
     "bodyInject": ""
 }

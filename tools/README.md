@@ -1,8 +1,8 @@
 # 🌸 萌·Markdown 配置文件生成器 (Moe JSON Editor) 🌸
 
-[![Version](https://img.shields.io/badge/version-1.4.3-pink.svg)](https://github.com/haoqi75/markdown-viewer-moe)
-[![License](https://img.shields.io/badge/license-MIT-blue.svg)](https://github.com/haoqi75/markdown-viewer-moe)
-[![Platform](https://img.shields.io/badge/platform-Web-emerald.svg)](https://github.com/haoqi75/markdown-viewer-moe)
+[![Version](https://img.shields.io/badge/version-1.4.4-pink.svg?style=for-the-badge)](https://github.com/haoqi75/markdown-viewer-moe)
+[![License](https://img.shields.io/badge/license-MIT-blue.svg?style=for-the-badge)](https://github.com/haoqi75/markdown-viewer-moe)
+[![Platform](https://img.shields.io/badge/platform-Web-emerald.svg?style=for-the-badge)](https://github.com/haoqi75/markdown-viewer-moe)
 
 > **✨ 小白配置文件简易生成编辑器 · 萌化极简版 ✨**
 >
