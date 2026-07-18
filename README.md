@@ -183,15 +183,18 @@ Actions文件在：`.forgejo/workflows/static.yml`
 3. 编辑`src/config.json`，把内容替换成你自己想要的。
 4. 编辑`.forgejo/workflows/static.yml`里面的内容
     ```yaml
-    // 在37行找到并替换一下代码
+    // 在40行找到并替换一下代码，其他不要瞎碰碰
     - name: Deploy to Codeberg Pages
         uses: https://codeberg.org/git-pages/action@v2
         with:
+          # 上传仅dist文件夹的文件
           source: ./dist
+          # 网站域名，有自己的请替换
           site: https://${{ forge.repository_owner }}.codeberg.page/markdown-viewer-moe/
           token: ${{ forge.token }}
     ```
-5. 转到`Actions`，开启它，在左菜单里找到`Build and deploy to Codeberg Pages`。
+5. （可选）若你想要自定义域名，可以访问官方的文档[自定义域名](https://docs.codeberg.org/codeberg-pages/using-custom-domain/)
+6. 转到`Actions`，开启它，在左菜单里找到`Build and deploy to Codeberg Pages`。
     * 手动触发：点击 **Run Workflow**。
     * 自动触发：每当更改任何文件会自动触发。
 
@@ -273,12 +276,29 @@ Actions文件在：`.forgejo/workflows/static.yml`
         "docs": "https://docs.example.com/readme.md"
     },
     "tocWelcome": "欢迎来到萌·Markdown",
-    "toolsUrl": "https://moe520.haoqi75.os.kg/tools.html"
+    "toolsUrl": "./tools.html",
+    "headInject": "",
+    "bodyInject": ""
 }
 ```
 
+**基本内容**：
+
 - **defaultUrl**：当没有匹配别名或 `?md=` 参数时的默认文档地址。
 - **aliases**：键为访问路径（如 `?p=vmdownload`），值为实际的 Markdown 文件 URL。
+
+**高级内容**：
+
+- **title**：标题。
+- **logo**：头部文字。
+- **logoImage**：头部图标。
+- **icon**：网页图标。
+- **footer**：页脚内容（支持Markdown格式）。
+- **mascot**：可爱吉祥物。
+- **tocWelcome**：大纲欢迎词。
+- **toolsUrl**：Tools地址，点击上面的 `[>]` （Json编辑器）打开这个地址。
+- **headInject**：自定义头部。
+- **bodyInject**：自定义内容。
 
 > 访问 `?md=Base64编码的URL` 将覆盖所有配置，优先级最高。
 

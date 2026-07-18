@@ -1,4 +1,5 @@
 name: Build and deploy to Github Pages
+# 注意，GitHub Pages 在设置配置，因此你无需编辑这个文件
 
 on:
   # 对推送至默认分支的操作运行

@@ -1,8 +1,12 @@
 name: Build and deploy to Codeberg Pages
+# 除了第40行，其他不要改。
 
 on:
+  # 对推送至默认分支的操作运行
   push:
     branches: ["main"]
+  
+  # 允许您从“操作”选项卡手动运行此工作流程。
   workflow_dispatch:
 
 # 这个就是Permissions
@@ -10,7 +14,8 @@ enable-openid-connect: true   # 需要推送至 pages 分支
 
 jobs:
   deploy:
-    runs-on: codeberg-small
+    # 由于我们只是进行部署，所以只执行一次部署任务。
+    runs-on: codeberg-small  # 这个就是 ubuntu-latest，small就可以运行了
     name: Build and deploy to Codeberg Pages
     steps:
       - name: Checkout repository
@@ -35,7 +40,10 @@ jobs:
       - name: Deploy to Codeberg Pages
         uses: https://codeberg.org/git-pages/action@v2
         with:
+          # 上传仅dist文件夹的文件
           source: ./dist
+          # 你的域名 或者可以使用 https://${{ forge.repository_owner }}.codeberg.page/markdown-viewer-moe/
           site: https://moe520.haoqi75.cn.mt
+          # 使用 https://${{ forge.repository_owner }}.codeberg.page/markdown-viewer-moe/ 可以去掉这一行
           server: codeberg.page
           token: ${{ forge.token }}
