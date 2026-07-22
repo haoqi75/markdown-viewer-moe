@@ -25,5 +25,8 @@
     "gulp-uglify": "^3.0.2",
     "npm-run-all2": "^9.0.2",
     "uglify-js": "^3.19.3"
-  }
+  },
+  "workspaces": [
+    "tools"
+  ]
 }
