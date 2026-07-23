@@ -26,7 +26,8 @@ const DEFAULTS = {
     tocWelcome: '欢迎来到萌·Markdown',
     toolsUrl: 'https://moe520.haoqi75.os.kg/tools.html',
     headInject: '',
-    bodyInject: ''
+    bodyInject: '',
+    logoSubUseDocTitle: false
 };
 
 function getMimeType(filePath) {

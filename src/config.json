@@ -21,5 +21,6 @@
     "tocWelcome": "欢迎来到萌·Markdown",
     "toolsUrl": "./tools.html",
     "headInject": "",
-    "bodyInject": ""
+    "bodyInject": "",
+    "logoSubUseDocTitle": false
 }

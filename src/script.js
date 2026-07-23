@@ -455,6 +455,13 @@ const Renderer = (function() {
             setupCallouts();
 
             TOC.generate();
+            if (CONFIG.logoSubUseDocTitle) {
+                var firstH1 = contentEl.querySelector('h1');
+                if (firstH1) {
+                    var subEl = document.querySelector('.logo-sub');
+                    if (subEl) subEl.textContent = firstH1.textContent.trim();
+                }
+            }
             interceptAnchors();
             setupImagePreview();
 
