@@ -1,14 +1,14 @@
 {
   "name": "markdown-viewer-moe",
-  "version": "1.10.3",
+  "version": "1.10.4",
   "description": "由AI生成的Moe Markdown查看器",
   "scripts": {
     "build": "run-s build:page build:tools",
     "build:page": "gulp build",
     "build:release": "run-s build:page && node script/release.js",
-    "build:tools": "pnpm --filter moe-json-editor build:html && node script/copy-tools.js",
+    "build:tools": "pnpm run --filter moe-json-editor build:html && node script/copy-tools.js",
     "dev": "gulp",
-    "dev:tools": "pnpm --filter moe-json-editor dev",
+    "dev:tools": "pnpm run --filter moe-json-editor dev",
     "start": "gulp"
   },
   "devDependencies": {
