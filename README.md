@@ -49,6 +49,24 @@
 
 ---
 
+## 📑 目录
+
+- [🌐 在线演示](#在线演示)
+- [📝 简单编辑 config.json 工具](#简单编辑-config-json-工具)
+- [✨ 特色](#特色)
+- [📷 预览](#预览)
+- [🚀 快速开始](#快速开始)
+- [🌐 如何使用](#如何使用)
+- [⚙️ 配置说明](#配置说明)
+- [📂 项目结构](#项目结构)
+- [🛠️ 技术栈](#技术栈)
+- [⭐Star 历史](#Star-历史)
+- [🤝 贡献](#贡献)
+- [📄 License](#license)
+- [💖 致谢](#致谢)
+
+---
+
 ## ✨ 特色
 
 - 🎀 **萌系主题** – 粉紫渐变、毛玻璃效果、浮动装饰、标题小图标
@@ -80,6 +98,12 @@
 | 桌面端 | 移动端 |
 |:------:|:------:|
 | ![桌面预览](images/desktop.png) | ![移动预览](images/mobile.jpg) |
+
+<details>
+  <summary>点击查看项目截图</summary>
+  <img src="images/desktop-old.png" alt="Desktop" style="max-width:600px">
+  <img src="images/mobile-old.jpg" alt="Mobile" style="max-width:600px">
+</details>
 
 ---
 
@@ -115,34 +139,39 @@
 ```
 编辑后保存，可以重命名为`index.html`，打开或上传到服务器。[更多信息](#使用方式)
 
-从 **tools-v1.2.0** 后，若不会编辑也可以使用[简单编辑 config.json 工具](#简单编辑-config.json-工具)来编辑。
+从 **tools-v1.2.0** 后，若不会编辑也可以使用[简单编辑 config.json 工具](#简单编辑-config-json-工具)来编辑。
 
 ---
 
 ### 本地部署
 
 #### 前置要求
+
 - Node.js 24+（避免错误，因为这是我开发的Node.js版本）
 - pnpm 11.x或者更高（跟Node.js一样）
 
 #### 克隆项目
+
 ```bash
 git clone https://github.com/haoqi75/markdown-viewer-moe.git
 cd markdown-viewer-moe
 ```
 
 #### 安装依赖
+
 ```bash
 pnpm install
 ```
 
 #### 开发模式（自动预览 + 热重载）
+
 ```bash
 pnpm dev
 # 请手动打开 http://localhost:8520
 ```
 
 #### 生产构建
+
 ```bash
 # 全部构建
 pnpm run build
@@ -158,6 +187,7 @@ pnpm run build:tools
 ```
 
 #### 构建Release版本
+
 ```bash
 # 构建软件
 pnpm build:release
@@ -213,7 +243,7 @@ Actions文件在：`.forgejo/workflows/static.yml`
 
 ---
 
-## 🌐如何使用
+## 🌐 如何使用
 
 > [!WARNING]
 > 请确保你的Markdown可以被浏览器访问，Markdown纯文本（Raw），并服务器拥有CORS配置正确，否则无法加载。
@@ -319,11 +349,12 @@ Actions文件在：`.forgejo/workflows/static.yml`
 
 若嫌麻烦可以使用UI化的编辑工具：[tools.html](https://moe520.haoqi75.os.kg/tools.html)
 
-具体在[简单编辑 config.json 工具](#简单编辑-config.json-工具)查看。
+具体在[简单编辑 config.json 工具](#简单编辑-config-json-工具)查看。
 
 ---
 
 ## 📂 项目结构
+
 ```tree
 markdown-viewer-moe/
 ├── .forgejo/
@@ -369,9 +400,9 @@ markdown-viewer-moe/
 
 <a href="https://www.star-history.com/?repos=haoqi75%2Fmarkdown-viewer-moe&type=timeline&logscale=&legend=bottom-right">
  <picture>
-   <source media="(prefers-color-scheme: dark)" srcset="https://api.star-history.com/chart?repos=haoqi75/markdown-viewer-moe&type=timeline&theme=dark&logscale&legend=bottom-right&sealed_token=1yzKo7QSVCsRe5S8lM54RkNL96kRXGtZA95pSawrYQtsXjvbgM1hvzBHtXy-RUr0TnjRqhsfZEuKSiqAXLs5-YZIJ8YpuDmUIjbw7aGHorIAnm4CiGj8t2N1QgMHpFETEdGHzs-hcYdy8FHpWXKbi8yJBas9G03-Giu9kSbPYUfi5vCd-uzeDCjW2Q3f" />
-   <source media="(prefers-color-scheme: light)" srcset="https://api.star-history.com/chart?repos=haoqi75/markdown-viewer-moe&type=timeline&logscale&legend=bottom-right&sealed_token=1yzKo7QSVCsRe5S8lM54RkNL96kRXGtZA95pSawrYQtsXjvbgM1hvzBHtXy-RUr0TnjRqhsfZEuKSiqAXLs5-YZIJ8YpuDmUIjbw7aGHorIAnm4CiGj8t2N1QgMHpFETEdGHzs-hcYdy8FHpWXKbi8yJBas9G03-Giu9kSbPYUfi5vCd-uzeDCjW2Q3f" />
-   <img alt="Star History Chart" src="https://api.star-history.com/chart?repos=haoqi75/markdown-viewer-moe&type=timeline&logscale&legend=bottom-right&sealed_token=1yzKo7QSVCsRe5S8lM54RkNL96kRXGtZA95pSawrYQtsXjvbgM1hvzBHtXy-RUr0TnjRqhsfZEuKSiqAXLs5-YZIJ8YpuDmUIjbw7aGHorIAnm4CiGj8t2N1QgMHpFETEdGHzs-hcYdy8FHpWXKbi8yJBas9G03-Giu9kSbPYUfi5vCd-uzeDCjW2Q3f" />
+   <source media="(prefers-color-scheme: dark)" srcset="https://api.star-history.com/chart?repos=haoqi75/markdown-viewer-moe&type=timeline&theme=dark&logscale&legend=bottom-right&sealed_token=3X3PCxJH5Y_CftorWNMDLyeY7hmF3x_EOZ1MNxiydzdoAcWZiRFDykUDeFRn3EQuvZJkJargBZSEtYm72dWJJ3WESDivZ5SnD4FOqV6rKel42lPDC9ztQA" />
+   <source media="(prefers-color-scheme: light)" srcset="https://api.star-history.com/chart?repos=haoqi75/markdown-viewer-moe&type=timeline&logscale&legend=bottom-right&sealed_token=3X3PCxJH5Y_CftorWNMDLyeY7hmF3x_EOZ1MNxiydzdoAcWZiRFDykUDeFRn3EQuvZJkJargBZSEtYm72dWJJ3WESDivZ5SnD4FOqV6rKel42lPDC9ztQA" />
+   <img alt="Star History Chart" src="https://api.star-history.com/chart?repos=haoqi75/markdown-viewer-moe&type=timeline&logscale&legend=bottom-right&sealed_token=3X3PCxJH5Y_CftorWNMDLyeY7hmF3x_EOZ1MNxiydzdoAcWZiRFDykUDeFRn3EQuvZJkJargBZSEtYm72dWJJ3WESDivZ5SnD4FOqV6rKel42lPDC9ztQA" />
  </picture>
 </a>
 
@@ -389,9 +420,11 @@ markdown-viewer-moe/
 ---
 
 ## 📄 License
+
 MIT © [ApHeQua758](https://github.com/haoqi75)
 
 ---
 
 ## 💖 致谢
+
 本项目由 [AI](https://github.com/) 辅助生成，融合了人类审美与机器效率，愿为您的 Markdown 阅读带来一丝惬意。
