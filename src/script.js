@@ -374,6 +374,19 @@ const Renderer = (function() {
 
     async function load() {
         var url = resolveUrl();
+        if (CONFIG.logoSubUseDocTitle) {
+            try {
+                var pathname = new URL(url).pathname;
+                var segments = pathname.replace(/\/+$/, '').split('/');
+                var filename = segments[segments.length - 1] || '';
+                if (filename) {
+                    var dotIdx = filename.lastIndexOf('.');
+                    if (dotIdx > 0) filename = filename.substring(0, dotIdx);
+                    var subEl = document.querySelector('.logo-sub');
+                    if (subEl && filename) subEl.textContent = filename;
+                }
+            } catch(e) {}
+        }
 
         if (url === '__ALIAS_NOT_FOUND__') {
             var aliasNotFound = new URLSearchParams(window.location.search).get('p');
@@ -455,13 +468,6 @@ const Renderer = (function() {
             setupCallouts();
 
             TOC.generate();
-            if (CONFIG.logoSubUseDocTitle) {
-                var firstH1 = contentEl.querySelector('h1');
-                if (firstH1) {
-                    var subEl = document.querySelector('.logo-sub');
-                    if (subEl) subEl.textContent = firstH1.textContent.trim();
-                }
-            }
             interceptAnchors();
             setupImagePreview();
 
