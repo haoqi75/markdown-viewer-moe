@@ -140,19 +140,28 @@ pnpm dev
 
 #### 生产构建
 ```bash
+# 全部构建
+pnpm run build
+# 代码会生成到 dist 文件夹喔~
+
 # 构建软件
-pnpm build
+pnpm run build:page
 # 代码会生成到 dist/index.html 喔~
 
 # 构建Tools
-pnpm build:tools
+pnpm run build:tools
 # 代码会生成到 dist/tools.html 喔~
 ```
 
 #### 构建Release版本
 ```bash
+# 构建软件
 pnpm build:release
 # 代码会生成到 dist/index.release.html 喔~
+
+# 构建Tools
+pnpm run build:tools --release
+# 代码会生成到 dist/tools-vX.X.X.html 喔~
 ```
 
 ---
