@@ -4,7 +4,7 @@
   <img src="../images/icon.png" alt="Moe Markdown Viewer 图标" width="128">
 </p>
 
-[![Version](https://img.shields.io/badge/version-1.5.0-pink.svg?style=for-the-badge)](https://github.com/haoqi75/markdown-viewer-moe)
+[![Version](https://img.shields.io/badge/version-1.6.0-pink.svg?style=for-the-badge)](https://github.com/haoqi75/markdown-viewer-moe)
 [![License](https://img.shields.io/badge/license-MIT-blue.svg?style=for-the-badge)](https://github.com/haoqi75/markdown-viewer-moe)
 [![Platform](https://img.shields.io/badge/platform-Web-emerald.svg?style=for-the-badge)](https://github.com/haoqi75/markdown-viewer-moe)
 

@@ -20,15 +20,17 @@ export const templates: ConfigTemplate[] = [
       },
       footer: "[萌·Markdown](https://github.com/haoqi75/markdown-viewer-moe) | 由 ApHeQua758 与 AI 创建",
       mascot: "img/mascot.png",
-      defaultUrl: "https://your-default-api.com/raw/index.md",
+      defaultUrl: "https://raw.githubusercontent.com/haoqi75/markdown-viewer-moe/refs/heads/main/README.md",
       aliases: {
-        test: "https://another-api.com/raw/rypa",
-        docs: "https://docs.example.com/readme.md"
+        page: "https://cp.qtdt.qzz.io/api/raw/index",
+        agents: "https://raw.githubusercontent.com/haoqi75/markdown-viewer-moe/refs/heads/main/AGENTS.md",
+        tools: "https://raw.githubusercontent.com/haoqi75/markdown-viewer-moe/refs/heads/main/tools/README.md"
       },
       tocWelcome: "欢迎来到萌·Markdown",
       toolsUrl: "./tools.html",
       headInject: "",
-      bodyInject: ""
+      bodyInject: "",
+      logoSubUseDocTitle: true
     },
     schema: [
       {
@@ -48,6 +50,7 @@ export const templates: ConfigTemplate[] = [
         fields: [
           { key: 'logo.text', label: 'Logo 主标题文本', type: 'string', description: '导航栏显示的主标题（支持 emoji）' },
           { key: 'logo.sub', label: 'Logo 副标题文本', type: 'string', description: 'Logo 旁边的迷你萌系副标题' },
+          { key: 'logoSubUseDocTitle', label: '副标题自动跟随文档标题 (logoSubUseDocTitle)', type: 'boolean', description: '开启后 Logo 副标题将自动跟随并替换为当前正在浏览的 Markdown 文档标题' },
           { key: 'logoImage', label: 'Logo 图像路径', type: 'string', description: '网站 Logo 图片的路径或网络链接' },
           { key: 'icon.svg', label: 'SVG 图标路径', type: 'string', description: '现代化浏览器适用的 SVG 格式 favicon 图标' },
           { key: 'icon.ico', label: 'ICO 图标路径', type: 'string', description: '传统浏览器专用的 favicon.ico 文件路径' },

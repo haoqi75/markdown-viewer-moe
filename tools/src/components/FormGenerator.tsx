@@ -488,6 +488,22 @@ export const FormGenerator: React.FC<FormGeneratorProps> = ({ config, schema, on
           handleFieldChange(field.key, updatedDict);
         };
 
+        const handleRenameKey = (oldKey: string, newKeyName: string) => {
+          if (oldKey === newKeyName) return;
+          if (newKeyName !== '' && Object.prototype.hasOwnProperty.call(dictionary, newKeyName) && newKeyName !== oldKey) {
+            return;
+          }
+          const updatedDict: Record<string, any> = {};
+          for (const [k, v] of Object.entries(dictionary)) {
+            if (k === oldKey) {
+              updatedDict[newKeyName] = v;
+            } else {
+              updatedDict[k] = v;
+            }
+          }
+          handleFieldChange(field.key, updatedDict);
+        };
+
         const handleUpdateValue = (k: string, v: string) => {
           const updatedDict = {
             ...dictionary,
@@ -500,16 +516,25 @@ export const FormGenerator: React.FC<FormGeneratorProps> = ({ config, schema, on
           <div className="space-y-3 p-4 rounded-2xl border border-pink-100/60 dark:border-pink-900/20 bg-pink-50/10 dark:bg-transparent">
             {entries.length > 0 ? (
               <div className="space-y-2.5 max-h-60 overflow-y-auto pr-1">
-                {entries.map(([k, v]) => (
-                  <div key={k} className="flex items-center gap-2">
-                    <span className="w-1/4 px-3 py-1.5 text-xs font-mono font-bold bg-pink-100/40 dark:bg-pink-950/40 text-pink-700 dark:text-pink-300 rounded-xl truncate" title={k}>
-                      {k}
-                    </span>
+                <div className="flex text-3xs font-bold text-gray-400 dark:text-gray-500 px-1 mb-1 justify-between">
+                  <span>✏️ 别名 Key (可直接修改)</span>
+                  <span className="pr-12">🔗 Markdown 原始直链</span>
+                </div>
+                {entries.map(([k, v], idx) => (
+                  <div key={`${field.key}_${idx}`} className="flex items-center gap-2">
+                    <input
+                      type="text"
+                      value={k}
+                      onChange={(e) => handleRenameKey(k, e.target.value)}
+                      className="w-1/3 sm:w-1/4 rounded-xl border border-pink-200/80 bg-pink-100/30 px-3 py-1.5 text-xs font-mono font-bold text-pink-700 focus:border-pink-500 focus:bg-white focus:outline-hidden focus:ring-1 focus:ring-pink-400 dark:border-pink-900/50 dark:bg-pink-950/40 dark:text-pink-300 dark:focus:bg-gray-800 shrink-0"
+                      placeholder="别名 Key"
+                      title="可以直接编辑修改别名 Key"
+                    />
                     <input
                       type="text"
                       value={String(v)}
                       onChange={(e) => handleUpdateValue(k, e.target.value)}
-                      className="flex-1 rounded-xl border border-pink-100 bg-white px-3.5 py-1.5 text-xs text-[#4a353d] focus:border-pink-400 focus:outline-none focus:ring-1 focus:ring-pink-400 dark:border-pink-900/40 dark:bg-gray-800 dark:text-white"
+                      className="flex-1 rounded-xl border border-pink-100 bg-white px-3.5 py-1.5 text-xs text-[#4a353d] focus:border-pink-400 focus:outline-hidden focus:ring-1 focus:ring-pink-400 dark:border-pink-900/40 dark:bg-gray-800 dark:text-white font-mono"
                       placeholder="对应的直链地址..."
                     />
                     <button

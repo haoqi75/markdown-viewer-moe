@@ -105,7 +105,7 @@ const DEFAULT_RELEASE_HTML = `<!DOCTYPE html>
 </body>
 </html>`;
 
-const APP_VERSION = "__APP_VERSION__".startsWith("__") ? "1.4.3" : "__APP_VERSION__";
+const APP_VERSION = "__APP_VERSION__".startsWith("__") ? "1.6.0" : "__APP_VERSION__";
 
 export default function App() {
   const [config, setConfig] = useState<Record<string, any>>(templates[0].config);
@@ -402,14 +402,14 @@ export default function App() {
       const blob = new Blob([updatedHtml], { type: 'text/html;charset=utf-8' });
       const downloadAnchor = document.createElement('a');
       downloadAnchor.setAttribute("href", URL.createObjectURL(blob));
-      downloadAnchor.setAttribute("download", uploadedHtmlName || "index.release.html");
+      downloadAnchor.setAttribute("download", "index.edited.html");
       document.body.appendChild(downloadAnchor);
       downloadAnchor.click();
       downloadAnchor.remove();
       
-      const fileName = uploadedHtmlName || "index.release.html";
+      const fileName = "index.edited.html";
       showToast(`打包完成，${fileName} 下载已开始！`, 'success');
-      setMascotMessage(`太棒啦！新的配置已经成功打包写入「${fileName}」，下载已开始，快去部署上线看看吧！🚀`);
+      setMascotMessage(`太棒啦！新的配置已经成功打包写入「${fileName}」，下载已开始，快去部署上线或替换文件吧！🚀`);
       setMascotExpression('excited');
     } catch (err: any) {
       showToast(`打包导出 HTML 失败: ${err.message}`, 'error');
@@ -1327,7 +1327,7 @@ export default function App() {
                   }`}
                 >
                   <Download className="h-4 w-4 shrink-0" />
-                  <span>打包并下载 index.release.html</span>
+                  <span>打包并下载 index.edited.html</span>
                 </button>
               </div>
             </div>
