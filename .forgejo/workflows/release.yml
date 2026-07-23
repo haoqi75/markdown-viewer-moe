@@ -143,6 +143,7 @@ jobs:
           title: "${{ steps.get_tag.outputs.tag_name }}${{ github.event.inputs.changes_name && format(' {0}', github.event.inputs.changes_name) || '' }}"
           release-notes: ${{ steps.body.outputs.body }}
           draft: false
+          overwrite: true
           prerelease: false
           release-dir: ./release-assets
 

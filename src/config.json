@@ -22,5 +22,5 @@
     "toolsUrl": "./tools.html",
     "headInject": "",
     "bodyInject": "",
-    "logoSubUseDocTitle": false
+    "logoSubUseDocTitle": true
 }
