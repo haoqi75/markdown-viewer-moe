@@ -65,6 +65,10 @@
 - ⚙️ **灵活配置** – `config.json` 轻松设置默认文档和别名映射
 - 🔧 **开发友好** – 使用 Gulp 构建，支持 `pnpm dev` 实时预览 + 热重载
 - 📦 **单文件交付** – 构建后生成 `dist/index.html`，所有资源内联，部署简单
+- 🏷️ **版本号页脚** – 页脚自动显示版本号和 Git 提交 hash，方便追踪部署版本
+- 📱 **移动端主题色** – 自动适配浏览器顶部主题色为萌粉色
+- 🔗 **专属链接生成** – Tools 内置 Base64 链接生成器，支持多线路网关一键合成
+- 🧩 **自定义注入** – 通过 `config.json` 的 `headInject`/`bodyInject` 自由注入 HTML
 - 💻 **代码高亮** – 集成 Prism.js，代码块美观易读
 - 🦊 **萌系吉祥物** – 可配置透明背景的右下角角色，为页面增添活力
 - 📝 **自定义页脚** – 支持 Markdown 的页脚内容，轻松添加版权或链接
@@ -287,7 +291,8 @@ Actions文件在：`.forgejo/workflows/static.yml`
     "tocWelcome": "欢迎来到萌·Markdown",
     "toolsUrl": "./tools.html",
     "headInject": "",
-    "bodyInject": ""
+    "bodyInject": "",
+    "logoSubUseDocTitle": true
 }
 ```
 
@@ -306,8 +311,9 @@ Actions文件在：`.forgejo/workflows/static.yml`
 - **mascot**：可爱吉祥物。
 - **tocWelcome**：大纲欢迎词。
 - **toolsUrl**：Tools地址，点击上面的 `[>]` （Json编辑器）打开这个地址。
-- **headInject**：自定义头部。
-- **bodyInject**：自定义内容。
+- **headInject**：在 `</head>` 之前注入的自定义 HTML（分析代码、meta 标签等）。
+- **bodyInject**：在 `</body>` 之前注入的自定义 HTML（脚本、样式等）。
+- **logoSubUseDocTitle**：开启后（默认 true），Logo 副标题自动显示当前文档的 URL 文件名（如 `readme`）。关闭则使用 `logo.sub` 固定文本。
 
 > 访问 `?md=Base64编码的URL` 将覆盖所有配置，优先级最高。
 
@@ -350,11 +356,12 @@ markdown-viewer-moe/
 ---
 
 ## 🛠️ 技术栈
-- [marked](https://marked.js.org/) – Markdown 解析
-- [Prism.js](https://prismjs.com/) – 代码高亮
-- [Gulp](https://gulpjs.com/) – 构建工具（内联、压缩）
-- [http-server](https://github.com/http-party/http-server) – 开发服务器
-- [pnpm](https://pnpm.io/) – 包管理
+- **[marked](https://marked.js.org/)** – Markdown 解析
+- **[Prism.js](https://prismjs.com/)** – 代码高亮
+- **[Gulp](https://gulpjs.com/)** – 构建工具（内联、压缩）
+- **[browser-sync](https://browsersync.io/)** – 开发服务器（热重载）
+- **[pnpm](https://pnpm.io/)** – 包管理
+- **[npm-run-all2](https://github.com/mysticatea/npm-run-all)** – 编排构建任务
 
 ---
 
