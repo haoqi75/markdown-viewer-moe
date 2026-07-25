@@ -30,7 +30,8 @@ export const templates: ConfigTemplate[] = [
       toolsUrl: "./tools.html",
       headInject: "",
       bodyInject: "",
-      logoSubUseDocTitle: true
+      logoSubUseDocTitle: true,
+      theme: "pink"
     },
     schema: [
       {
@@ -39,6 +40,20 @@ export const templates: ConfigTemplate[] = [
         icon: 'Sliders',
         fields: [
           { key: 'title', label: '页面标题 (title)', type: 'string', description: '浏览器标签页显示的文字标题' },
+          { 
+            key: 'theme', 
+            label: '主题配色 (theme)', 
+            type: 'select', 
+            options: [
+              { label: '🌸 pink - 粉色（默认）', value: 'pink' },
+              { label: '💧 blue - 浅蓝', value: 'blue' },
+              { label: '🌿 green - 绿色', value: 'green' },
+              { label: '🍇 purple - 紫色', value: 'purple' },
+              { label: '🤍 white - 淡花白', value: 'white' },
+              { label: '🌻 yellow - 黄色', value: 'yellow' }
+            ],
+            description: '预览器的默认主题配色方案：pink (粉色默认)、blue (浅蓝)、green (绿色)、purple (紫色)、white (淡花白)、yellow (黄色)' 
+          },
           { key: 'tocWelcome', label: '目录欢迎词 (tocWelcome)', type: 'string', description: '侧边栏目录最上方显示的欢迎文本' },
           { key: 'footer', label: '页脚版权声明 (footer)', type: 'textarea', description: '支持 Markdown 链接格式的页脚版权声明，例如: [名称](链接) | 额外信息' }
         ]
@@ -92,11 +107,13 @@ export const templates: ConfigTemplate[] = [
     description: '标准、极简的 Markdown 预览发布配置，包含默认加载的 Markdown 文件地址与路由别名定义。',
     icon: 'Globe',
     config: {
-      defaultUrl: "https://your-default-api.com/raw/index.md",
+      defaultUrl: "https://raw.githubusercontent.com/haoqi75/markdown-viewer-moe/refs/heads/main/README.md",
       aliases: {
-        test: "https://another-api.com/raw/rypa",
-        docs: "https://docs.example.com/readme.md"
-      }
+        page: "https://cp.qtdt.qzz.io/api/raw/index",
+        agents: "https://raw.githubusercontent.com/haoqi75/markdown-viewer-moe/refs/heads/main/AGENTS.md",
+        tools: "https://raw.githubusercontent.com/haoqi75/markdown-viewer-moe/refs/heads/main/tools/README.md"
+      },
+      theme: "pink"
     },
     schema: [
       {
@@ -105,6 +122,20 @@ export const templates: ConfigTemplate[] = [
         icon: 'Sliders',
         fields: [
           { key: 'defaultUrl', label: '默认 Markdown 地址 (defaultUrl)', type: 'string', description: '预览器默认加载的 Markdown 原始文件链接' },
+          { 
+            key: 'theme', 
+            label: '主题配色 (theme)', 
+            type: 'select', 
+            options: [
+              { label: '🌸 pink - 粉色（默认）', value: 'pink' },
+              { label: '💧 blue - 浅蓝', value: 'blue' },
+              { label: '🌿 green - 绿色', value: 'green' },
+              { label: '🍇 purple - 紫色', value: 'purple' },
+              { label: '🤍 white - 淡花白', value: 'white' },
+              { label: '🌻 yellow - 黄色', value: 'yellow' }
+            ],
+            description: '预览器的默认主题配色方案：pink (粉色默认)、blue (浅蓝)、green (绿色)、purple (紫色)、white (淡花白)、yellow (黄色)' 
+          },
           { key: 'aliases', label: '别名映射表 (aliases)', type: 'object', description: '定义特定别名路由对应的 Markdown 直链。例如：添加别名 test，即可通过 /#test 或 ?id=test 快速访问！' }
         ]
       }

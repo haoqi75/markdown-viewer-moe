@@ -244,21 +244,80 @@ export const FormGenerator: React.FC<FormGeneratorProps> = ({ config, schema, on
           </div>
         );
 
-      case 'select':
+      case 'select': {
+        const defaultVal = typeof field.options?.[0] === 'object' ? field.options[0].value : field.options?.[0];
+        const currentValue = value !== undefined && value !== null && value !== '' ? value : (defaultVal || '');
+
         return (
-          <select
-            id={`select-${field.key}`}
-            value={value || ''}
-            onChange={(e) => handleFieldChange(field.key, e.target.value)}
-            className="w-full max-w-xs rounded-xl border border-pink-100 bg-white px-3.5 py-2 text-sm font-semibold text-gray-900 focus:border-pink-400 focus:outline-none focus:ring-1 focus:ring-pink-400 dark:border-pink-900/40 dark:bg-gray-800 dark:text-white"
-          >
-            {field.options?.map((opt) => (
-              <option key={opt} value={opt}>
-                {opt}
-              </option>
-            ))}
-          </select>
+          <div className="space-y-3">
+            {/* Mobile-friendly Theme Color Swatches when editing 'theme' */}
+            {field.key === 'theme' && (
+              <div className="grid grid-cols-2 sm:grid-cols-3 gap-2.5 mb-2">
+                {field.options?.map((opt) => {
+                  const val = typeof opt === 'object' ? opt.value : opt;
+                  const lbl = typeof opt === 'object' ? opt.label : opt;
+                  const isSelected = currentValue === val;
+
+                  const getThemeStyle = (tVal: string) => {
+                    switch (tVal) {
+                      case 'pink':
+                        return { bg: 'bg-pink-500 text-white', ring: 'ring-2 ring-pink-500 ring-offset-2', badge: '🌸' };
+                      case 'blue':
+                        return { bg: 'bg-blue-500 text-white', ring: 'ring-2 ring-blue-500 ring-offset-2', badge: '💧' };
+                      case 'green':
+                        return { bg: 'bg-emerald-500 text-white', ring: 'ring-2 ring-emerald-500 ring-offset-2', badge: '🌿' };
+                      case 'purple':
+                        return { bg: 'bg-purple-500 text-white', ring: 'ring-2 ring-purple-500 ring-offset-2', badge: '🍇' };
+                      case 'white':
+                        return { bg: 'bg-slate-100 dark:bg-slate-700 text-slate-800 dark:text-slate-100 border border-slate-300 dark:border-slate-600', ring: 'ring-2 ring-slate-400 ring-offset-2', badge: '🤍' };
+                      case 'yellow':
+                        return { bg: 'bg-amber-400 text-amber-950', ring: 'ring-2 ring-amber-400 ring-offset-2', badge: '🌻' };
+                      default:
+                        return { bg: 'bg-gray-500 text-white', ring: 'ring-2 ring-gray-400 ring-offset-2', badge: '🎨' };
+                    }
+                  };
+
+                  const style = getThemeStyle(val);
+
+                  return (
+                    <button
+                      key={val}
+                      type="button"
+                      onClick={() => handleFieldChange(field.key, val)}
+                      className={`flex items-center space-x-2 px-3 py-2.5 rounded-xl text-xs font-bold transition-all cursor-pointer shadow-xs active:scale-95 touch-manipulation text-left ${style.bg} ${
+                        isSelected ? `${style.ring} scale-[1.02] shadow-md font-extrabold` : 'opacity-70 hover:opacity-100'
+                      }`}
+                    >
+                      <span className="text-base leading-none">{style.badge}</span>
+                      <span className="truncate flex-1">{lbl.includes(' - ') ? lbl.split(' - ')[1] : lbl}</span>
+                      {isSelected && <span className="ml-auto text-xs font-black">✓</span>}
+                    </button>
+                  );
+                })}
+              </div>
+            )}
+
+            {/* Standard Dropdown Select */}
+            <select
+              id={`select-${field.key}`}
+              value={currentValue}
+              onChange={(e) => handleFieldChange(field.key, e.target.value)}
+              className="w-full max-w-xs rounded-xl border border-pink-100 bg-white px-3.5 py-2.5 text-sm font-semibold text-gray-900 focus:border-pink-400 focus:outline-hidden focus:ring-1 focus:ring-pink-400 dark:border-pink-900/40 dark:bg-gray-800 dark:text-white cursor-pointer touch-manipulation appearance-none"
+              style={{ WebkitAppearance: 'menulist' }}
+            >
+              {field.options?.map((opt) => {
+                const val = typeof opt === 'object' ? opt.value : opt;
+                const lbl = typeof opt === 'object' ? opt.label : opt;
+                return (
+                  <option key={val} value={val} className="bg-white text-gray-900 dark:bg-gray-800 dark:text-white font-sans py-1">
+                    {lbl}
+                  </option>
+                );
+              })}
+            </select>
+          </div>
         );
+      }
 
       case 'textarea':
         return (

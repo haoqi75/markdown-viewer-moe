@@ -3,7 +3,7 @@ export interface ConfigFieldMetadata {
   label: string;
   type: 'string' | 'number' | 'boolean' | 'color' | 'select' | 'array_string' | 'array_object' | 'object' | 'textarea';
   description?: string;
-  options?: string[]; // for select types
+  options?: (string | { label: string; value: string })[]; // for select types
   placeholder?: string;
   min?: number;
   max?: number;

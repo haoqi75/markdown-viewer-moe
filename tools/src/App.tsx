@@ -1,4 +1,4 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { templates } from './templates';
 import { ConfigTemplate, ValidationResult } from './types';
 import { FormGenerator } from './components/FormGenerator';
@@ -58,7 +58,11 @@ const DEFAULT_RELEASE_HTML = `<!DOCTYPE html>
 <html lang="zh-CN">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <meta name="theme-color" content="#f472b6">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
   <title>Markdown 预览发布版</title>
   <script id="release-config" type="application/json">
 {
@@ -105,7 +109,7 @@ const DEFAULT_RELEASE_HTML = `<!DOCTYPE html>
 </body>
 </html>`;
 
-const APP_VERSION = "__APP_VERSION__".startsWith("__") ? "1.6.0" : "__APP_VERSION__";
+const APP_VERSION = "__APP_VERSION__".startsWith("__") ? "1.6.1" : "__APP_VERSION__";
 
 export default function App() {
   const [config, setConfig] = useState<Record<string, any>>(templates[0].config);
@@ -115,6 +119,50 @@ export default function App() {
   const [isDarkMode, setIsDarkMode] = useState<boolean>(false);
   const [toast, setToast] = useState<{ message: string; type: 'success' | 'error' | 'info' } | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
+
+  // Dynamic sync for Dark Mode & theme-color meta tag for mobile browsers (iOS Safari, Chrome Android, WeChat)
+  useEffect(() => {
+    if (isDarkMode) {
+      document.documentElement.classList.add('dark');
+    } else {
+      document.documentElement.classList.remove('dark');
+    }
+
+    const getThemeColor = () => {
+      if (isDarkMode) return '#12070e';
+      const themeVal = config?.theme;
+      switch (themeVal) {
+        case 'blue':
+          return '#38bdf8';
+        case 'green':
+          return '#34d399';
+        case 'purple':
+          return '#c084fc';
+        case 'white':
+          return '#94a3b8';
+        case 'yellow':
+          return '#facc15';
+        case 'pink':
+        default:
+          return '#f472b6';
+      }
+    };
+
+    const themeColor = getThemeColor();
+
+    // 1. Sync document root and body background color for Chrome Android status bar color sampling
+    document.documentElement.style.backgroundColor = themeColor;
+    document.body.style.backgroundColor = themeColor;
+
+    // 2. Chrome Android requires removing old meta tag and appending a fresh <meta name="theme-color"> element to trigger repaint
+    const existingMetas = document.querySelectorAll('meta[name="theme-color"]');
+    existingMetas.forEach((m) => m.remove());
+
+    const meta = document.createElement('meta');
+    meta.name = 'theme-color';
+    meta.content = themeColor;
+    document.head.appendChild(meta);
+  }, [isDarkMode, config?.theme]);
 
   // HTML file upload state
   const [uploadedHtmlContent, setUploadedHtmlContent] = useState<string | null>(null);

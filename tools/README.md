@@ -4,7 +4,7 @@
   <img src="../images/icon.png" alt="Moe Markdown Viewer 图标" width="128">
 </p>
 
-[![Version](https://img.shields.io/badge/version-1.6.0-pink.svg?style=for-the-badge)](https://github.com/haoqi75/markdown-viewer-moe)
+[![Version](https://img.shields.io/badge/version-1.6.1-pink.svg?style=for-the-badge)](https://github.com/haoqi75/markdown-viewer-moe)
 [![License](https://img.shields.io/badge/license-MIT-blue.svg?style=for-the-badge)](https://github.com/haoqi75/markdown-viewer-moe)
 [![Platform](https://img.shields.io/badge/platform-Web-emerald.svg?style=for-the-badge)](https://github.com/haoqi75/markdown-viewer-moe)
 
@@ -34,8 +34,8 @@
 ### 2. 📦 `index.release.html` 预发布端配置工具
 专为独立、可部署的 Markdown 预览单网页提供配置热更新：
 * **读取与提取**: 点击上传你本地已有的 `index.release.html`，系统会自动搜寻并安全读取 HTML 内嵌 `<script id="release-config" type="application/json">` 标记中的配置。
-* **配置打包机制 (v1.3.1+ 限制)**: 允许在右侧修改、调整配置 JSON。修改后只需点击一键打包，更新后的配置会**精准写回**模板，并让你下载全新的、即刻可部署上线的 `index.release.html`！
-* *注：为确保数据安全，你必须先上传一次已有 HTML 模板作为模板框架，才可以执行下载。仅上传 `config.json` 时将显示温馨提示并禁用下载。*
+* **配置打包机制 (v1.6.0)**: 允许在界面上修改、调整配置 JSON（支持自由添加与编辑 Alias 别名 Key/Value 键值对）。修改后只需点击一键打包，更新后的配置会**精准写回**模板，并可下载为 `index.edited.html`（方便区分源模板文件 `index.release.html`）！
+* *注：为确保数据安全，你必须先上传一次已有 HTML 模板作为框架，才可以执行下载。仅上传 `config.json` 时将显示温馨提示并禁用下载。*
 
 ### 3. 🔐 Base64 ＆ Markdown 专属链接生成助手 (v1.4.3 新增)
 专为 Markdown 订阅或配置场景设计的链式转换与加解密中心，包含两个大模式：
