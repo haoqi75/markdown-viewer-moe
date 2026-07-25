@@ -32,7 +32,8 @@ try { config = JSON.parse(match[1]); } catch (e) {
 
 var releaseConfig = {
     defaultUrl: config.defaultUrl || '',
-    aliases: config.aliases || {}
+    aliases: config.aliases || {},
+    theme: config.theme || 'pink'
 };
 
 // ====== 强制 toolsUrl 为远程地址（release 版固定）======
@@ -41,8 +42,8 @@ html = html.replace(/"toolsUrl"\s*:\s*"[^"]*"/, '"toolsUrl":"https://moe520.haoq
 var block =
     '\n<!--' +
     '\n  ╔══════════════════════════════════════════════╗' +
-    '\n  ║  RELEASE CONFIG — 编辑 defaultUrl 和 aliases  ║' +
-    '\n  ║  修改下方 JSON 后保存，直接部署即可            ║' +
+    '\n  ║  RELEASE CONFIG — 编辑 defaultUrl/aliases/theme ║' +
+    '\n  ║  修改下方 JSON 后保存，直接部署即可               ║' +
     '\n  ╚══════════════════════════════════════════════╝' +
     '\n-->' +
     '\n<script id="release-config" type="application/json">' +

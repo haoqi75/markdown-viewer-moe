@@ -15,6 +15,7 @@ const CONFIG = (function() {
                 if (!cfg.aliases || typeof cfg.aliases !== 'object') cfg.aliases = {};
                 Object.assign(cfg.aliases, rel.aliases);
             }
+            if (rel.theme) cfg.theme = rel.theme;
         } catch(e) { console.warn('⚠️ release-config JSON 解析失败:', e); }
     }
     return cfg;
