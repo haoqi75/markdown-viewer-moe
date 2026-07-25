@@ -612,6 +612,15 @@ window.addEventListener('hashchange', function() {
 // 初始化
 // ============================================================
 document.addEventListener('DOMContentLoaded', function() {
+    if (CONFIG.theme) {
+        document.documentElement.setAttribute('data-theme', CONFIG.theme);
+        var themeColors = {
+            pink: '#ff6b9d', blue: '#3b82f6', green: '#22c55e',
+            purple: '#9333ea', white: '#d4a5a5', yellow: '#d97706'
+        };
+        var mc = document.querySelector('meta[name="theme-color"]');
+        if (mc && themeColors[CONFIG.theme]) mc.setAttribute('content', themeColors[CONFIG.theme]);
+    }
     TOC.init();
 
     var logoEl = document.querySelector('.logo');

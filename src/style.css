@@ -26,6 +26,85 @@
     --moe-font: 'ZCOOL KuaiLe', 'PingFang SC', 'Microsoft YaHei', system-ui, -apple-system, sans-serif;
     --moe-transition: 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
 }
+
+/* ============================================================
+   颜色主题（data-theme 属性覆盖 :root 色板变量）
+   ============================================================ */
+:root, html[data-theme="pink"] {
+    --moe-pink: #ff6b9d;
+    --moe-pink-light: #ffb3d1;
+    --moe-pink-dark: #e0557a;
+    --moe-purple: #a855f7;
+    --moe-purple-light: #d8b4fe;
+    --moe-blue: #60a5fa;
+    --moe-blue-light: #93c5fd;
+    --moe-bg: #fdf6f9;
+    --moe-card: rgba(255, 248, 250, 0.92);
+    --moe-shadow: 0 12px 48px rgba(255, 107, 157, 0.18);
+}
+html[data-theme="blue"] {
+    --moe-pink: #60a5fa;
+    --moe-pink-light: #93c5fd;
+    --moe-pink-dark: #3b82f6;
+    --moe-purple: #818cf8;
+    --moe-purple-light: #a5b4fc;
+    --moe-blue: #60a5fa;
+    --moe-blue-light: #93c5fd;
+    --moe-bg: #f4f8ff;
+    --moe-card: rgba(240, 245, 255, 0.92);
+    --moe-shadow: 0 12px 48px rgba(96, 165, 250, 0.18);
+}
+html[data-theme="green"] {
+    --moe-pink: #4ade80;
+    --moe-pink-light: #86efac;
+    --moe-pink-dark: #22c55e;
+    --moe-purple: #34d399;
+    --moe-purple-light: #6ee7b7;
+    --moe-blue: #60a5fa;
+    --moe-blue-light: #93c5fd;
+    --moe-bg: #f4fdf7;
+    --moe-card: rgba(240, 253, 245, 0.92);
+    --moe-shadow: 0 12px 48px rgba(74, 222, 128, 0.18);
+}
+html[data-theme="purple"] {
+    --moe-pink: #a855f7;
+    --moe-pink-light: #c084fc;
+    --moe-pink-dark: #9333ea;
+    --moe-purple: #c084fc;
+    --moe-purple-light: #d8b4fe;
+    --moe-blue: #818cf8;
+    --moe-blue-light: #a5b4fc;
+    --moe-bg: #faf5ff;
+    --moe-card: rgba(250, 245, 255, 0.92);
+    --moe-shadow: 0 12px 48px rgba(168, 85, 247, 0.18);
+}
+html[data-theme="white"] {
+    --moe-pink: #d4a5a5;
+    --moe-pink-light: #e8d0d0;
+    --moe-pink-dark: #c08a8a;
+    --moe-purple: #b8a0b8;
+    --moe-purple-light: #d5c5d5;
+    --moe-blue: #a0b4d0;
+    --moe-blue-light: #c5d5e8;
+    --moe-bg: #fefcfb;
+    --moe-card: rgba(254, 252, 251, 0.92);
+    --moe-shadow: 0 12px 48px rgba(180, 140, 140, 0.12);
+}
+html[data-theme="yellow"] {
+    --moe-pink: #f59e0b;
+    --moe-pink-light: #fbbf24;
+    --moe-pink-dark: #d97706;
+    --moe-purple: #f97316;
+    --moe-purple-light: #fb923c;
+    --moe-blue: #60a5fa;
+    --moe-blue-light: #93c5fd;
+    --moe-bg: #fffdf5;
+    --moe-card: rgba(255, 253, 245, 0.92);
+    --moe-shadow: 0 12px 48px rgba(245, 158, 11, 0.18);
+}
+/* ============================================================ */
+
+html {
 html {
     scroll-behavior: smooth;
 }

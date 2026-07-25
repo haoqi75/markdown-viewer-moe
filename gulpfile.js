@@ -27,7 +27,8 @@ const DEFAULTS = {
     toolsUrl: 'https://moe520.haoqi75.os.kg/tools.html',
     headInject: '',
     bodyInject: '',
-    logoSubUseDocTitle: true
+    logoSubUseDocTitle: true,
+    theme: 'pink'
 };
 
 function getMimeType(filePath) {

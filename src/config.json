@@ -22,5 +22,6 @@
     "toolsUrl": "./tools.html",
     "headInject": "",
     "bodyInject": "",
-    "logoSubUseDocTitle": true
+    "logoSubUseDocTitle": true,
+    "theme": "pink"
 }
