@@ -236,10 +236,13 @@ Actions文件在：`.forgejo/workflows/static.yml`
           site: https://${{ forge.repository_owner }}.codeberg.page/markdown-viewer-moe/
           token: ${{ forge.token }}
     ```
-5. （可选）若你想要自定义域名，可以访问官方的文档[自定义域名](https://docs.codeberg.org/codeberg-pages/using-custom-domain/)
-6. 转到`Actions`，开启它，在左菜单里找到`Build and deploy to Codeberg Pages`。
+5. （可选）若你想要自定义域名，可以访问官方的文档[自定义域名](https://docs.codeberg.org/codeberg-pages/using-custom-domain/)。
+    提示，需要在里面加上一行 `server: codeberg.page` 才能自定义域名生效。
+6. 转到`Actions`，在左菜单里找到`Build and deploy to Codeberg Pages`。
     * 手动触发：点击 **Run Workflow**。
     * 自动触发：每当更改任何文件会自动触发。
+
+祝你一切顺利~
 
 ---
 
@@ -253,7 +256,7 @@ Actions文件在：`.forgejo/workflows/static.yml`
 这是一个单独的**html**文件，可以直接打开或者上传到
 - GitHub Pages
 - Codeberg Pages
-- Cloudfare Pages
+- Cloudflare Pages
 - Edgeone Pages
 - Netlify
 - Vercel
@@ -369,12 +372,7 @@ markdown-viewer-moe/
 ├── script/
 │   ├── copy-tools.js       # Tools复制准备脚本
 │   └── release.js          # Release版本构建代码
-├── src/
-│   ├── img/                # 图标文件夹
-│   ├── index.html          # 主页面
-│   ├── style.css           # 萌系样式
-│   ├── script.js           # 主要逻辑（TOC、渲染、路由）
-│   └── config.json         # 配置文件
+├── src/                     # 源代码（里面包含所有内容）
 ├── dist/                   # 构建输出（包含 index.html、index.release.html、tools.html和tools-vX.X.X.html）
 ├── tools/                  # 小白也能编辑内容
 ├── AGENTS.md               # AI Agent提示文件
