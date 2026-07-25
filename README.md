@@ -347,6 +347,7 @@ Actions文件在：`.forgejo/workflows/static.yml`
 - **headInject**：在 `</head>` 之前注入的自定义 HTML（分析代码、meta 标签等）。
 - **bodyInject**：在 `</body>` 之前注入的自定义 HTML（脚本、样式等）。
 - **logoSubUseDocTitle**：开启后（默认 true），Logo 副标题自动显示当前文档的 URL 文件名（如 `readme`）。关闭则使用 `logo.sub` 固定文本。
+- **theme**：颜色主题（默认 `pink`）。可选：`pink`（粉色）、`blue`（浅蓝）、`green`（绿色）、`purple`（紫色）、`white`（淡花白）、`yellow`（黄色）。
 
 > 访问 `?md=Base64编码的URL` 将覆盖所有配置，优先级最高。
 
