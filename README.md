@@ -1,4 +1,4 @@
-# 🌸 Moe Markdown Viewer
+# Moe Markdown Viewer
 
 <p align="center">
   <img src="images/icon.png" alt="Moe Markdown Viewer 图标" width="128">
@@ -6,14 +6,21 @@
 
 > 由 AI 生成的 Moe Markdown 查看器 · 萌系主题 · 开箱即用
 
+<div align="center">
+
 [![License: MIT](https://img.shields.io/badge/License-MIT-pink.svg?style=for-the-badge)](LICENSE)
 [![pnpm](https://img.shields.io/badge/pnpm-11.x-blue?logo=pnpm&style=for-the-badge)](https://pnpm.io)
 [![Gulp](https://img.shields.io/badge/Gulp-5.x-red?logo=gulp&style=for-the-badge)](https://gulpjs.com)
-[![Build and deploy to Github Pages](https://img.shields.io/github/actions/workflow/status/haoqi75/markdown-viewer-moe/static.yml?style=for-the-badge&label=Build%20and%20deploy%20to%20Github%20Pages)](https://github.com/haoqi75/markdown-viewer-moe/actions/workflows/static.yml)
-[![Build to GitHub Releases](https://img.shields.io/github/actions/workflow/status/haoqi75/markdown-viewer-moe/release.yml?style=for-the-badge&label=Build%20to%20GitHub%20Releases&labelColor=violet)](https://github.com/haoqi75/markdown-viewer-moe/actions/workflows/release.yml)
+[![Platform](https://img.shields.io/badge/platform-Web-emerald.svg?style=for-the-badge)](https://github.com/haoqi75/markdown-viewer-moe)
 [![GitHub Tag](https://img.shields.io/github/v/tag/haoqi75/markdown-viewer-moe?style=for-the-badge&label=%E7%89%88%E6%9C%AC&color=pink)](https://github.com/haoqi75/markdown-viewer-moe/tags)
 [![GitHub Repo stars](https://img.shields.io/github/stars/haoqi75/markdown-viewer-moe?style=for-the-badge&label=%E2%AD%90%20Stars&color=yellow)](https://github.com/haoqi75/markdown-viewer-moe/stargazers)
 [![GitHub Downloads](https://img.shields.io/github/downloads/haoqi75/markdown-viewer-moe/total?style=for-the-badge&label=%E4%B8%8B%E8%BD%BD%E9%87%8F&color=cyan)](https://github.com/haoqi75/markdown-viewer-moe/releases)
+[![Build and deploy to Github Pages](https://img.shields.io/github/actions/workflow/status/haoqi75/markdown-viewer-moe/static.yml?style=for-the-badge&label=Build%20and%20deploy%20to%20Github%20Pages)](https://github.com/haoqi75/markdown-viewer-moe/actions/workflows/static.yml)
+[![Build to GitHub Releases](https://img.shields.io/github/actions/workflow/status/haoqi75/markdown-viewer-moe/release.yml?style=for-the-badge&label=Build%20to%20GitHub%20Releases&labelColor=violet)](https://github.com/haoqi75/markdown-viewer-moe/actions/workflows/release.yml)
+
+</div>
+
+---
 
 ![:markdown-viewer-moe](https://count.getloli.com/@:markdown-viewer-moe?theme=moebooru&padding=1)
 
@@ -64,7 +71,7 @@
 - [⚙️ 配置说明](#配置说明)
 - [📂 项目结构](#项目结构)
 - [🛠️ 技术栈](#技术栈)
-- [⭐Star 历史](#Star-历史)
+- [⭐ Star 历史](#Star-历史)
 - [🤝 贡献](#贡献)
 - [📄 License](#license)
 - [💖 致谢](#致谢)
@@ -415,8 +422,9 @@ markdown-viewer-moe/
 
 ---
 
-## ⭐Star 历史
+## ⭐ Star 历史
 
+<div align="center">
 <a href="https://www.star-history.com/?repos=haoqi75%2Fmarkdown-viewer-moe&type=timeline&logscale=&legend=bottom-right">
  <picture>
    <source media="(prefers-color-scheme: dark)" srcset="https://api.star-history.com/chart?repos=haoqi75/markdown-viewer-moe&type=timeline&theme=dark&logscale&legend=bottom-right&sealed_token=3X3PCxJH5Y_CftorWNMDLyeY7hmF3x_EOZ1MNxiydzdoAcWZiRFDykUDeFRn3EQuvZJkJargBZSEtYm72dWJJ3WESDivZ5SnD4FOqV6rKel42lPDC9ztQA" />
@@ -424,6 +432,7 @@ markdown-viewer-moe/
    <img alt="Star History Chart" src="https://api.star-history.com/chart?repos=haoqi75/markdown-viewer-moe&type=timeline&logscale&legend=bottom-right&sealed_token=3X3PCxJH5Y_CftorWNMDLyeY7hmF3x_EOZ1MNxiydzdoAcWZiRFDykUDeFRn3EQuvZJkJargBZSEtYm72dWJJ3WESDivZ5SnD4FOqV6rKel42lPDC9ztQA" />
  </picture>
 </a>
+</div>
 
 ---
 

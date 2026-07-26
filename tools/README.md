@@ -1,16 +1,22 @@
-# 🌸 萌·Markdown 配置文件生成器 (Moe JSON Editor) 🌸
+# 萌·Markdown 配置文件生成器 (Moe JSON Editor) 🌸
 
 <p align="center">
   <img src="../images/icon.png" alt="Moe Markdown Viewer 图标" width="128">
 </p>
 
+> **✨ 小白配置文件简易生成编辑器 · 萌化极简版 ✨**
+>
+> 专为「萌·Markdown 预览器」打造的图形化、低门槛 `config.json` 配置文件生成器与独立 `index.release.html` 打包工具。所有操作在本地浏览器安全、隐私地运行。
+
+<div align="center">
+
 [![Version](https://img.shields.io/badge/version-1.7.0-pink.svg?style=for-the-badge)](https://github.com/haoqi75/markdown-viewer-moe)
 [![License](https://img.shields.io/badge/license-MIT-blue.svg?style=for-the-badge)](https://github.com/haoqi75/markdown-viewer-moe)
 [![Platform](https://img.shields.io/badge/platform-Web-emerald.svg?style=for-the-badge)](https://github.com/haoqi75/markdown-viewer-moe)
 
-> **✨ 小白配置文件简易生成编辑器 · 萌化极简版 ✨**
->
-> 专为「萌·Markdown 预览器」打造的图形化、低门槛 `config.json` 配置文件生成器与独立 `index.release.html` 打包工具。所有操作在本地浏览器安全、隐私地运行。
+</div>
+
+---
 
 > [!WARNING]
 > 版本**v1.7.0**后，配置文件更改了方式：
