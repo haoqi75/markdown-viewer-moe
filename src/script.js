@@ -145,7 +145,7 @@ const TOC = (function() {
         const top = el.getBoundingClientRect().top + window.pageYOffset - 80;
         window.scrollTo({ top, behavior: 'smooth' });
         el.style.transition = 'background 0.3s';
-        el.style.background = 'rgba(255,107,157,0.12)';
+        el.style.background = 'rgba(var(--moe-pink-rgb), 0.12)';
         el.style.borderRadius = '6px';
         setTimeout(function() {
             el.style.background = 'transparent';
@@ -488,15 +488,15 @@ const Renderer = (function() {
                     var top = el.getBoundingClientRect().top + window.pageYOffset - 80;
                     window.scrollTo({ top: top });
                     el.style.transition = 'background 0.3s';
-                    el.style.background = 'rgba(255,107,157,0.12)';
-                    el.style.borderRadius = '6px';
-                    setTimeout(function() {
-                        el.style.background = 'transparent';
-                    }, 1200);
-                    return true;
-                }
+        el.style.background = 'rgba(var(--moe-pink-rgb), 0.12)';
+        el.style.borderRadius = '6px';
+        setTimeout(function() {
+            el.style.background = 'transparent';
+        }, 1200);
+        return true;
+    }
 
-                function afterLayout(fn) {
+    function afterLayout(fn) {
                     requestAnimationFrame(function() {
                         requestAnimationFrame(function() {
                             setTimeout(fn, 150);
