@@ -19,6 +19,8 @@
 
 此作品基于[AI Markdown](https://github.com/haoqi75/haoqi75)（我的老版首页，已停止更新）生成和修复内容，专门给Moe爱好提供的Markdown预览器。功能增强，修复了老版本错误。
 
+我做了这个作品是为了可以让你们拥有 Markdown 网页预览器。把你的普通 Markdown 页面变成 Moe 好看的页面，纯静态前端、单文件、以及JSON配置文件编辑工具。
+
 > [!NOTE]
 > 此作品为 **AI** 生成，部分代码可能会缺失，我毕竟也不知道如何修复有些问题，所以可能全靠 **AI** 修复，谢谢理解。
 
@@ -100,7 +102,7 @@
 | ![桌面预览](images/desktop.png) | ![移动预览](images/mobile.jpg) |
 
 <details>
-  <summary>点击查看项目截图</summary>
+  <summary>点击查看更多项目截图</summary>
   <img src="images/desktop-old.png" alt="Desktop" style="max-width:600px">
   <img src="images/mobile-old.jpg" alt="Mobile" style="max-width:600px">
 </details>
@@ -131,7 +133,8 @@
   "aliases": {
         "test": "https://another-api.com/raw/rypa",
         "docs": "https://docs.example.com/readme.md"
-  }
+  },
+  "theme": "pink"
 }
 </script>
 <!-- RELEASE CONFIG END -->
@@ -237,6 +240,7 @@ Actions文件在：`.forgejo/workflows/static.yml`
           token: ${{ forge.token }}
     ```
 5. （可选）若你想要自定义域名，可以访问官方的文档[自定义域名](https://docs.codeberg.org/codeberg-pages/using-custom-domain/)。
+    
     提示，需要在里面加上一行 `server: codeberg.page` 才能自定义域名生效。
 6. 转到`Actions`，在左菜单里找到`Build and deploy to Codeberg Pages`。
     * 手动触发：点击 **Run Workflow**。
@@ -258,6 +262,7 @@ Actions文件在：`.forgejo/workflows/static.yml`
 - Codeberg Pages
 - Cloudflare Pages
 - Edgeone Pages
+- Google Firebase Hosting
 - Netlify
 - Vercel
 - 任何html服务器
@@ -325,7 +330,8 @@ Actions文件在：`.forgejo/workflows/static.yml`
     "toolsUrl": "./tools.html",
     "headInject": "",
     "bodyInject": "",
-    "logoSubUseDocTitle": true
+    "logoSubUseDocTitle": true,
+    "theme": "pink"
 }
 ```
 
