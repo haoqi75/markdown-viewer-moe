@@ -13,10 +13,26 @@ import {
   Info
 } from 'lucide-react';
 
+interface ThemePalette {
+  name: string;
+  metaColor: string;
+  lightBg: string;
+  darkBg: string;
+  lightText: string;
+  darkText: string;
+  primaryAccent: string;
+  primaryHover: string;
+  primaryLight: string;
+  primaryBorder: string;
+  badgeBg: string;
+  shadow: string;
+}
+
 interface FormGeneratorProps {
   config: Record<string, any>;
   schema?: ConfigGroup[];
   onChange: (updatedConfig: Record<string, any>) => void;
+  activePalette?: ThemePalette;
 }
 
 // Helper to access nested objects by path (e.g., "theme.primaryColor")
@@ -130,11 +146,14 @@ export const inferSchema = (json: Record<string, any>): ConfigGroup[] => {
   return groups;
 };
 
-export const FormGenerator: React.FC<FormGeneratorProps> = ({ config, schema, onChange }) => {
+export const FormGenerator: React.FC<FormGeneratorProps> = ({ config, schema, onChange, activePalette }) => {
   const activeSchema = schema || inferSchema(config);
   const [activeTab, setActiveTab] = useState<number>(0);
   const [showHelp, setShowHelp] = useState<Record<string, boolean>>({});
   
+  const primaryAccent = activePalette?.primaryAccent || '#ec4899';
+  const primaryLight = activePalette?.primaryLight || '#fff0f3';
+
   // Array Object state
   const [editingArrayPath, setEditingArrayPath] = useState<string | null>(null);
   const [newItemObject, setNewItemObject] = useState<Record<string, any>>({});
@@ -178,9 +197,10 @@ export const FormGenerator: React.FC<FormGeneratorProps> = ({ config, schema, on
               id={`btn-bool-${field.key}`}
               type="button"
               onClick={() => handleFieldChange(field.key, !value)}
-              className={`relative inline-flex h-6 w-11 shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none focus:ring-2 focus:ring-pink-400 focus:ring-offset-2 ${
-                value ? 'bg-pink-500' : 'bg-gray-200 dark:bg-gray-700'
-              }`}
+              className="relative inline-flex h-6 w-11 shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none"
+              style={{
+                backgroundColor: value ? primaryAccent : 'rgba(156, 163, 175, 0.4)'
+              }}
             >
               <span
                 className={`pointer-events-none inline-block h-5 w-5 transform rounded-full bg-white shadow ring-0 transition duration-200 ease-in-out ${
@@ -664,25 +684,31 @@ export const FormGenerator: React.FC<FormGeneratorProps> = ({ config, schema, on
     <div className="flex flex-col lg:flex-row gap-6">
       {/* Category Tabs (Left on wide screens, top on small) */}
       <div className="w-full lg:w-64 shrink-0">
-        <div className="space-y-1 rounded-2xl bg-pink-50/20 p-2 dark:bg-pink-950/5 border border-pink-100/30 dark:border-pink-900/10">
-          {activeSchema.map((group, idx) => (
-            <button
-              id={`tab-btn-${idx}`}
-              key={group.name}
-              type="button"
-              onClick={() => setActiveTab(idx)}
-              className={`flex w-full items-center px-4 py-3 text-sm font-bold rounded-xl transition-all duration-150 ${
-                activeTab === idx
-                  ? 'bg-white text-pink-600 shadow-sm shadow-pink-100/30 dark:bg-gray-800 dark:text-pink-400'
-                  : 'text-gray-600 hover:bg-pink-50/50 hover:text-pink-600 dark:text-gray-400 dark:hover:bg-gray-800/60 dark:hover:text-white'
-              }`}
-            >
-              <span className="flex items-center text-left truncate">
-                <Sliders className={`mr-2.5 h-4 w-4 shrink-0 ${activeTab === idx ? 'text-pink-500 dark:text-pink-400' : 'text-gray-400'}`} />
-                {group.name}
-              </span>
-            </button>
-          ))}
+        <div className="space-y-1 rounded-2xl p-2 bg-white/40 dark:bg-gray-900/40 border border-gray-100/50 dark:border-gray-800">
+          {activeSchema.map((group, idx) => {
+            const isSelected = activeTab === idx;
+            return (
+              <button
+                id={`tab-btn-${idx}`}
+                key={group.name}
+                type="button"
+                onClick={() => setActiveTab(idx)}
+                className="flex w-full items-center px-4 py-3 text-sm font-bold rounded-xl transition-all duration-200 cursor-pointer"
+                style={{
+                  backgroundColor: isSelected ? (activePalette?.primaryLight || '#fff0f3') : 'transparent',
+                  color: isSelected ? primaryAccent : undefined
+                }}
+              >
+                <span className="flex items-center text-left truncate">
+                  <Sliders 
+                    className="mr-2.5 h-4 w-4 shrink-0" 
+                    style={{ color: isSelected ? primaryAccent : undefined }} 
+                  />
+                  {group.name}
+                </span>
+              </button>
+            );
+          })}
         </div>
       </div>
 

@@ -109,7 +109,109 @@ const DEFAULT_RELEASE_HTML = `<!DOCTYPE html>
 </body>
 </html>`;
 
-const APP_VERSION = "__APP_VERSION__".startsWith("__") ? "1.6.1" : "__APP_VERSION__";
+const INJECTED_VERSION = "__APP_VERSION__";
+const PLACEHOLDER_VERSION = ["__APP", "VERSION__"].join("_");
+const APP_VERSION = INJECTED_VERSION === PLACEHOLDER_VERSION ? "1.7.0" : INJECTED_VERSION;
+
+export const THEME_CONFIGS: Record<string, {
+  name: string;
+  metaColor: string;
+  lightBg: string;
+  darkBg: string;
+  lightText: string;
+  darkText: string;
+  primaryAccent: string;
+  primaryHover: string;
+  primaryLight: string;
+  primaryBorder: string;
+  badgeBg: string;
+  shadow: string;
+}> = {
+  pink: {
+    name: '🌸 粉色 (pink)',
+    metaColor: '#f472b6',
+    lightBg: '#fff0f3',
+    darkBg: '#180d14',
+    lightText: '#4a353d',
+    darkText: '#ffe3ec',
+    primaryAccent: '#ec4899',
+    primaryHover: '#db2777',
+    primaryLight: '#fce7f3',
+    primaryBorder: '#fbcfe8',
+    badgeBg: '#f472b6',
+    shadow: 'rgba(236, 72, 153, 0.3)',
+  },
+  blue: {
+    name: '💧 浅蓝 (blue)',
+    metaColor: '#38bdf8',
+    lightBg: '#f0f9ff',
+    darkBg: '#0f172a',
+    lightText: '#0c4a6e',
+    darkText: '#e0f2fe',
+    primaryAccent: '#0284c7',
+    primaryHover: '#0369a1',
+    primaryLight: '#e0f2fe',
+    primaryBorder: '#bae6fd',
+    badgeBg: '#38bdf8',
+    shadow: 'rgba(2, 132, 199, 0.3)',
+  },
+  green: {
+    name: '🌿 绿色 (green)',
+    metaColor: '#34d399',
+    lightBg: '#ecfdf5',
+    darkBg: '#062e1f',
+    lightText: '#064e3b',
+    darkText: '#d1fae5',
+    primaryAccent: '#059669',
+    primaryHover: '#047857',
+    primaryLight: '#d1fae5',
+    primaryBorder: '#a7f3d0',
+    badgeBg: '#34d399',
+    shadow: 'rgba(5, 150, 105, 0.3)',
+  },
+  purple: {
+    name: '🍇 紫色 (purple)',
+    metaColor: '#c084fc',
+    lightBg: '#faf5ff',
+    darkBg: '#1e102d',
+    lightText: '#3b0764',
+    darkText: '#f3e8ff',
+    primaryAccent: '#9333ea',
+    primaryHover: '#7e22ce',
+    primaryLight: '#f3e8ff',
+    primaryBorder: '#e9d5ff',
+    badgeBg: '#c084fc',
+    shadow: 'rgba(147, 51, 234, 0.3)',
+  },
+  white: {
+    name: '🤍 淡花白 (white)',
+    metaColor: '#94a3b8',
+    lightBg: '#f8fafc',
+    darkBg: '#18181b',
+    lightText: '#0f172a',
+    darkText: '#f1f5f9',
+    primaryAccent: '#475569',
+    primaryHover: '#334155',
+    primaryLight: '#f1f5f9',
+    primaryBorder: '#cbd5e1',
+    badgeBg: '#94a3b8',
+    shadow: 'rgba(71, 85, 105, 0.3)',
+  },
+  yellow: {
+    name: '🌻 黄色 (yellow)',
+    metaColor: '#facc15',
+    lightBg: '#fefce8',
+    darkBg: '#261e08',
+    lightText: '#713f12',
+    darkText: '#fefce8',
+    primaryAccent: '#d97706',
+    primaryHover: '#b45309',
+    primaryLight: '#fef3c7',
+    primaryBorder: '#fde68a',
+    badgeBg: '#facc15',
+    shadow: 'rgba(217, 119, 6, 0.3)',
+  }
+};
 
 export default function App() {
   const [config, setConfig] = useState<Record<string, any>>(templates[0].config);
@@ -120,6 +222,9 @@ export default function App() {
   const [toast, setToast] = useState<{ message: string; type: 'success' | 'error' | 'info' } | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
+  const themeKey = config?.theme && THEME_CONFIGS[config.theme] ? config.theme : 'pink';
+  const activePalette = THEME_CONFIGS[themeKey];
+
   // Dynamic sync for Dark Mode & theme-color meta tag for mobile browsers (iOS Safari, Chrome Android, WeChat)
   useEffect(() => {
     if (isDarkMode) {
@@ -128,31 +233,12 @@ export default function App() {
       document.documentElement.classList.remove('dark');
     }
 
-    const getThemeColor = () => {
-      if (isDarkMode) return '#12070e';
-      const themeVal = config?.theme;
-      switch (themeVal) {
-        case 'blue':
-          return '#38bdf8';
-        case 'green':
-          return '#34d399';
-        case 'purple':
-          return '#c084fc';
-        case 'white':
-          return '#94a3b8';
-        case 'yellow':
-          return '#facc15';
-        case 'pink':
-        default:
-          return '#f472b6';
-      }
-    };
-
-    const themeColor = getThemeColor();
+    const currentBgColor = isDarkMode ? activePalette.darkBg : activePalette.lightBg;
+    const currentMetaColor = isDarkMode ? activePalette.darkBg : activePalette.metaColor;
 
     // 1. Sync document root and body background color for Chrome Android status bar color sampling
-    document.documentElement.style.backgroundColor = themeColor;
-    document.body.style.backgroundColor = themeColor;
+    document.documentElement.style.backgroundColor = currentBgColor;
+    document.body.style.backgroundColor = currentBgColor;
 
     // 2. Chrome Android requires removing old meta tag and appending a fresh <meta name="theme-color"> element to trigger repaint
     const existingMetas = document.querySelectorAll('meta[name="theme-color"]');
@@ -160,9 +246,9 @@ export default function App() {
 
     const meta = document.createElement('meta');
     meta.name = 'theme-color';
-    meta.content = themeColor;
+    meta.content = currentMetaColor;
     document.head.appendChild(meta);
-  }, [isDarkMode, config?.theme]);
+  }, [isDarkMode, themeKey, activePalette]);
 
   // HTML file upload state
   const [uploadedHtmlContent, setUploadedHtmlContent] = useState<string | null>(null);
@@ -336,6 +422,45 @@ export default function App() {
     }
   };
 
+  // Import modal states for JSON without 'type'
+  const [pendingImportJson, setPendingImportJson] = useState<Record<string, any> | null>(null);
+  const [isTypeSelectModalOpen, setIsTypeSelectModalOpen] = useState<boolean>(false);
+
+  const findMatchingTemplateByJson = (json: Record<string, any>): ConfigTemplate | null => {
+    if (!json || typeof json !== 'object') return null;
+    const rawType = json.type;
+    if (rawType && typeof rawType === 'string') {
+      const typeLower = rawType.toLowerCase().trim();
+      if (typeLower === 'normal' || typeLower === 'markdown_moe') {
+        return templates.find(t => t.id === 'markdown_moe') || templates[0];
+      }
+      if (typeLower === 'release' || typeLower === 'markdown_basic') {
+        return templates.find(t => t.id === 'markdown_basic') || templates[1];
+      }
+      const matched = templates.find(t => t.id.toLowerCase() === typeLower || (t.config && String(t.config.type).toLowerCase() === typeLower));
+      if (matched) return matched;
+    }
+    return null;
+  };
+
+  const handleSelectStyleForImport = (tpl: ConfigTemplate) => {
+    if (!pendingImportJson) return;
+    const typeValue = tpl.config.type || (tpl.id === 'markdown_moe' ? 'normal' : 'release');
+    const mergedConfig = {
+      ...tpl.config,
+      ...pendingImportJson,
+      type: typeValue
+    };
+    setConfig(mergedConfig);
+    setActiveTemplate(tpl);
+    setValidation({ isValid: true });
+    setIsTypeSelectModalOpen(false);
+    setPendingImportJson(null);
+    showToast(`已成功套用「${tpl.name}」样式模板！`, 'success');
+    setMascotMessage(`好棒！已为导入的配置补全 type: "${typeValue}" 属性，并套用了「${tpl.name}」表单样式！✨`);
+    setMascotExpression('happy');
+  };
+
   // Import JSON File
   const handleFileImport = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
@@ -349,24 +474,22 @@ export default function App() {
           throw new Error('导入的文件顶层必须是一个 JSON 对象 ( { ... } )。');
         }
         
-        setConfig(parsed);
-        // Reset active template if it's custom
-        const matchedTpl = templates.find(t => JSON.stringify(t.config) === JSON.stringify(parsed));
+        const matchedTpl = findMatchingTemplateByJson(parsed);
         if (matchedTpl) {
+          const mergedConfig = { ...matchedTpl.config, ...parsed };
+          setConfig(mergedConfig);
           setActiveTemplate(matchedTpl);
+          setValidation({ isValid: true });
+          showToast(`识别到 type: "${parsed.type}"，已载入「${matchedTpl.name}」`, 'success');
+          setMascotMessage(`好耶！识别到配置 type 属性为「${parsed.type}」，已自动为您匹配「${matchedTpl.name}」样式并解析了所有参数！🌸`);
+          setMascotExpression('excited');
         } else {
-          setActiveTemplate({
-            id: 'custom',
-            name: '自定义导入配置',
-            description: '从外部 JSON 文件载入的自定义参数列表。',
-            icon: 'FileJson',
-            config: parsed
-          });
+          // No type property or unknown type -> Open selection modal!
+          setPendingImportJson(parsed);
+          setIsTypeSelectModalOpen(true);
+          setMascotMessage("检测到导入的 JSON 顶部未包含 type 标识，请在弹窗中选择您要套用的配置样式哦！🌸");
+          setMascotExpression('wink');
         }
-        setValidation({ isValid: true });
-        showToast('配置文件导入成功！', 'success');
-        setMascotMessage("哇！新的配置文件导入成功啦！小萌立刻为你生成了可视化编辑表单～🌸");
-        setMascotExpression('excited');
       } catch (err: any) {
         showToast(`导入失败: ${err.message || 'JSON 格式解析错误'}`, 'error');
         setMascotMessage("呜呜……这个 JSON 文件结构好像坏掉了，导入失败了……💧");
@@ -399,26 +522,22 @@ export default function App() {
         if (json) {
           setUploadedHtmlContent(htmlText);
           setUploadedHtmlName(file.name);
-          setConfig(json);
           
-          // Check if matches an existing template
-          const matchedTpl = templates.find(t => JSON.stringify(t.config) === JSON.stringify(json));
+          const matchedTpl = findMatchingTemplateByJson(json);
           if (matchedTpl) {
+            const mergedConfig = { ...matchedTpl.config, ...json };
+            setConfig(mergedConfig);
             setActiveTemplate(matchedTpl);
+            setValidation({ isValid: true });
+            showToast(`提取成功 (type: "${json.type}")，已载入「${matchedTpl.name}」`, 'success');
+            setMascotMessage(`好耶！成功从「${file.name}」中提取配置 (type: "${json.type}")，并已为您应用「${matchedTpl.name}」样式！✨`);
+            setMascotExpression('excited');
           } else {
-            setActiveTemplate({
-              id: 'html_release_config',
-              name: `📦 发布版 HTML: ${file.name}`,
-              description: `正在编辑从 ${file.name} 中提取的 release-config JSON 参数。`,
-              icon: 'Layers',
-              config: json
-            });
+            setPendingImportJson(json);
+            setIsTypeSelectModalOpen(true);
+            setMascotMessage(`已从「${file.name}」提取配置，但未包含 type，请选择要匹配的配置样式～🌸`);
+            setMascotExpression('wink');
           }
-          
-          setValidation({ isValid: true });
-          showToast(`成功载入 ${file.name} 并提取配置！`, 'success');
-          setMascotMessage(`好耶！成功从「${file.name}」中读取并提取了 release-config 配置，已经为您加载到下方的可视化编辑区啦！✨`);
-          setMascotExpression('excited');
         }
       } catch (err: any) {
         showToast(`加载 HTML 失败: ${err.message}`, 'error');
@@ -675,6 +794,38 @@ export default function App() {
         setLocalCode(JSON.stringify(config, null, 2));
       }, [config]);
 
+      // Dynamic theme sync in standalone HTML
+      useEffect(() => {
+        if (isDarkMode) {
+          document.documentElement.classList.add('dark');
+        } else {
+          document.documentElement.classList.remove('dark');
+        }
+
+        const themeVal = config?.theme;
+        const themeMap = {
+          pink: { lightBg: '#fff0f3', darkBg: '#180d14', meta: '#f472b6' },
+          blue: { lightBg: '#e0f2fe', darkBg: '#0f172a', meta: '#38bdf8' },
+          green: { lightBg: '#d1fae5', darkBg: '#062e1f', meta: '#34d399' },
+          purple: { lightBg: '#f3e8ff', darkBg: '#1e102d', meta: '#c084fc' },
+          white: { lightBg: '#f1f5f9', darkBg: '#18181b', meta: '#94a3b8' },
+          yellow: { lightBg: '#fef9c3', darkBg: '#261e08', meta: '#facc15' }
+        };
+        const p = themeMap[themeVal] || themeMap.pink;
+        const bg = isDarkMode ? p.darkBg : p.lightBg;
+        const metaColor = isDarkMode ? p.darkBg : p.meta;
+
+        document.documentElement.style.backgroundColor = bg;
+        document.body.style.backgroundColor = bg;
+
+        const existingMetas = document.querySelectorAll('meta[name="theme-color"]');
+        existingMetas.forEach(m => m.remove());
+        const meta = document.createElement('meta');
+        meta.name = 'theme-color';
+        meta.content = metaColor;
+        document.head.appendChild(meta);
+      }, [isDarkMode, config?.theme]);
+
       const triggerToast = (msg, type = 'success') => {
         setToast({ message: msg, type });
         setTimeout(() => setToast(null), 3000);
@@ -774,8 +925,24 @@ export default function App() {
       const currentTpl = templates.find(t => t.id === activeTplId);
       const activeSchema = (currentTpl && currentTpl.schema) ? currentTpl.schema : inferSchema(config);
 
+      const standaloneThemeMap = {
+        pink: { lightBg: '#fff0f3', darkBg: '#180d14', text: '#4a353d', darkText: '#ffe3ec' },
+        blue: { lightBg: '#e0f2fe', darkBg: '#0f172a', text: '#1e3a8a', darkText: '#e0f2fe' },
+        green: { lightBg: '#d1fae5', darkBg: '#062e1f', text: '#064e3b', darkText: '#d1fae5' },
+        purple: { lightBg: '#f3e8ff', darkBg: '#1e102d', text: '#3b0764', darkText: '#f3e8ff' },
+        white: { lightBg: '#f1f5f9', darkBg: '#18181b', text: '#0f172a', darkText: '#f1f5f9' },
+        yellow: { lightBg: '#fef9c3', darkBg: '#261e08', text: '#713f12', darkText: '#fef9c3' }
+      };
+      const curStandaloneTheme = standaloneThemeMap[config?.theme] || standaloneThemeMap.pink;
+
       return (
-        React.createElement("div", { className: isDarkMode ? 'dark bg-gray-900 text-white min-h-screen' : 'bg-gray-50 text-gray-900 min-h-screen' },
+        React.createElement("div", { 
+          className: "min-h-screen transition-colors duration-500 " + (isDarkMode ? 'dark' : ''),
+          style: {
+            backgroundColor: isDarkMode ? curStandaloneTheme.darkBg : curStandaloneTheme.lightBg,
+            color: isDarkMode ? curStandaloneTheme.darkText : curStandaloneTheme.text
+          }
+        },
           React.createElement("div", { className: "max-w-7xl mx-auto px-4 py-8" },
             
             // Toast Notification
@@ -1187,7 +1354,13 @@ export default function App() {
   };
 
   return (
-    <div className={`min-h-screen transition-colors duration-300 ${isDarkMode ? 'dark bg-[#180d14] text-[#ffe3ec]' : 'bg-[#fff5f6] text-[#4a353d]'}`}>
+    <div 
+      className={`min-h-screen transition-colors duration-500 ${isDarkMode ? 'dark' : ''}`}
+      style={{
+        backgroundColor: isDarkMode ? activePalette.darkBg : activePalette.lightBg,
+        color: isDarkMode ? activePalette.darkText : activePalette.lightText
+      }}
+    >
       <div className="max-w-7xl mx-auto px-4 py-8">
         
         {/* Toast Alert Banner */}
@@ -1200,15 +1373,45 @@ export default function App() {
         )}
 
         {/* Top Header Section */}
-        <header className={`flex flex-col md:flex-row md:items-center md:justify-between border-b pb-6 mb-8 ${isDarkMode ? 'border-pink-950/20' : 'border-pink-100'}`}>
+        <header className={`flex flex-col md:flex-row md:items-center md:justify-between border-b pb-6 mb-8 transition-colors duration-300 ${isDarkMode ? 'border-gray-800/60' : 'border-gray-200/50'}`}>
           <div className="flex items-center space-x-4">
-            <div className="p-3 bg-pink-500 rounded-2xl text-white shadow-lg shadow-pink-500/20">
+            <div 
+              className="p-3 rounded-2xl text-white transition-all duration-300"
+              style={{
+                backgroundColor: activePalette.primaryAccent,
+                boxShadow: `0 6px 18px ${activePalette.shadow}`
+              }}
+            >
               <Sparkles className="h-6 w-6 animate-pulse" />
             </div>
             <div>
-              <h1 className="text-xl font-black tracking-tight text-pink-600 dark:text-pink-400">
-                🎀 萌·配置文件生成器 (Config Box)
-              </h1>
+              <div className="flex items-center space-x-2.5 flex-wrap gap-y-1">
+                <h1 
+                  className="text-xl font-black tracking-tight transition-colors duration-300"
+                  style={{ color: isDarkMode ? activePalette.darkText : activePalette.primaryAccent }}
+                >
+                  🎀 萌·配置文件生成器 (Config Box)
+                </h1>
+                <span className="text-2xs font-extrabold px-2.5 py-0.5 rounded-full border shadow-2xs transition-all duration-300"
+                  style={{
+                    backgroundColor: activePalette.badgeBg + '25',
+                    borderColor: activePalette.badgeBg + '70',
+                    color: isDarkMode ? activePalette.darkText : activePalette.primaryAccent
+                  }}
+                >
+                  {activePalette.name}
+                </span>
+                <span 
+                  className="text-2xs font-mono font-bold px-2 py-0.5 rounded-full border transition-all duration-300"
+                  style={{
+                    backgroundColor: activePalette.primaryAccent + '15',
+                    borderColor: activePalette.primaryAccent + '30',
+                    color: isDarkMode ? activePalette.darkText : activePalette.primaryAccent
+                  }}
+                >
+                  v{APP_VERSION}
+                </span>
+              </div>
               <p className="text-xs text-[#6e4e59] dark:text-[#ccb3bc] mt-1.5 font-bold flex items-center">
                 <span>零代码基础的可视化 JSON 交互编辑，支持导入、美化、校验与下载 🌸</span>
               </p>
@@ -1221,10 +1424,10 @@ export default function App() {
               id="btn-toggle-theme"
               type="button"
               onClick={() => setIsDarkMode(!isDarkMode)}
-              className="p-2.5 rounded-2xl border border-pink-100 bg-white/80 hover:bg-pink-50 dark:border-pink-950/30 dark:bg-[#251620] dark:hover:bg-pink-950/10 transition-colors shadow-xs"
+              className="p-2.5 rounded-2xl border border-gray-200/60 bg-white/80 hover:bg-gray-50 dark:border-gray-800 dark:bg-[#251620] dark:hover:bg-gray-800/40 transition-colors shadow-2xs cursor-pointer"
               title="切换亮色/暗色主题"
             >
-              {isDarkMode ? <Sun className="h-5 w-5 text-amber-500 animate-spin" style={{ animationDuration: '6s' }} /> : <Moon className="h-5 w-5 text-pink-500" />}
+              {isDarkMode ? <Sun className="h-5 w-5 text-amber-500 animate-spin" style={{ animationDuration: '6s' }} /> : <Moon className="h-5 w-5" style={{ color: activePalette.primaryAccent }} />}
             </button>
 
             {/* Import file upload button */}
@@ -1232,9 +1435,9 @@ export default function App() {
               id="btn-import-file"
               type="button"
               onClick={() => fileInputRef.current?.click()}
-              className="flex items-center space-x-1.5 px-4 py-2.5 text-xs font-bold rounded-2xl border border-pink-100 bg-white/80 hover:bg-pink-50 text-[#6e4e59] dark:border-pink-950/30 dark:bg-[#251620] dark:text-pink-200 dark:hover:bg-pink-950/20 transition-all shadow-xs cursor-pointer"
+              className="flex items-center space-x-1.5 px-4 py-2.5 text-xs font-bold rounded-2xl border border-gray-200/60 bg-white/80 hover:bg-gray-50 text-[#6e4e59] dark:border-gray-800 dark:bg-[#251620] dark:text-gray-200 dark:hover:bg-gray-800/40 transition-all shadow-2xs cursor-pointer"
             >
-              <Upload className="h-4 w-4 shrink-0 text-pink-500" />
+              <Upload className="h-4 w-4 shrink-0" style={{ color: activePalette.primaryAccent }} />
               <span>导入 JSON</span>
             </button>
             <input
@@ -1251,7 +1454,11 @@ export default function App() {
               id="btn-download-json"
               type="button"
               onClick={handleDownloadJson}
-              className="flex items-center space-x-1.5 px-5 py-2.5 text-xs font-bold rounded-2xl bg-pink-500 text-white hover:bg-pink-600 transition-all shadow-md shadow-pink-500/25 cursor-pointer"
+              className="flex items-center space-x-1.5 px-5 py-2.5 text-xs font-bold rounded-2xl text-white transition-all cursor-pointer"
+              style={{
+                backgroundColor: activePalette.primaryAccent,
+                boxShadow: `0 4px 14px ${activePalette.shadow}`
+              }}
             >
               <Download className="h-4 w-4 shrink-0" />
               <span>保存 config.json</span>
@@ -1260,23 +1467,29 @@ export default function App() {
         </header>
 
         {/* Interactive Chibi Mascot Speech Bubble Banner */}
-        <div className="bg-white/90 dark:bg-[#251620]/90 border-2 border-pink-100 dark:border-pink-900/30 rounded-3xl p-5 mb-8 shadow-xl shadow-pink-100/20 dark:shadow-none flex flex-col md:flex-row items-center space-y-4 md:space-y-0 md:space-x-5 relative overflow-hidden transition-all duration-300">
-          <div className="absolute right-3 top-3 opacity-15 dark:opacity-10 text-pink-500 select-none pointer-events-none">
+        <div className="bg-white/90 dark:bg-[#251620]/90 border-2 border-gray-100 dark:border-gray-800/60 rounded-3xl p-5 mb-8 shadow-xl flex flex-col md:flex-row items-center space-y-4 md:space-y-0 md:space-x-5 relative overflow-hidden transition-all duration-300">
+          <div className="absolute right-3 top-3 opacity-15 dark:opacity-10 select-none pointer-events-none" style={{ color: activePalette.primaryAccent }}>
             <Sparkles className="w-10 h-10 animate-pulse" />
           </div>
           {/* Chibi Mascot Image */}
           <div className="shrink-0 relative">
-            <div className={`w-20 h-20 rounded-full bg-pink-100 dark:bg-pink-950/40 p-1 border-2 border-pink-200 dark:border-pink-800/30 overflow-hidden flex items-center justify-center transition-all duration-300 ${
-              mascotExpression === 'happy'
-                ? 'animate-bounce [animation-duration:0.6s] scale-105'
-                : mascotExpression === 'excited'
-                ? 'animate-bounce [animation-duration:0.4s] rotate-6 scale-110'
-                : mascotExpression === 'sad'
-                ? 'animate-pulse opacity-85 translate-y-1 rotate-[-4deg]'
-                : mascotExpression === 'wink'
-                ? 'scale-105 rotate-3'
-                : 'hover:scale-105 hover:rotate-2'
-            }`}>
+            <div 
+              className={`w-20 h-20 rounded-full p-1 border-2 overflow-hidden flex items-center justify-center transition-all duration-300 ${
+                mascotExpression === 'happy'
+                  ? 'animate-bounce [animation-duration:0.6s] scale-105'
+                  : mascotExpression === 'excited'
+                  ? 'animate-bounce [animation-duration:0.4s] rotate-6 scale-110'
+                  : mascotExpression === 'sad'
+                  ? 'animate-pulse opacity-85 translate-y-1 rotate-[-4deg]'
+                  : mascotExpression === 'wink'
+                  ? 'scale-105 rotate-3'
+                  : 'hover:scale-105 hover:rotate-2'
+              }`}
+              style={{
+                backgroundColor: activePalette.primaryLight,
+                borderColor: activePalette.primaryBorder
+              }}
+            >
               <img 
                 src="/icon.png" 
                 alt="小萌 Mascot" 
@@ -1284,12 +1497,16 @@ export default function App() {
                 referrerPolicy="no-referrer"
               />
             </div>
-            <span className="absolute -bottom-1 -right-1 bg-pink-500 text-white text-3xs px-2 py-0.5 rounded-full font-black shadow-xs select-none">小萌</span>
+            <span 
+              className="absolute -bottom-1 -right-1 text-white text-3xs px-2 py-0.5 rounded-full font-black shadow-2xs select-none"
+              style={{ backgroundColor: activePalette.primaryAccent }}
+            >
+              小萌
+            </span>
           </div>
 
           {/* Speech bubble */}
-          <div className="flex-1 relative bg-pink-50/40 dark:bg-pink-950/10 border border-pink-100/40 dark:border-pink-900/10 rounded-2xl p-4.5">
-            <div className="absolute left-4 -top-2 md:-left-2 md:top-7 w-0 h-0 border-l-[8px] border-l-transparent border-r-[8px] border-r-transparent border-b-[8px] border-b-pink-100/40 dark:border-b-pink-900/10 md:rotate-270" />
+          <div className="flex-1 relative bg-gray-50/50 dark:bg-gray-900/40 border border-gray-100 dark:border-gray-800 rounded-2xl p-4.5">
             <p className="text-sm font-bold text-[#4a353d] dark:text-[#ffe3ec] leading-relaxed">
               {mascotMessage}
             </p>
@@ -1402,8 +1619,8 @@ export default function App() {
         {/* Templates Selector */}
         <div className="mb-8">
           <div className="flex items-center space-x-2 mb-4">
-            <Sparkles className="h-4.5 w-4.5 text-pink-500 animate-pulse" />
-            <h2 className="text-xs font-black uppercase tracking-wider text-pink-600 dark:text-pink-400">
+            <Sparkles className="h-4.5 w-4.5 animate-pulse" style={{ color: activePalette.primaryAccent }} />
+            <h2 className="text-xs font-black uppercase tracking-wider" style={{ color: activePalette.primaryAccent }}>
               请选择一个基础模板开始配置
             </h2>
           </div>
@@ -1411,20 +1628,21 @@ export default function App() {
             templates={templates} 
             onSelect={handleTemplateSelect} 
             activeId={activeTemplate.id} 
+            activePalette={activePalette}
           />
         </div>
 
         {/* Tab Switch View Mode */}
-        <div className="flex border-b border-pink-100 dark:border-pink-950/20 mb-6">
+        <div className="flex border-b border-gray-200/50 dark:border-gray-800/60 mb-6">
           <button
             id="btn-tab-visual"
             type="button"
             onClick={() => setViewMode('visual')}
-            className={`flex items-center px-6 py-3 border-b-2 text-sm font-bold transition-all duration-200 cursor-pointer ${
-              viewMode === 'visual'
-                ? 'border-pink-500 text-pink-600 dark:border-pink-400 dark:text-pink-400'
-                : 'border-transparent text-gray-400 hover:text-pink-500 dark:hover:text-pink-400'
-            }`}
+            className="flex items-center px-6 py-3 border-b-2 text-sm font-bold transition-all duration-200 cursor-pointer"
+            style={{
+              borderColor: viewMode === 'visual' ? activePalette.primaryAccent : 'transparent',
+              color: viewMode === 'visual' ? activePalette.primaryAccent : undefined
+            }}
           >
             <Eye className="mr-2 h-4 w-4" />
             可视化表单模式 (适合小白)
@@ -1433,11 +1651,11 @@ export default function App() {
             id="btn-tab-code"
             type="button"
             onClick={() => setViewMode('code')}
-            className={`flex items-center px-6 py-3 border-b-2 text-sm font-bold transition-all duration-200 cursor-pointer ${
-              viewMode === 'code'
-                ? 'border-pink-500 text-pink-600 dark:border-pink-400 dark:text-pink-400'
-                : 'border-transparent text-gray-400 hover:text-pink-500 dark:hover:text-pink-400'
-            }`}
+            className="flex items-center px-6 py-3 border-b-2 text-sm font-bold transition-all duration-200 cursor-pointer"
+            style={{
+              borderColor: viewMode === 'code' ? activePalette.primaryAccent : 'transparent',
+              color: viewMode === 'code' ? activePalette.primaryAccent : undefined
+            }}
           >
             <Code className="mr-2 h-4 w-4" />
             源码高级模式 (代码校验)
@@ -1451,6 +1669,7 @@ export default function App() {
               config={config} 
               schema={activeTemplate.schema} 
               onChange={handleConfigChange} 
+              activePalette={activePalette}
             />
           ) : (
             <JsonView 
@@ -1462,10 +1681,16 @@ export default function App() {
         </div>
 
         {/* Base64 & Markdown Link Helper Tool */}
-        <div className="mt-12 bg-white/95 dark:bg-[#251620]/95 border-2 border-pink-100/50 dark:border-pink-900/30 rounded-3xl p-6 shadow-md transition-all duration-300">
-          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-5 pb-4 border-b border-pink-50/50 dark:border-pink-950/20">
+        <div className="mt-12 bg-white/95 dark:bg-[#251620]/95 border-2 border-gray-100 dark:border-gray-800/60 rounded-3xl p-6 shadow-md transition-all duration-300">
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-5 pb-4 border-b border-gray-100 dark:border-gray-800/40">
             <div className="flex items-center space-x-2.5">
-              <div className="p-2 bg-pink-100 dark:bg-pink-950/80 rounded-2xl text-pink-500 shrink-0 animate-bounce-slow">
+              <div 
+                className="p-2 rounded-2xl shrink-0 animate-bounce-slow"
+                style={{
+                  backgroundColor: activePalette.primaryLight,
+                  color: activePalette.primaryAccent
+                }}
+              >
                 <Lock className="h-5 w-5" />
               </div>
               <div>
@@ -1479,26 +1704,26 @@ export default function App() {
             </div>
             
             {/* Cute Tab Buttons */}
-            <div className="flex bg-pink-50/50 dark:bg-pink-950/30 p-1 rounded-2xl border border-pink-100/30 dark:border-pink-900/20 shrink-0">
+            <div className="flex bg-gray-100/60 dark:bg-gray-900/40 p-1 rounded-2xl border border-gray-200/50 dark:border-gray-800 shrink-0">
               <button
                 type="button"
                 onClick={() => setBase64ToolMode('link')}
-                className={`px-3.5 py-1.5 text-xs font-bold rounded-xl transition-all cursor-pointer ${
-                  base64ToolMode === 'link'
-                    ? "bg-pink-500 text-white shadow-xs"
-                    : "text-gray-500 dark:text-gray-400 hover:text-pink-500"
-                }`}
+                className="px-3.5 py-1.5 text-xs font-bold rounded-xl transition-all cursor-pointer"
+                style={{
+                  backgroundColor: base64ToolMode === 'link' ? activePalette.primaryAccent : 'transparent',
+                  color: base64ToolMode === 'link' ? '#ffffff' : undefined
+                }}
               >
                 🔗 专属链接生成
               </button>
               <button
                 type="button"
                 onClick={() => setBase64ToolMode('text')}
-                className={`px-3.5 py-1.5 text-xs font-bold rounded-xl transition-all cursor-pointer ${
-                  base64ToolMode === 'text'
-                    ? "bg-pink-500 text-white shadow-xs"
-                    : "text-gray-500 dark:text-gray-400 hover:text-pink-500"
-                }`}
+                className="px-3.5 py-1.5 text-xs font-bold rounded-xl transition-all cursor-pointer"
+                style={{
+                  backgroundColor: base64ToolMode === 'text' ? activePalette.primaryAccent : 'transparent',
+                  color: base64ToolMode === 'text' ? '#ffffff' : undefined
+                }}
               >
                 🔐 通用加解密
               </button>
@@ -1613,7 +1838,11 @@ https://raw.githubusercontent.com/haoqi75/markdown-viewer-moe/main/README.md"
                   <button
                     type="button"
                     onClick={() => handleGenerateMoeUrl()}
-                    className="flex-1 flex items-center justify-center space-x-1.5 px-3 py-2.5 text-xs font-bold rounded-2xl bg-pink-500 hover:bg-pink-600 text-white transition-all shadow-sm cursor-pointer"
+                    className="flex-1 flex items-center justify-center space-x-1.5 px-3 py-2.5 text-xs font-bold rounded-2xl text-white transition-all cursor-pointer"
+                    style={{
+                      backgroundColor: activePalette.primaryAccent,
+                      boxShadow: `0 4px 12px ${activePalette.shadow}`
+                    }}
                   >
                     <Sparkles className="h-3.5 w-3.5 shrink-0" />
                     <span>合成加密链接</span>
@@ -1794,6 +2023,87 @@ https://raw.githubusercontent.com/haoqi75/markdown-viewer-moe/main/README.md"
           </div>
         </footer>
       </div>
+
+      {/* Modal: Select Template Style for JSON without 'type' */}
+      {isTypeSelectModalOpen && pendingImportJson && (
+        <div className="fixed inset-0 z-50 bg-black/60 backdrop-blur-xs flex items-center justify-center p-4 animate-in fade-in duration-200">
+          <div className="bg-white dark:bg-[#1a0f18] border-2 border-gray-100 dark:border-gray-800 rounded-3xl p-6 max-w-lg w-full shadow-2xl relative">
+            <div className="flex items-center space-x-3 mb-4 pb-3 border-b border-gray-100 dark:border-gray-800">
+              <div 
+                className="p-2.5 rounded-2xl text-white shrink-0 shadow-md"
+                style={{
+                  backgroundColor: activePalette.primaryAccent,
+                  boxShadow: `0 4px 12px ${activePalette.shadow}`
+                }}
+              >
+                <Layers className="h-5 w-5" />
+              </div>
+              <div>
+                <h3 className="text-base font-black text-gray-800 dark:text-gray-100">
+                  请选择文件样式 (Select Config Style)
+                </h3>
+                <p className="text-xs text-gray-500 dark:text-gray-400 font-bold mt-0.5">
+                  导入的 JSON 未包含 <code className="bg-gray-100 dark:bg-gray-800 px-1 py-0.5 rounded text-pink-500 font-mono text-2xs">type</code> 属性，请选择对应的模板样式：
+                </p>
+              </div>
+            </div>
+
+            <div className="space-y-3 my-5 max-h-[60vh] overflow-y-auto pr-1">
+              {templates.map((tpl) => (
+                <button
+                  key={tpl.id}
+                  type="button"
+                  onClick={() => handleSelectStyleForImport(tpl)}
+                  className="w-full text-left p-4 rounded-2xl border-2 border-gray-100 dark:border-gray-800/80 bg-gray-50/50 dark:bg-gray-900/40 hover:border-pink-300 dark:hover:border-pink-800 hover:bg-white dark:hover:bg-gray-900 transition-all cursor-pointer group flex items-start space-x-3.5"
+                >
+                  <div 
+                    className="p-2.5 rounded-xl shrink-0 mt-0.5 group-hover:scale-110 transition-transform"
+                    style={{
+                      backgroundColor: activePalette.primaryLight,
+                      color: activePalette.primaryAccent
+                    }}
+                  >
+                    <Sparkles className="h-5 w-5" />
+                  </div>
+                  <div className="flex-1 min-w-0">
+                    <div className="flex items-center justify-between mb-1">
+                      <span className="font-bold text-sm text-gray-800 dark:text-gray-100 group-hover:text-pink-600 dark:group-hover:text-pink-400">
+                        {tpl.name}
+                      </span>
+                      <span 
+                        className="text-3xs font-mono font-black px-2 py-0.5 rounded-full uppercase"
+                        style={{
+                          backgroundColor: activePalette.primaryAccent + '15',
+                          color: activePalette.primaryAccent
+                        }}
+                      >
+                        {tpl.config.type || tpl.id}
+                      </span>
+                    </div>
+                    <p className="text-xs text-gray-500 dark:text-gray-400 leading-relaxed line-clamp-2">
+                      {tpl.description}
+                    </p>
+                  </div>
+                </button>
+              ))}
+            </div>
+
+            <div className="flex justify-end space-x-3 pt-3 border-t border-gray-100 dark:border-gray-800">
+              <button
+                type="button"
+                onClick={() => {
+                  setIsTypeSelectModalOpen(false);
+                  setPendingImportJson(null);
+                  showToast('已取消导入', 'info');
+                }}
+                className="px-4 py-2 text-xs font-bold rounded-xl border border-gray-200 dark:border-gray-700 text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors cursor-pointer"
+              >
+                取消
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

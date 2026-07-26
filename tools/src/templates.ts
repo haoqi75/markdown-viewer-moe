@@ -7,6 +7,7 @@ export const templates: ConfigTemplate[] = [
     description: '专门为 萌·Markdown 预览器设计的主配置文件，包含网站 Logo、图标、页脚、看板娘以及内容别名路由等可爱设置。',
     icon: 'Sparkles',
     config: {
+      type: "normal",
       title: "🌸 萌·Markdown 预览器：我的专属 Markdown 空间",
       logo: {
         text: "📝 萌·Markdown",
@@ -39,6 +40,16 @@ export const templates: ConfigTemplate[] = [
         description: '预览器的标签页标题、欢迎词和版权页脚等基础信息。',
         icon: 'Sliders',
         fields: [
+          { 
+            key: 'type', 
+            label: '配置类型 (type)', 
+            type: 'select', 
+            options: [
+              { label: 'normal - 萌·Markdown 完整预览器', value: 'normal' },
+              { label: 'release - 基础·发布配置', value: 'release' }
+            ],
+            description: '配置文件的类型标识：normal (完整版) 或 release (发布版)' 
+          },
           { key: 'title', label: '页面标题 (title)', type: 'string', description: '浏览器标签页显示的文字标题' },
           { 
             key: 'theme', 
@@ -107,6 +118,7 @@ export const templates: ConfigTemplate[] = [
     description: '标准、极简的 Markdown 预览发布配置，包含默认加载的 Markdown 文件地址与路由别名定义。',
     icon: 'Globe',
     config: {
+      type: "release",
       defaultUrl: "https://raw.githubusercontent.com/haoqi75/markdown-viewer-moe/refs/heads/main/README.md",
       aliases: {
         page: "https://cp.qtdt.qzz.io/api/raw/index",
@@ -121,6 +133,16 @@ export const templates: ConfigTemplate[] = [
         description: '配置最核心的数据源与路由别名映射表。您可以自由添加、修改或删除自定义别名。',
         icon: 'Sliders',
         fields: [
+          { 
+            key: 'type', 
+            label: '配置类型 (type)', 
+            type: 'select', 
+            options: [
+              { label: 'release - 基础·发布配置', value: 'release' },
+              { label: 'normal - 萌·Markdown 完整预览器', value: 'normal' }
+            ],
+            description: '配置文件的类型标识：release (发布版) 或 normal (完整版)' 
+          },
           { key: 'defaultUrl', label: '默认 Markdown 地址 (defaultUrl)', type: 'string', description: '预览器默认加载的 Markdown 原始文件链接' },
           { 
             key: 'theme', 
