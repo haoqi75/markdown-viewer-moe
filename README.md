@@ -87,6 +87,7 @@
 - 📦 **单文件交付** – 构建后生成 `dist/index.html`，所有资源内联，部署简单
 - 🏷️ **版本号页脚** – 页脚自动显示版本号和 Git 提交 hash，方便追踪部署版本
 - 📱 **移动端主题色** – 自动适配浏览器顶部主题色为萌粉色
+- 🎨 **颜色主题切换** – 6 种颜色主题（粉/蓝/绿/紫/白/黄），支持配置和 Release 编辑
 - 🔗 **专属链接生成** – Tools 内置 Base64 链接生成器，支持多线路网关一键合成
 - 🧩 **自定义注入** – 通过 `config.json` 的 `headInject`/`bodyInject` 自由注入 HTML
 - 💻 **代码高亮** – 集成 Prism.js，代码块美观易读
@@ -123,16 +124,17 @@
 ```html
 <!--
   ╔══════════════════════════════════════════════╗
-  ║  RELEASE CONFIG — 编辑 defaultUrl 和 aliases  ║
-  ║  修改下方 JSON 后保存，直接部署即可            ║
+  ║  RELEASE CONFIG — 编辑 defaultUrl/aliases/theme/type ║
+  ║  修改下方 JSON 后保存，直接部署即可                 ║
   ╚══════════════════════════════════════════════╝
 -->
 <script id="release-config" type="application/json">
 {
+  "type": "release",
   "defaultUrl": "https://your-default-api.com/raw/index.md",
   "aliases": {
-        "test": "https://another-api.com/raw/rypa",
-        "docs": "https://docs.example.com/readme.md"
+    "test": "https://another-api.com/raw/rypa",
+    "docs": "https://docs.example.com/readme.md"
   },
   "theme": "pink"
 }
@@ -308,6 +310,7 @@ Actions文件在：`.forgejo/workflows/static.yml`
 
 ```json
 {
+    "type": "normal",
     "title": "🌸 萌·Markdown 预览器：我的专属 Markdown 空间",
     "logo": {
         "text": "📝 萌·Markdown",
@@ -352,8 +355,9 @@ Actions文件在：`.forgejo/workflows/static.yml`
 - **toolsUrl**：Tools地址，点击上面的 `[>]` （Json编辑器）打开这个地址。
 - **headInject**：在 `</head>` 之前注入的自定义 HTML（分析代码、meta 标签等）。
 - **bodyInject**：在 `</body>` 之前注入的自定义 HTML（脚本、样式等）。
-- **logoSubUseDocTitle**：开启后（默认 true），Logo 副标题自动显示当前文档的 URL 文件名（如 `readme`）。关闭则使用 `logo.sub` 固定文本。
+- **logoSubUseDocTitle**：开启后（默认 true），Logo 副标题自动显示当前文档的 URL 文件名（如 `readme.md`）。关闭则使用 `logo.sub` 固定文本。
 - **theme**：颜色主题（默认 `pink`）。可选：`pink`（粉色）、`blue`（浅蓝）、`green`（绿色）、`purple`（紫色）、`white`（淡花白）、`yellow`（黄色）。
+- **type**：配置类别标识（`normal` 完整版 / `release` 发布版），供 tools 编辑器识别。
 
 > 访问 `?md=Base64编码的URL` 将覆盖所有配置，优先级最高。
 
@@ -376,7 +380,7 @@ markdown-viewer-moe/
 │        ├── release.yml    # 自动发布Release
 │        └── static.yml     # 自动构建并推送到GitHub Pages
 ├── images/                  # 图片
-├── script/
+├── scripts/
 │   ├── copy-tools.js       # Tools复制准备脚本
 │   └── release.js          # Release版本构建代码
 ├── src/                     # 源代码（里面包含所有内容）
