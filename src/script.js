@@ -381,8 +381,6 @@ const Renderer = (function() {
                 var segments = pathname.replace(/\/+$/, '').split('/');
                 var filename = segments[segments.length - 1] || '';
                 if (filename) {
-                    var dotIdx = filename.lastIndexOf('.');
-                    if (dotIdx > 0) filename = filename.substring(0, dotIdx);
                     var subEl = document.querySelector('.logo-sub');
                     if (subEl && filename) subEl.textContent = filename;
                 }
