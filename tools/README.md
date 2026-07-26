@@ -60,17 +60,17 @@
 ### 快速开发
 ```bash
 # 1. 安装项目依赖
-npm install
+pnpm install
 
 # 2. 启动本地开发服务 (默认运行在 3000 端口)
-npm run dev
+pnpm run dev
 ```
 
 ### 生成单网页发布版
 如果你想打包出一个完全单网页、可以双击在任何无网电脑、或托管在任意静态空间的单网页工具包：
 ```bash
 # 构建并打包 tools.html
-npm run build:html
+pnpm run build:html
 ```
 构建完成后，在 `/dist` 目录下将会产出 `tools.html`。
 

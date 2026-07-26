@@ -53,19 +53,16 @@ jobs:
       - name: Install Dependencies
         run: pnpm install
         
-      - name: Build page for release
+      - name: Build page and tools for release
         run: pnpm run build:release
-        
-      - name: Build tools for release
-        run: pnpm run build:tools --release
         
       - name: Get tools verison
         id: get_tools_version
         run: |
           if [ "${{ github.event_name }}" = "push" ]; then
             TOOLS_VERSION=$(cat tools/package.json | jq -r .version)
-            echo "tools_version=${TOOLS_VERSION}" >> $GITHUB_OUTPUT
-            echo "Tools version: ${TOOLS_VERSION}"
+            echo "tools_version=v${TOOLS_VERSION}" >> $GITHUB_OUTPUT
+            echo "Tools version: v${TOOLS_VERSION}"
           fi
         
       - name: Generate release body

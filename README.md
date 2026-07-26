@@ -180,7 +180,7 @@ pnpm dev
 ```bash
 # 全部构建
 pnpm run build
-# 代码会生成到 dist 文件夹喔~
+# 代码会生成并放在 dist 文件夹里喔~
 
 # 构建软件
 pnpm run build:page
@@ -189,17 +189,25 @@ pnpm run build:page
 # 构建Tools
 pnpm run build:tools
 # 代码会生成到 dist/tools.html 喔~
+
+# 生成404.html (仅部分服务器)
+pnpm run build:404
+# 代码会生成到 dist/404.html 喔~
 ```
 
 #### 构建Release版本
 
 ```bash
+# 全部构建
+pnpm run build:release
+# 代码会生成并放在 dist 文件夹里喔~
+
 # 构建软件
-pnpm build:release
+pnpm run build:page-release
 # 代码会生成到 dist/index.release.html 喔~
 
 # 构建Tools
-pnpm run build:tools --release
+pnpm run build:tools-release
 # 代码会生成到 dist/tools-vX.X.X.html 喔~
 ```
 
