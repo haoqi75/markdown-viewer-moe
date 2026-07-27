@@ -331,10 +331,19 @@ const Renderer = (function() {
 
             // 移除第一行标签文字
             var text = p.innerHTML.replace(/^\[!(NOTE|TIP|IMPORTANT|WARNING|CAUTION)\]\s*/i, '');
-            if (text.trim()) {
+            // breaks:true 会在独占一行的 [!WARNING] 后插入 <br>，去掉
+            text = text.replace(/^(\s*<br\s*\/?>\s*)+/i, '');
+            // 收集第一段之后的所有子元素（后续段落等）
+            var remaining = '';
+            var el = p.nextElementSibling;
+            while (el) {
+                remaining += el.outerHTML;
+                el = el.nextElementSibling;
+            }
+            if (text.trim() || remaining) {
                 var bodyEl = document.createElement('div');
                 bodyEl.className = 'callout-body';
-                bodyEl.innerHTML = text;
+                bodyEl.innerHTML = text + remaining;
                 div.appendChild(bodyEl);
             }
             bq.parentNode.replaceChild(div, bq);
@@ -432,7 +441,7 @@ const Renderer = (function() {
                 throw new Error('HTTP ' + resp.status + ' ' + resp.statusText);
             }
             var markdown = await resp.text();
-            var html = marked.parse(markdown, { gfm: true, breaks: false, pedantic: false, headerIds: false });
+            var html = marked.parse(markdown, { gfm: true, breaks: true, pedantic: false, headerIds: false });
             contentEl.innerHTML = html;
 
             // 修正相对路径图片和链接
