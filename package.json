@@ -2,6 +2,23 @@
   "name": "markdown-viewer-moe",
   "version": "1.11.0",
   "description": "由AI生成的Moe Markdown查看器",
+  "homepage": "https://moe520.haoqi75.os.kg/",
+  "keywords": [
+    "ai",
+    "gulp",
+    "html",
+    "markdown"
+  ],
+  "bugs": {
+    "url": "https://github.com/haoqi75/markdown-viewer-moe/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/haoqi75/markdown-viewer-moe.git"
+  },
+  "license": "MIT",
+  "author": "haoqi75",
+  "type": "commonjs",
   "scripts": {
     "build": "run-s build:page build:tools build:404",
     "build:release": "run-s build:page-release build:tools-release",
