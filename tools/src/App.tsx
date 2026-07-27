@@ -111,7 +111,7 @@ const DEFAULT_RELEASE_HTML = `<!DOCTYPE html>
 
 const INJECTED_VERSION = "__APP_VERSION__";
 const PLACEHOLDER_VERSION = ["__APP", "VERSION__"].join("_");
-const APP_VERSION = INJECTED_VERSION === PLACEHOLDER_VERSION ? "1.7.0" : INJECTED_VERSION;
+const APP_VERSION = INJECTED_VERSION === PLACEHOLDER_VERSION ? "1.7.1" : INJECTED_VERSION;
 
 export const THEME_CONFIGS: Record<string, {
   name: string;
@@ -216,6 +216,7 @@ export const THEME_CONFIGS: Record<string, {
 export default function App() {
   const [config, setConfig] = useState<Record<string, any>>(templates[0].config);
   const [activeTemplate, setActiveTemplate] = useState<ConfigTemplate>(templates[0]);
+  const [isConfigEdited, setIsConfigEdited] = useState<boolean>(false);
   const [viewMode, setViewMode] = useState<'visual' | 'code'>('visual');
   const [validation, setValidation] = useState<ValidationResult>({ isValid: true });
   const [isDarkMode, setIsDarkMode] = useState<boolean>(false);
@@ -398,6 +399,7 @@ export default function App() {
   const handleTemplateSelect = (tpl: ConfigTemplate) => {
     setConfig(tpl.config);
     setActiveTemplate(tpl);
+    setIsConfigEdited(false);
     showToast(`成功载入模板：${tpl.name}`, 'success');
     setMascotMessage(`成功载入「${tpl.name}」模板啦！这个配置非常实用呢！✨`);
     setMascotExpression('happy');
@@ -405,6 +407,7 @@ export default function App() {
 
   const handleConfigChange = (updated: Record<string, any>) => {
     setConfig(updated);
+    setIsConfigEdited(true);
     if (validation.isValid) {
       setMascotMessage("哇！你更新了配置参数，小萌已经帮你自动存好草稿啦～📝");
       setMascotExpression('wink');
@@ -453,6 +456,7 @@ export default function App() {
     };
     setConfig(mergedConfig);
     setActiveTemplate(tpl);
+    setIsConfigEdited(true);
     setValidation({ isValid: true });
     setIsTypeSelectModalOpen(false);
     setPendingImportJson(null);
@@ -474,6 +478,7 @@ export default function App() {
           throw new Error('导入的文件顶层必须是一个 JSON 对象 ( { ... } )。');
         }
         
+        setIsConfigEdited(true);
         const matchedTpl = findMatchingTemplateByJson(parsed);
         if (matchedTpl) {
           const mergedConfig = { ...matchedTpl.config, ...parsed };
@@ -519,10 +524,18 @@ export default function App() {
           return;
         }
 
-        if (json) {
-          setUploadedHtmlContent(htmlText);
-          setUploadedHtmlName(file.name);
-          
+        setUploadedHtmlContent(htmlText);
+        setUploadedHtmlName(file.name);
+
+        if (isConfigEdited) {
+          // Keep user's edited/imported JSON configuration without losing changes!
+          const mergedConfig = json ? { ...json, ...config } : { ...config };
+          setConfig(mergedConfig);
+          showToast(`已成功载入 ${file.name}，并保留您当前编辑的配置！`, 'success');
+          setMascotMessage(`好耶！已成功关联「${file.name}」，并为您完整保留了当前已编辑/导入的配置 JSON！修改满意后点击打包下载即可导出～✨`);
+          setMascotExpression('excited');
+        } else if (json) {
+          // If user hasn't edited anything yet, load config extracted from uploaded HTML
           const matchedTpl = findMatchingTemplateByJson(json);
           if (matchedTpl) {
             const mergedConfig = { ...matchedTpl.config, ...json };
@@ -538,6 +551,10 @@ export default function App() {
             setMascotMessage(`已从「${file.name}」提取配置，但未包含 type，请选择要匹配的配置样式～🌸`);
             setMascotExpression('wink');
           }
+        } else {
+          showToast(`已成功载入 ${file.name}！`, 'success');
+          setMascotMessage(`已为您成功关联「${file.name}」！接下来可以修改参数并随时打包导出啦！✨`);
+          setMascotExpression('happy');
         }
       } catch (err: any) {
         showToast(`加载 HTML 失败: ${err.message}`, 'error');
@@ -1515,7 +1532,7 @@ export default function App() {
         
         {/* index.release.html Release Injector Tools */}
         {activeTemplate.id === 'markdown_moe' ? (
-          <div className="bg-gray-50/55 dark:bg-[#1a0f16]/60 border border-gray-200/50 dark:border-pink-950/20 rounded-3xl p-6 mb-8 shadow-inner transition-all animate-fade-in">
+          <div className="bg-gray-50/55 dark:bg-[#1a0f16]/60 border border-gray-200/50 dark:border-gray-800 rounded-3xl p-6 mb-8 shadow-inner transition-all animate-fade-in">
             <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
               <div className="flex items-start space-x-3.5 opacity-65">
                 <div className="p-2.5 bg-gray-200 dark:bg-gray-800 rounded-2xl shrink-0 text-gray-400 dark:text-gray-500">
@@ -1537,7 +1554,11 @@ export default function App() {
                     const basicTpl = templates.find(t => t.id === 'markdown_basic');
                     if (basicTpl) handleTemplateSelect(basicTpl);
                   }}
-                  className="px-4 py-2 text-xs font-bold rounded-2xl bg-white hover:bg-pink-50 border border-pink-200 text-pink-600 dark:border-pink-800 dark:bg-[#251620] dark:text-pink-300 dark:hover:bg-pink-950/20 transition-all cursor-pointer shadow-xs"
+                  className="px-4 py-2 text-xs font-bold rounded-2xl bg-white dark:bg-[#251620] border transition-all cursor-pointer shadow-xs"
+                  style={{
+                    borderColor: activePalette.primaryBorder,
+                    color: activePalette.primaryAccent
+                  }}
                 >
                   切换到基础发布模板
                 </button>
@@ -1545,10 +1566,21 @@ export default function App() {
             </div>
           </div>
         ) : (
-          <div className="bg-gradient-to-br from-pink-50/40 to-white dark:from-[#2e1927]/40 dark:to-[#251620]/95 border-2 border-pink-100/70 dark:border-pink-900/40 rounded-3xl p-6 mb-8 shadow-md">
+          <div 
+            className="bg-white/90 dark:bg-[#251620]/90 border-2 rounded-3xl p-6 mb-8 shadow-md transition-all duration-300"
+            style={{
+              borderColor: activePalette.primaryBorder
+            }}
+          >
             <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-4">
               <div className="flex items-start space-x-3.5">
-                <div className="p-2.5 bg-pink-100 dark:bg-pink-950/80 rounded-2xl shrink-0 text-pink-500">
+                <div 
+                  className="p-2.5 rounded-2xl shrink-0"
+                  style={{
+                    backgroundColor: activePalette.primaryLight,
+                    color: activePalette.primaryAccent
+                  }}
+                >
                   <Layers className="h-5 w-5" />
                 </div>
                 <div>
@@ -1556,7 +1588,7 @@ export default function App() {
                     📦 index.release.html 预发布端配置工具 (v{APP_VERSION})
                   </h3>
                   <p className="mt-1 text-xs text-gray-500 dark:text-gray-300 font-medium max-w-2xl leading-relaxed">
-                    必须先在右侧上传您现有的 <code className="bg-pink-100/40 dark:bg-pink-950/40 px-1 py-0.5 rounded text-pink-600 font-mono text-2xs">index.release.html</code> 文件，系统自动提取其中 <code className="bg-pink-100/40 dark:bg-pink-950/40 px-1 py-0.5 rounded text-pink-600 font-mono text-2xs">id="release-config"</code> 的 JSON 后方能允许重新打包下载。
+                    必须先在右侧上传您现有的 <code className="px-1 py-0.5 rounded font-mono text-2xs font-bold" style={{ backgroundColor: activePalette.primaryAccent + '15', color: activePalette.primaryAccent }}>index.release.html</code> 文件，系统自动提取其中 <code className="px-1 py-0.5 rounded font-mono text-2xs font-bold" style={{ backgroundColor: activePalette.primaryAccent + '15', color: activePalette.primaryAccent }}>id="release-config"</code> 的 JSON 后方能允许重新打包下载。
                   </p>
                 </div>
               </div>
@@ -1566,9 +1598,13 @@ export default function App() {
                   id="btn-upload-html"
                   type="button"
                   onClick={() => htmlInputRef.current?.click()}
-                  className="flex items-center space-x-1.5 px-4 py-2.5 text-xs font-bold rounded-2xl border border-pink-200 bg-white hover:bg-pink-50 text-pink-600 dark:border-pink-800 dark:bg-[#251620] dark:text-pink-300 dark:hover:bg-pink-950/20 transition-all shadow-xs cursor-pointer"
+                  className="flex items-center space-x-1.5 px-4 py-2.5 text-xs font-bold rounded-2xl border bg-white dark:bg-[#251620] transition-all shadow-xs cursor-pointer"
+                  style={{
+                    borderColor: activePalette.primaryBorder,
+                    color: activePalette.primaryAccent
+                  }}
                 >
-                  <Upload className="h-4 w-4 shrink-0 text-pink-500" />
+                  <Upload className="h-4 w-4 shrink-0" style={{ color: activePalette.primaryAccent }} />
                   <span>上传 index.release.html</span>
                 </button>
                 <input
@@ -1587,9 +1623,13 @@ export default function App() {
                   disabled={!uploadedHtmlContent}
                   className={`flex items-center space-x-1.5 px-5 py-2.5 text-xs font-bold rounded-2xl transition-all shadow-md ${
                     uploadedHtmlContent 
-                      ? "bg-pink-500 hover:bg-pink-600 text-white cursor-pointer" 
+                      ? "text-white cursor-pointer" 
                       : "bg-gray-100 dark:bg-gray-800 text-gray-400 dark:text-gray-500 cursor-not-allowed shadow-none"
                   }`}
+                  style={uploadedHtmlContent ? {
+                    backgroundColor: activePalette.primaryAccent,
+                    boxShadow: `0 4px 14px ${activePalette.shadow}`
+                  } : undefined}
                 >
                   <Download className="h-4 w-4 shrink-0" />
                   <span>打包并下载 index.edited.html</span>
@@ -1737,7 +1777,7 @@ export default function App() {
               <div className="flex flex-col">
                 <label className="text-xs font-bold text-[#4a353d] dark:text-gray-300 mb-2 flex justify-between items-center">
                   <span>📝 输入 Markdown 原始 Raw 链接 (Markdown URL)</span>
-                  <span className="text-pink-500 font-bold">必填</span>
+                  <span className="font-bold" style={{ color: activePalette.primaryAccent }}>必填</span>
                 </label>
                 <textarea
                   value={markdownUrl}
@@ -1752,7 +1792,7 @@ export default function App() {
                   }}
                   placeholder="在此输入或粘贴原始的 Markdown 文件直链，例如：
 https://raw.githubusercontent.com/haoqi75/markdown-viewer-moe/main/README.md"
-                  className="w-full h-24 px-4 py-3 text-xs font-medium rounded-2xl border border-pink-100 dark:border-pink-950/40 bg-pink-50/10 dark:bg-transparent text-gray-700 dark:text-gray-200 placeholder-gray-400 dark:placeholder-gray-600 focus:outline-hidden focus:border-pink-400 focus:ring-1 focus:ring-pink-400 resize-none transition-all"
+                  className="w-full h-24 px-4 py-3 text-xs font-medium rounded-2xl border border-gray-200 dark:border-gray-800 bg-gray-50/20 dark:bg-gray-900/20 text-gray-700 dark:text-gray-200 placeholder-gray-400 dark:placeholder-gray-600 focus:outline-hidden resize-none transition-all"
                 />
 
                 <div className="mt-4">
@@ -1766,17 +1806,21 @@ https://raw.githubusercontent.com/haoqi75/markdown-viewer-moe/main/README.md"
                         setPrefixPreset('kg');
                         handleGenerateMoeUrl(markdownUrl, 'kg', customPrefix);
                       }}
-                      className={`px-3 py-2 text-3xs sm:text-2xs font-bold rounded-xl border text-left transition-all ${
-                        prefixPreset === 'kg'
-                          ? "border-pink-400 bg-pink-500/10 text-pink-600 dark:text-pink-300 dark:border-pink-600"
-                          : "border-pink-100/50 dark:border-pink-950/40 hover:bg-pink-50/30 text-gray-600 dark:text-gray-400"
-                      }`}
+                      className="px-3 py-2 text-3xs sm:text-2xs font-bold rounded-xl border text-left transition-all cursor-pointer"
+                      style={prefixPreset === 'kg' ? {
+                        borderColor: activePalette.primaryAccent,
+                        backgroundColor: activePalette.primaryAccent + '15',
+                        color: activePalette.primaryAccent
+                      } : {
+                        borderColor: activePalette.primaryBorder + '80',
+                        color: undefined
+                      }}
                     >
                       <div className="font-bold flex items-center gap-1">
-                        <Globe className="h-3 w-3 shrink-0 text-pink-500" />
+                        <Globe className="h-3 w-3 shrink-0" style={{ color: activePalette.primaryAccent }} />
                         <span>主线路 (.os.kg)</span>
                       </div>
-                      <div className="text-4xs text-gray-400 mt-0.5 font-mono truncate">moe520.haoqi75.os.kg</div>
+                      <div className="text-4xs text-gray-400 dark:text-gray-500 mt-0.5 font-mono truncate">moe520.haoqi75.os.kg</div>
                     </button>
 
                     <button
@@ -1785,17 +1829,21 @@ https://raw.githubusercontent.com/haoqi75/markdown-viewer-moe/main/README.md"
                         setPrefixPreset('mt');
                         handleGenerateMoeUrl(markdownUrl, 'mt', customPrefix);
                       }}
-                      className={`px-3 py-2 text-3xs sm:text-2xs font-bold rounded-xl border text-left transition-all ${
-                        prefixPreset === 'mt'
-                          ? "border-pink-400 bg-pink-500/10 text-pink-600 dark:text-pink-300 dark:border-pink-600"
-                          : "border-pink-100/50 dark:border-pink-950/40 hover:bg-pink-50/30 text-gray-600 dark:text-gray-400"
-                      }`}
+                      className="px-3 py-2 text-3xs sm:text-2xs font-bold rounded-xl border text-left transition-all cursor-pointer"
+                      style={prefixPreset === 'mt' ? {
+                        borderColor: activePalette.primaryAccent,
+                        backgroundColor: activePalette.primaryAccent + '15',
+                        color: activePalette.primaryAccent
+                      } : {
+                        borderColor: activePalette.primaryBorder + '80',
+                        color: undefined
+                      }}
                     >
                       <div className="font-bold flex items-center gap-1">
-                        <Globe className="h-3 w-3 shrink-0 text-pink-500" />
+                        <Globe className="h-3 w-3 shrink-0" style={{ color: activePalette.primaryAccent }} />
                         <span>备用线路 (.cn.mt)</span>
                       </div>
-                      <div className="text-4xs text-gray-400 mt-0.5 font-mono truncate">moe520.haoqi75.cn.mt</div>
+                      <div className="text-4xs text-gray-400 dark:text-gray-500 mt-0.5 font-mono truncate">moe520.haoqi75.cn.mt</div>
                     </button>
 
                     <button
@@ -1804,17 +1852,21 @@ https://raw.githubusercontent.com/haoqi75/markdown-viewer-moe/main/README.md"
                         setPrefixPreset('custom');
                         handleGenerateMoeUrl(markdownUrl, 'custom', customPrefix);
                       }}
-                      className={`px-3 py-2 text-3xs sm:text-2xs font-bold rounded-xl border text-left transition-all ${
-                        prefixPreset === 'custom'
-                          ? "border-pink-400 bg-pink-500/10 text-pink-600 dark:text-pink-300 dark:border-pink-600"
-                          : "border-pink-100/50 dark:border-pink-950/40 hover:bg-pink-50/30 text-gray-600 dark:text-gray-400"
-                      }`}
+                      className="px-3 py-2 text-3xs sm:text-2xs font-bold rounded-xl border text-left transition-all cursor-pointer"
+                      style={prefixPreset === 'custom' ? {
+                        borderColor: activePalette.primaryAccent,
+                        backgroundColor: activePalette.primaryAccent + '15',
+                        color: activePalette.primaryAccent
+                      } : {
+                        borderColor: activePalette.primaryBorder + '80',
+                        color: undefined
+                      }}
                     >
                       <div className="font-bold flex items-center gap-1">
-                        <Sparkles className="h-3 w-3 shrink-0 text-pink-500" />
+                        <Sparkles className="h-3 w-3 shrink-0" style={{ color: activePalette.primaryAccent }} />
                         <span>自定义前缀</span>
                       </div>
-                      <div className="text-4xs text-gray-400 mt-0.5 font-mono truncate">手动输入特定前缀</div>
+                      <div className="text-4xs text-gray-400 dark:text-gray-500 mt-0.5 font-mono truncate">手动输入特定前缀</div>
                     </button>
                   </div>
                 </div>
@@ -1829,7 +1881,7 @@ https://raw.githubusercontent.com/haoqi75/markdown-viewer-moe/main/README.md"
                         handleGenerateMoeUrl(markdownUrl, 'custom', e.target.value);
                       }}
                       placeholder="请输入前缀，例如 http://localhost:3000/"
-                      className="w-full px-3.5 py-2 text-xs font-mono rounded-xl border border-pink-100 dark:border-pink-950/40 bg-transparent text-gray-700 dark:text-gray-200 focus:outline-hidden focus:border-pink-400 focus:ring-1 focus:ring-pink-400"
+                      className="w-full px-3.5 py-2 text-xs font-mono rounded-xl border border-gray-200 dark:border-gray-800 bg-transparent text-gray-700 dark:text-gray-200 focus:outline-hidden"
                     />
                   </div>
                 )}
@@ -1872,7 +1924,7 @@ https://raw.githubusercontent.com/haoqi75/markdown-viewer-moe/main/README.md"
                   readOnly
                   value={generatedMoeUrl}
                   placeholder="在左侧输入 Markdown 原始直链后，系统将在此处自动生成对应的专属加密加载链接..."
-                  className="w-full h-32 px-4 py-3 text-xs font-mono rounded-2xl border border-pink-100 dark:border-pink-950/40 bg-gray-50/30 dark:bg-gray-900/10 text-slate-800 dark:text-slate-100 placeholder-gray-400 dark:placeholder-gray-600 focus:outline-hidden resize-none"
+                  className="w-full h-32 px-4 py-3 text-xs font-mono rounded-2xl border border-gray-200 dark:border-gray-800 bg-gray-50/30 dark:bg-gray-900/10 text-slate-800 dark:text-slate-100 placeholder-gray-400 dark:placeholder-gray-600 focus:outline-hidden resize-none"
                 />
 
                 <div className="mt-4 grid grid-cols-2 gap-3.5">
@@ -1895,7 +1947,11 @@ https://raw.githubusercontent.com/haoqi75/markdown-viewer-moe/main/README.md"
                       href={generatedMoeUrl}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="flex items-center justify-center space-x-1.5 px-4 py-2.5 text-xs font-bold rounded-2xl bg-pink-500 hover:bg-pink-600 text-white transition-all shadow-sm cursor-pointer"
+                      className="flex items-center justify-center space-x-1.5 px-4 py-2.5 text-xs font-bold text-white transition-all shadow-sm cursor-pointer"
+                      style={{
+                        backgroundColor: activePalette.primaryAccent,
+                        boxShadow: `0 4px 12px ${activePalette.shadow}`
+                      }}
                     >
                       <ExternalLink className="h-3.5 w-3.5 shrink-0" />
                       <span>立即打开测试</span>
@@ -1930,14 +1986,18 @@ https://raw.githubusercontent.com/haoqi75/markdown-viewer-moe/main/README.md"
                   value={base64Input}
                   onChange={(e) => setBase64Input(e.target.value)}
                   placeholder="在此处输入待加密的普通文本，或粘贴需要解密的 Base64 字符串..."
-                  className="w-full h-32 px-4 py-3 text-xs font-medium rounded-2xl border border-pink-100 dark:border-pink-950/40 bg-pink-50/10 dark:bg-transparent text-gray-700 dark:text-gray-200 placeholder-gray-400 dark:placeholder-gray-600 focus:outline-hidden focus:border-pink-400 focus:ring-1 focus:ring-pink-400 resize-none transition-all"
+                  className="w-full h-32 px-4 py-3 text-xs font-medium rounded-2xl border border-gray-200 dark:border-gray-800 bg-gray-50/20 dark:bg-gray-900/20 text-gray-700 dark:text-gray-200 placeholder-gray-400 dark:placeholder-gray-600 focus:outline-hidden resize-none transition-all"
                 />
                 
                 <div className="mt-3 flex flex-wrap gap-2">
                   <button
                     type="button"
                     onClick={handleBase64Encode}
-                    className="flex-1 flex items-center justify-center space-x-1.5 px-3 py-2.5 text-xs font-bold rounded-2xl bg-pink-500 hover:bg-pink-600 text-white transition-all shadow-sm cursor-pointer"
+                    className="flex-1 flex items-center justify-center space-x-1.5 px-3 py-2.5 text-xs font-bold rounded-2xl text-white transition-all cursor-pointer"
+                    style={{
+                      backgroundColor: activePalette.primaryAccent,
+                      boxShadow: `0 4px 12px ${activePalette.shadow}`
+                    }}
                   >
                     <Lock className="h-3.5 w-3.5 shrink-0" />
                     <span>加密 (Encode)</span>
@@ -1946,9 +2006,13 @@ https://raw.githubusercontent.com/haoqi75/markdown-viewer-moe/main/README.md"
                   <button
                     type="button"
                     onClick={handleBase64Decode}
-                    className="flex-1 flex items-center justify-center space-x-1.5 px-3 py-2.5 text-xs font-bold rounded-2xl bg-white hover:bg-pink-50 border border-pink-200 text-pink-600 dark:border-pink-800 dark:bg-[#251620] dark:text-pink-300 dark:hover:bg-pink-950/20 transition-all shadow-xs cursor-pointer"
+                    className="flex-1 flex items-center justify-center space-x-1.5 px-3 py-2.5 text-xs font-bold rounded-2xl bg-white dark:bg-[#251620] border transition-all shadow-xs cursor-pointer"
+                    style={{
+                      borderColor: activePalette.primaryBorder,
+                      color: activePalette.primaryAccent
+                    }}
                   >
-                    <Unlock className="h-3.5 w-3.5 shrink-0 text-pink-500" />
+                    <Unlock className="h-3.5 w-3.5 shrink-0" style={{ color: activePalette.primaryAccent }} />
                     <span>解密 (Decode)</span>
                   </button>
 
@@ -1977,7 +2041,7 @@ https://raw.githubusercontent.com/haoqi75/markdown-viewer-moe/main/README.md"
                   readOnly
                   value={base64Output}
                   placeholder="运算结果将显示在这里..."
-                  className="w-full h-32 px-4 py-3 text-xs font-mono rounded-2xl border border-pink-100 dark:border-pink-950/40 bg-gray-50/30 dark:bg-gray-900/10 text-slate-800 dark:text-slate-100 placeholder-gray-400 dark:placeholder-gray-600 focus:outline-hidden resize-none"
+                  className="w-full h-32 px-4 py-3 text-xs font-mono rounded-2xl border border-gray-200 dark:border-gray-800 bg-gray-50/30 dark:bg-gray-900/10 text-slate-800 dark:text-slate-100 placeholder-gray-400 dark:placeholder-gray-600 focus:outline-hidden resize-none"
                 />
 
                 <div className="mt-3 flex">
@@ -2001,9 +2065,9 @@ https://raw.githubusercontent.com/haoqi75/markdown-viewer-moe/main/README.md"
         </div>
 
         {/* Footer */}
-        <footer className={`mt-16 pt-6 border-t text-center text-xs text-[#a3808c] dark:text-[#735862] ${isDarkMode ? 'border-pink-950/20' : 'border-pink-100/50'}`}>
+        <footer className="mt-16 pt-6 border-t border-gray-200/80 dark:border-gray-800/80 text-center text-xs text-[#a3808c] dark:text-[#735862]">
           <p>© 2026 🌸 小白配置文件简易生成编辑器 · 萌化极简版 v{APP_VERSION} 🌸 所有配置均在浏览器本地保存解析，100% 安全隐私。</p>
-          <div className="mt-2.5 flex justify-center space-x-3 text-pink-500/60 dark:text-pink-400/40 font-semibold">
+          <div className="mt-2.5 flex justify-center space-x-3 font-semibold" style={{ color: activePalette.primaryAccent }}>
             <span>支持格式自动转换</span>
             <span>•</span>
             <span>自动匹配属性类型</span>
@@ -2015,7 +2079,12 @@ https://raw.githubusercontent.com/haoqi75/markdown-viewer-moe/main/README.md"
               href="https://github.com/haoqi75/markdown-viewer-moe" 
               target="_blank" 
               rel="noopener noreferrer"
-              className="inline-flex items-center space-x-1.5 px-3.5 py-1.5 rounded-2xl bg-pink-50/50 hover:bg-pink-100 text-pink-600 dark:bg-pink-950/20 dark:hover:bg-pink-900/30 dark:text-pink-400 transition-all text-xs font-bold border border-pink-100/30 dark:border-pink-900/20 cursor-pointer shadow-xs"
+              className="inline-flex items-center space-x-1.5 px-3.5 py-1.5 rounded-2xl transition-all text-xs font-bold cursor-pointer shadow-xs border"
+              style={{
+                backgroundColor: activePalette.primaryLight,
+                color: activePalette.primaryAccent,
+                borderColor: activePalette.primaryBorder
+              }}
             >
               <Github className="h-3.5 w-3.5 shrink-0" />
               <span>GitHub 仓库 (haoqi75)</span>
@@ -2043,7 +2112,7 @@ https://raw.githubusercontent.com/haoqi75/markdown-viewer-moe/main/README.md"
                   请选择文件样式 (Select Config Style)
                 </h3>
                 <p className="text-xs text-gray-500 dark:text-gray-400 font-bold mt-0.5">
-                  导入的 JSON 未包含 <code className="bg-gray-100 dark:bg-gray-800 px-1 py-0.5 rounded text-pink-500 font-mono text-2xs">type</code> 属性，请选择对应的模板样式：
+                  导入的 JSON 未包含 <code className="bg-gray-100 dark:bg-gray-800 px-1 py-0.5 rounded font-mono text-2xs" style={{ color: activePalette.primaryAccent }}>type</code> 属性，请选择对应的模板样式：
                 </p>
               </div>
             </div>
@@ -2054,7 +2123,7 @@ https://raw.githubusercontent.com/haoqi75/markdown-viewer-moe/main/README.md"
                   key={tpl.id}
                   type="button"
                   onClick={() => handleSelectStyleForImport(tpl)}
-                  className="w-full text-left p-4 rounded-2xl border-2 border-gray-100 dark:border-gray-800/80 bg-gray-50/50 dark:bg-gray-900/40 hover:border-pink-300 dark:hover:border-pink-800 hover:bg-white dark:hover:bg-gray-900 transition-all cursor-pointer group flex items-start space-x-3.5"
+                  className="w-full text-left p-4 rounded-2xl border-2 border-gray-100 dark:border-gray-800/80 bg-gray-50/50 dark:bg-gray-900/40 hover:bg-white dark:hover:bg-gray-900 transition-all cursor-pointer group flex items-start space-x-3.5"
                 >
                   <div 
                     className="p-2.5 rounded-xl shrink-0 mt-0.5 group-hover:scale-110 transition-transform"
@@ -2067,7 +2136,7 @@ https://raw.githubusercontent.com/haoqi75/markdown-viewer-moe/main/README.md"
                   </div>
                   <div className="flex-1 min-w-0">
                     <div className="flex items-center justify-between mb-1">
-                      <span className="font-bold text-sm text-gray-800 dark:text-gray-100 group-hover:text-pink-600 dark:group-hover:text-pink-400">
+                      <span className="font-bold text-sm text-gray-800 dark:text-gray-100">
                         {tpl.name}
                       </span>
                       <span 
