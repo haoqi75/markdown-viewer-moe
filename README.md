@@ -8,22 +8,39 @@
 
 <div align="center">
 
-[![GitHub License](https://img.shields.io/github/license/haoqi75/markdown-viewer-moe?style=for-the-badge&logo=github&color=pink)](LICENSE)
+[![License: MIT](https://img.shields.io/badge/License-MIT-pink.svg?style=for-the-badge)](LICENSE)
+[![Node.js](https://img.shields.io/badge/Node.js-24.x-green?logo=node.js&style=for-the-badge)](https://nodejs.org)
 [![pnpm](https://img.shields.io/badge/pnpm-11.x-blue?logo=pnpm&style=for-the-badge)](https://pnpm.io)
 [![Gulp](https://img.shields.io/badge/Gulp-5.x-red?logo=gulp&style=for-the-badge)](https://gulpjs.com)
-[![Platform](https://img.shields.io/badge/platform-Web-emerald.svg?style=for-the-badge&logo=codeforces)](https://github.com/haoqi75/markdown-viewer-moe)
+[![Platform](https://img.shields.io/badge/platform-Web-emerald.svg?style=for-the-badge&logo=codeforces)](https://moe520.haoqi75.os.kg/)
+
 [![GitHub Tag](https://img.shields.io/github/v/tag/haoqi75/markdown-viewer-moe?style=for-the-badge&logo=github&label=%E7%89%88%E6%9C%AC&color=pink)](https://github.com/haoqi75/markdown-viewer-moe/tags)
 [![GitHub Repo stars](https://img.shields.io/github/stars/haoqi75/markdown-viewer-moe?style=for-the-badge&logo=github&label=%E2%AD%90%20Stars&color=yellow)](https://github.com/haoqi75/markdown-viewer-moe/stargazers)
 [![GitHub Downloads](https://img.shields.io/github/downloads/haoqi75/markdown-viewer-moe/total?style=for-the-badge&logo=github&label=%E4%B8%8B%E8%BD%BD%E9%87%8F&color=cyan)](https://github.com/haoqi75/markdown-viewer-moe/releases)
-[![GitHub forks](https://img.shields.io/github/forks/haoqi75/markdown-viewer-moe?style=for-the-badge&logo=github&labelColor=blue&color=lightpink)](https://github.com/haoqi75/markdown-viewer-moe/forks)
-[![Build and deploy to Github Pages](https://img.shields.io/github/actions/workflow/status/haoqi75/markdown-viewer-moe/static.yml?style=for-the-badge&label=Build%20and%20deploy%20to%20Github%20Pages)](https://github.com/haoqi75/markdown-viewer-moe/actions/workflows/static.yml)
-[![Build to GitHub Releases](https://img.shields.io/github/actions/workflow/status/haoqi75/markdown-viewer-moe/release.yml?style=for-the-badge&label=Build%20to%20GitHub%20Releases&labelColor=violet)](https://github.com/haoqi75/markdown-viewer-moe/actions/workflows/release.yml)
+[![GitHub forks](https://img.shields.io/github/forks/haoqi75/markdown-viewer-moe?style=for-the-badge&logo=github&label=%E5%88%86%E5%8F%89%20\(Forks\)&labelColor=blue&color=lightpink)](https://github.com/haoqi75/markdown-viewer-moe/forks)
+
+[![Codeberg Repo Stars](https://img.shields.io/gitea/stars/haoqi75/markdown-viewer-moe?gitea_url=https%3A%2F%2Fcodeberg.org%2F&style=for-the-badge&logo=codeberg&label=%E2%AD%90%20Stars&color=yellow)](https://codeberg.org/haoqi75/markdown-viewer-moe/stars)
+[![Codeberg Repo Forks](https://img.shields.io/gitea/forks/haoqi75/markdown-viewer-moe?gitea_url=https%3A%2F%2Fcodeberg.org%2F&style=for-the-badge&logo=Codeberg&logoColor=white&label=%E5%88%86%E5%8F%89%20\(Forks\)&labelColor=blue&color=pink)](https://codeberg.org/haoqi75/markdown-viewer-moe/forks)
 
 </div>
 
 ---
 
+<div align="center">
+
+观看次数：
+
 ![:markdown-viewer-moe](https://count.getloli.com/@:markdown-viewer-moe?theme=moebooru&padding=1)
+
+状态：
+
+[![Build and deploy to Github Pages](https://img.shields.io/github/actions/workflow/status/haoqi75/markdown-viewer-moe/static.yml?style=for-the-badge&logo=github&label=Build%20and%20deploy%20to%20Github%20Pages)](https://github.com/haoqi75/markdown-viewer-moe/actions/workflows/static.yml)
+[![Build to GitHub Releases](https://img.shields.io/github/actions/workflow/status/haoqi75/markdown-viewer-moe/release.yml?style=for-the-badge&logo=github&label=Build%20to%20GitHub%20Releases&labelColor=violet)](https://github.com/haoqi75/markdown-viewer-moe/actions/workflows/release.yml)
+
+[![Github Website](https://img.shields.io/website?url=https%3A%2F%2Fmoe520.haoqi75.os.kg&up_message=%E6%B4%BB%E8%B7%83&up_color=cyan&down_message=%E6%B2%89%E9%97%B7&down_color=violet&style=for-the-badge&logo=GitHub&logoColor=black&label=Github%E7%BD%91%E7%AB%99&labelColor=pink)](https://moe520.haoqi75.os.kg/)
+[![Codeberg Website](https://img.shields.io/website?url=https%3A%2F%2Fmoe520.haoqi75.cn.mt&up_message=%E6%B4%BB%E8%B7%83&up_color=cyan&down_message=%E6%B2%89%E9%97%B7&down_color=violet&style=for-the-badge&logo=Codeberg&logoColor=black&label=Codeberg%E7%BD%91%E7%AB%99&labelColor=pink)](https://moe520.haoqi75.cn.mt/)
+
+</div>
 
 此作品基于[AI Markdown](https://github.com/haoqi75/haoqi75)（我的老版首页，已停止更新）生成和修复内容，专门给Moe爱好提供的Markdown预览器。功能增强，修复了老版本错误。
 
@@ -128,7 +145,8 @@
 
 ### 下载编辑好的
 
-[![GitHub Release](https://img.shields.io/github/v/release/haoqi75/markdown-viewer-moe?display_name=release&style=for-the-badge)](https://github.com/haoqi75/markdown-viewer-moe/releases)
+[![GitHub Release](https://img.shields.io/github/v/release/haoqi75/markdown-viewer-moe?display_name=release&logo=github&style=for-the-badge)](https://github.com/haoqi75/markdown-viewer-moe/releases)
+[![Codeberg Release](https://img.shields.io/gitea/v/release/haoqi75/markdown-viewer-moe?gitea_url=https%3A%2F%2Fcodeberg.org%2F&display_name=release&style=for-the-badge&logo=Codeberg)](https://codeberg.org/haoqi75/markdown-viewer-moe/releases)
 
 从**v1.4.0**后，支持直接编辑index.html，从 [Releases](https://github.com/haoqi75/markdown-viewer-moe/releases) （或者[备份仓库Release](https://codeberg.org/haoqi75/markdown-viewer-moe/releases)）下载一个叫`index.release.html`的文件，直接使用记事本编辑上面的内容：
 ```html
