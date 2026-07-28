@@ -374,26 +374,39 @@ Actions文件在：`.forgejo/workflows/static.yml`
 }
 ```
 
+**配置设置**：
+
+> [!WARNING]
+> 版本**v1.7.0**后，配置文件更改了方式：
+>
+> 配置文件要包含 `"type"` 。未包含 `"type"` 得需要选择你的配置文件模板方式。
+
+- **type**：配置类别标识（`normal` 完整版 / `release` 发布版），供 tools 编辑器识别。
+
 **基本内容**：
 
 - **defaultUrl**：当没有匹配别名或 `?md=` 参数时的默认文档地址。
 - **aliases**：键为访问路径（如 `?p=vmdownload`），值为实际的 Markdown 文件 URL。
 
-**高级内容**：
+**自定义**：
 
-- **title**：标题。
+- **title**：页面标题。
 - **logo**：头部文字。
+  * **logo.text**：头部文字标题。
+  * **logo.sub**：头部文字副标题（或文件命名）。
 - **logoImage**：头部图标。
 - **icon**：网页图标。
 - **footer**：页脚内容（支持Markdown格式）。
 - **mascot**：可爱吉祥物。
 - **tocWelcome**：大纲欢迎词。
-- **toolsUrl**：Tools地址，点击上面的 `[>]` （Json编辑器）打开这个地址。
+- **theme**：颜色主题（默认 `pink`）。可选：`pink`（粉色）、`blue`（浅蓝）、`green`（绿色）、`purple`（紫色）、`white`（淡花白）、`yellow`（黄色）。
+
+**高级内容**：
+
 - **headInject**：在 `</head>` 之前注入的自定义 HTML（分析代码、meta 标签等）。
 - **bodyInject**：在 `</body>` 之前注入的自定义 HTML（脚本、样式等）。
+- **toolsUrl**：Tools地址，点击上面的 `[>]` （Json编辑器）打开这个地址。
 - **logoSubUseDocTitle**：开启后（默认 true），Logo 副标题自动显示当前文档的 URL 文件名（如 `readme.md`）。关闭则使用 `logo.sub` 固定文本。
-- **theme**：颜色主题（默认 `pink`）。可选：`pink`（粉色）、`blue`（浅蓝）、`green`（绿色）、`purple`（紫色）、`white`（淡花白）、`yellow`（黄色）。
-- **type**：配置类别标识（`normal` 完整版 / `release` 发布版），供 tools 编辑器识别。
 
 > 访问 `?md=Base64编码的URL` 将覆盖所有配置，优先级最高。
 
@@ -417,6 +430,7 @@ markdown-viewer-moe/
 │        └── static.yml     # 自动构建并推送到GitHub Pages
 ├── images/                  # 图片
 ├── scripts/
+│   ├── build-404.js        # 构建404页面
 │   ├── copy-tools.js       # Tools复制准备脚本
 │   └── release.js          # Release版本构建代码
 ├── src/                     # 源代码（里面包含所有内容）
