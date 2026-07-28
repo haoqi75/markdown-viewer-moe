@@ -23,7 +23,10 @@
     "tools"
   ],
   "scripts": {
+    "prebuild": "node scripts/check-env.js",
     "build": "run-s build:page build:tools build:404",
+    "postbuild": "node scripts/verify-build.js",
+    "prebuild:release": "node scripts/check-env.js",
     "build:release": "run-s build:page-release build:tools-release",
     "build:page": "gulp build",
     "build:page-release": "run-s build:page && node scripts/release.js",

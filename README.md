@@ -431,8 +431,10 @@ markdown-viewer-moe/
 ├── images/                  # 图片
 ├── scripts/
 │   ├── build-404.js        # 构建404页面
+│   ├── check-env.js        # 确认依赖
 │   ├── copy-tools.js       # Tools复制准备脚本
-│   └── release.js          # Release版本构建代码
+│   ├── release.js          # Release版本构建代码
+│   └── verify-build.js     # 确认构建正常
 ├── src/                     # 源代码（里面包含所有内容）
 ├── dist/                   # 构建输出（包含 index.html、index.release.html、tools.html和tools-vX.X.X.html）
 ├── tools/                  # 小白也能编辑内容
