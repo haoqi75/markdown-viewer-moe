@@ -19,6 +19,9 @@
   "license": "MIT",
   "author": "haoqi75",
   "type": "commonjs",
+    "workspaces": [
+    "tools"
+  ],
   "scripts": {
     "build": "run-s build:page build:tools build:404",
     "build:release": "run-s build:page-release build:tools-release",
@@ -30,6 +33,10 @@
     "dev": "gulp",
     "dev:tools": "pnpm run --filter moe-json-editor dev",
     "start": "gulp"
+  },
+    "dependencies": {
+    "jimp": "^1.6.1",
+    "npm-run-all2": "^9.0.2"
   },
   "devDependencies": {
     "browser-sync": "^3.0.4",
@@ -43,13 +50,6 @@
     "gulp-rename": "^2.1.0",
     "gulp-replace": "^1.1.4",
     "gulp-uglify": "^3.0.2",
-    "npm-run-all2": "^9.0.2",
     "uglify-js": "^3.19.3"
-  },
-  "workspaces": [
-    "tools"
-  ],
-  "dependencies": {
-    "jimp": "^1.6.1"
   }
 }

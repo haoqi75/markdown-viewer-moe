@@ -34,11 +34,11 @@
 
 状态：
 
-[![Build and deploy to Github Pages](https://img.shields.io/github/actions/workflow/status/haoqi75/markdown-viewer-moe/static.yml?style=for-the-badge&logo=github&label=Build%20and%20deploy%20to%20Github%20Pages)](https://github.com/haoqi75/markdown-viewer-moe/actions/workflows/static.yml)
+[![Build and deploy to Github Pages](https://img.shields.io/github/actions/workflow/status/haoqi75/markdown-viewer-moe/static.yml?style=for-the-badge&logo=github&label=Build%20and%20deploy%20to%20Github%20Pages&labelColor=violet)](https://github.com/haoqi75/markdown-viewer-moe/actions/workflows/static.yml)
 [![Build to GitHub Releases](https://img.shields.io/github/actions/workflow/status/haoqi75/markdown-viewer-moe/release.yml?style=for-the-badge&logo=github&label=Build%20to%20GitHub%20Releases&labelColor=violet)](https://github.com/haoqi75/markdown-viewer-moe/actions/workflows/release.yml)
 
-[![Github Website](https://img.shields.io/website?url=https%3A%2F%2Fmoe520.haoqi75.os.kg&up_message=%E6%B4%BB%E8%B7%83&up_color=cyan&down_message=%E6%B2%89%E9%97%B7&down_color=violet&style=for-the-badge&logo=GitHub&logoColor=black&label=Github%E7%BD%91%E7%AB%99&labelColor=pink)](https://moe520.haoqi75.os.kg/)
-[![Codeberg Website](https://img.shields.io/website?url=https%3A%2F%2Fmoe520.haoqi75.cn.mt&up_message=%E6%B4%BB%E8%B7%83&up_color=cyan&down_message=%E6%B2%89%E9%97%B7&down_color=violet&style=for-the-badge&logo=Codeberg&logoColor=black&label=Codeberg%E7%BD%91%E7%AB%99&labelColor=pink)](https://moe520.haoqi75.cn.mt/)
+[![Github Website](https://img.shields.io/website?url=https%3A%2F%2Fmoe520.haoqi75.os.kg&up_message=%E5%9C%A8%E7%BA%BF&up_color=pink&down_message=%E7%A6%BB%E7%BA%BF&down_color=grey&style=for-the-badge&logo=GitHub&logoColor=violet&label=Github%E7%BD%91%E7%AB%99&labelColor=white)](https://moe520.haoqi75.os.kg/)
+[![Codeberg Website](https://img.shields.io/website?url=https%3A%2F%2Fmoe520.haoqi75.cn.mt&up_message=%E5%9C%A8%E7%BA%BF&up_color=pink&down_message=%E7%A6%BB%E7%BA%BF&down_color=grey&style=for-the-badge&logo=Codeberg&logoColor=violet&label=Codeberg%E7%BD%91%E7%AB%99&labelColor=white)](https://moe520.haoqi75.cn.mt/)
 
 </div>
 
