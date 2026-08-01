@@ -15,6 +15,7 @@
 
 const fs = require('fs');
 const path = require('path');
+const crypto = require('crypto');
 
 // ---- 终端颜色（零依赖，仅用 ANSI 转义码） ----
 const colors = {
@@ -242,6 +243,15 @@ function verifyHtmlFile(fileName, options = {}) {
   }
 }
 
+/**
+ * 计算文件的 MD5 值（十六进制小写字符串）
+ * @param {string} filePath
+ */
+function computeFileMd5(filePath) {
+  const buffer = fs.readFileSync(filePath);
+  return crypto.createHash('md5').update(buffer).digest('hex');
+}
+
 function main() {
   const startTime = Date.now();
   const isRelease = process.argv.includes('--release');
@@ -267,7 +277,7 @@ function main() {
     targetFiles = [{ name: 'index.html' }, { name: 'tools.html' }, { name: '404.html' }];
   }
 
-  const modeLabel = isRelease ? c('bold', 'RELEASE') : c('bold', 'DEV');
+  const modeLabel = isRelease ? c('bold', 'RELEASE') : c('bold', 'PRODUCTION');
   console.log(
     `\n${c('dim', '🔍 正在校验构建产物目录:')} ${c('cyan', DIST_DIR)} ${c('dim', '· 模式:')} ${modeLabel}\n`
   );
@@ -315,6 +325,32 @@ function main() {
     process.exit(1);
   }
 
+  // ---- Release 模式：生成 files-md5.txt 校验和清单 ----
+  // 覆盖本次校验通过的 release 交付文件（index.release.html / tools-vX.X.X.html），
+  // 方便部署后核对文件完整性、排查 CDN 缓存或传输过程中的内容篡改/损坏问题。
+  let md5FileName = null;
+  if (isRelease) {
+    md5FileName = 'files-md5.txt';
+    const md5FilePath = path.join(DIST_DIR, md5FileName);
+    try {
+      const lines = targetFiles
+        .map((file) => file.name)
+        .sort()
+        .map((name) => `${computeFileMd5(path.join(DIST_DIR, name))}  ${name}`);
+      fs.writeFileSync(md5FilePath, lines.join('\n') + '\n', 'utf-8');
+    } catch (err) {
+      errors.push(`[MD5清单生成失败] 写入 dist/${md5FileName} 时出错: ${err.message}`);
+    }
+  }
+
+  // 生成校验和清单也可能失败，同样按失败处理退出
+  if (errors.length > 0) {
+    console.error(c('red', `\n❌ 构建产物校验未通过，发现 ${errors.length} 个问题：\n`));
+    errors.forEach((msg, idx) => console.error(`  ${c('red', `${idx + 1}.`)} ${msg}`));
+    console.error(c('dim', '\n请检查构建流程后重新构建。\n'));
+    process.exit(1);
+  }
+
   const elapsedMs = Date.now() - startTime;
   const boxWidth = 52; // 边框内部可用宽度
   const line = '─'.repeat(boxWidth);
@@ -344,6 +380,11 @@ function main() {
     removedFiles.forEach((name) => {
       printRow(`${c('gray', '🧹 已清理残留文件')} dist/${name}`);
     });
+  }
+
+  if (md5FileName) {
+    console.log(`${c('green', '├')}${line}${c('green', '┤')}`);
+    printRow(`${c('gray', '🔐 已生成校验和清单')} dist/${md5FileName}`);
   }
 
   console.log(c('green', `└${line}┘`));

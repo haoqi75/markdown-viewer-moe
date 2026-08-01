@@ -229,6 +229,7 @@ pnpm run build:404
 # 全部构建
 pnpm run build:release
 # 代码会生成并放在 dist 文件夹里喔~
+# 运行此代码后会自动生成 dist/files-md5.txt 文件，此文件是验证文件。
 
 # 构建软件
 pnpm run build:page-release
@@ -431,7 +432,6 @@ markdown-viewer-moe/
 ├── images/                  # 图片
 ├── scripts/
 │   ├── build-404.js        # 构建404页面
-│   ├── check-env.js        # 确认依赖
 │   ├── copy-tools.js       # Tools复制准备脚本
 │   ├── release.js          # Release版本构建代码
 │   └── verify-build.js     # 确认构建正常

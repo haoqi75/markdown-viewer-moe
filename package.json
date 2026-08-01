@@ -1,6 +1,6 @@
 {
   "name": "markdown-viewer-moe",
-  "version": "1.11.1",
+  "version": "1.11.2",
   "description": "由AI生成的Moe Markdown查看器",
   "homepage": "https://moe520.haoqi75.os.kg/",
   "keywords": [
@@ -23,10 +23,8 @@
     "tools"
   ],
   "scripts": {
-    "prebuild": "node scripts/check-env.js",
     "build": "run-s build:page build:tools build:404",
     "postbuild": "node scripts/verify-build.js",
-    "prebuild:release": "node scripts/check-env.js",
     "build:release": "run-s build:page-release build:tools-release",
     "postbuild:release": "node scripts/verify-build.js --release",
     "build:page": "gulp build",
