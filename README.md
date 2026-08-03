@@ -145,8 +145,13 @@
 
 ### 下载编辑好的
 
-[![GitHub Release](https://img.shields.io/github/v/release/haoqi75/markdown-viewer-moe?display_name=release&logo=github&style=for-the-badge)](https://github.com/haoqi75/markdown-viewer-moe/releases)
-[![Codeberg Release](https://img.shields.io/gitea/v/release/haoqi75/markdown-viewer-moe?gitea_url=https%3A%2F%2Fcodeberg.org%2F&display_name=release&style=for-the-badge&logo=Codeberg)](https://codeberg.org/haoqi75/markdown-viewer-moe/releases)
+[![GitHub Release](https://img.shields.io/github/v/release/haoqi75/markdown-viewer-moe?display_name=release&logo=github&style=for-the-badge)](https://github.com/haoqi75/markdown-viewer-moe/releases/latest)
+[![Codeberg Release](https://img.shields.io/gitea/v/release/haoqi75/markdown-viewer-moe?gitea_url=https%3A%2F%2Fcodeberg.org%2F&display_name=release&style=for-the-badge&logo=Codeberg)](https://codeberg.org/haoqi75/markdown-viewer-moe/releases/latest)
+
+[![Release Download Page](https://img.shields.io/badge/%F0%9F%94%97%E7%AB%8B%E5%8D%B3%E4%B8%8B%E8%BD%BD-%E4%B8%8B%E8%BD%BD%E9%A1%B5%E9%9D%A2%20v1.0.1-pink?style=for-the-badge&labelColor=violet)](https://moe520.haoqi75.os.kg/download.html)
+
+> [!WARNING]
+> 下载页面临时还在开发中（Beta / Experimental），可能会有Bug等，请转用[GitHub Release（主）](https://github.com/haoqi75/markdown-viewer-moe/releases)页面或者[Codeberg Release（备）](https://codeberg.org/haoqi75/markdown-viewer-moe/releases)页面都可以。
 
 从**v1.4.0**后，支持直接编辑index.html，从 [Releases](https://github.com/haoqi75/markdown-viewer-moe/releases) （或者[备份仓库Release](https://codeberg.org/haoqi75/markdown-viewer-moe/releases)）下载一个叫`index.release.html`的文件，直接使用记事本编辑上面的内容：
 ```html
