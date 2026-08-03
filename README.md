@@ -180,8 +180,8 @@
 
 #### 前置要求
 
-- Node.js 24+（避免错误，因为这是我开发的Node.js版本）
-- pnpm 11.x或者更高（跟Node.js一样）
+- Node.js 24+（18+ 应该也行）
+- pnpm 11.x或者更高（10+ 应该也行）
 
 #### 克隆项目
 
@@ -449,15 +449,14 @@ markdown-viewer-moe/
 │   └── verify-build.js     # 确认构建正常
 ├── src/                     # 源代码（里面包含所有内容）
 ├── dist/                   # 构建输出（包含 index.html、index.release.html、tools.html和tools-vX.X.X.html）
-├── downloadpage/      # 下载页面（Beta / Experimental）
+├── downloadpage/           # 下载页面（Beta / Experimental）
 ├── tools/                  # 小白也能编辑内容
 ├── AGENTS.md               # AI Agent提示文件
 ├── gulpfile.js             # Gulp 构建脚本
 ├── package.json            # 项目依赖和脚本
 ├── LICENSE                 # LICENSE
 ├── README.md               # 就是这个文件啦~
-└── server.js                 # 本地服务器文件脚本
-
+└── server.js               # 本地服务器文件脚本
 ```
 
 ---
