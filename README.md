@@ -199,8 +199,16 @@ pnpm install
 #### 开发模式（自动预览 + 热重载）
 
 ```bash
-pnpm dev
+pnpm run dev
 # 请手动打开 http://localhost:8520
+
+pnpm run dev:tools
+# 开发测试Tools
+```
+
+#### 运行服务器
+```bash
+pnpm run start
 ```
 
 #### 生产构建
@@ -447,7 +455,9 @@ markdown-viewer-moe/
 ├── gulpfile.js             # Gulp 构建脚本
 ├── package.json            # 项目依赖和脚本
 ├── LICENSE                 # LICENSE
-└── README.md               # 就是这个文件啦~
+├── README.md               # 就是这个文件啦~
+└── server.js                 # 本地服务器文件脚本
+
 ```
 
 ---
