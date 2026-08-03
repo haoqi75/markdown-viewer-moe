@@ -218,6 +218,10 @@ pnpm run build:page
 pnpm run build:tools
 # 代码会生成到 dist/tools.html 喔~
 
+# 构建下载页面（Beta / Experimental）
+pnpm run build:dwpage
+# 代码会生成到 dist/download.html 喔~
+
 # 生成404.html (仅部分服务器)
 pnpm run build:404
 # 代码会生成到 dist/404.html 喔~
@@ -437,6 +441,7 @@ markdown-viewer-moe/
 │   └── verify-build.js     # 确认构建正常
 ├── src/                     # 源代码（里面包含所有内容）
 ├── dist/                   # 构建输出（包含 index.html、index.release.html、tools.html和tools-vX.X.X.html）
+├── downloadpage/      # 下载页面（Beta / Experimental）
 ├── tools/                  # 小白也能编辑内容
 ├── AGENTS.md               # AI Agent提示文件
 ├── gulpfile.js             # Gulp 构建脚本

@@ -1,0 +1,23 @@
+{
+  "name": "moe-release-downloadpage",
+  "version": "1.0.0",
+  "private": true,
+  "description": "A cute GitHub Release download page.",
+  "author": "",
+  "license": "MIT",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "build:onefile": "node scripts/build.js",
+    "preview": "vite preview"
+  },
+  "dependencies": {
+    "esbuild": "^0.25.12",
+    "marked": "^16.2.1"
+  },
+  "devDependencies": {
+    "vite": "^7.1.0",
+    "vite-plugin-singlefile": "^2.3.0"
+  }
+}
