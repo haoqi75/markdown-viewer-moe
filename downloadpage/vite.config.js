@@ -2,8 +2,13 @@ import { defineConfig } from "vite";
 import { viteSingleFile } from "vite-plugin-singlefile";
 import fs from 'fs';
 import path from 'path';
+import pkg from "./package.json";
 
 export default defineConfig({
+    define: {
+        __APP_NAME__: JSON.stringify(pkg.name),
+        __APP_VERSION__: JSON.stringify(pkg.version)
+    },
     plugins: [
         viteSingleFile(),
         {
@@ -22,7 +27,6 @@ export default defineConfig({
     ],
 
     base: "./",
-
     publicDir: false,
 
     build: {

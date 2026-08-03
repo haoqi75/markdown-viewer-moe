@@ -1,85 +1,57 @@
 <!DOCTYPE html>
-<html lang="en">
-
+<html lang="zh_CN">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport"
           content="width=device-width, initial-scale=1.0">
-
-    <title>GitHub Release Download Beta</title>
-
+    <title>发布版本下载网（Beta / Experimental）</title>
     <meta name="description"
           content="Cute GitHub Release Download Page">
-
     <meta name="theme-color"
-          content="#8EC5FC">
-
+          content="#ff8fc7">
     <link rel="icon"
           href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 128 128'%3E%3Ctext y='1em' font-size='96'%3E🌸%3C/text%3E%3C/svg%3E">
-
     <link rel="stylesheet"
-          href="./src/style.css">
+          href="./src/moe-edited.css">
 </head>
-
 <body>
-
     <!-- Background -->
-
     <div class="background">
         <div class="blob blob-a"></div>
         <div class="blob blob-b"></div>
         <div class="blob blob-c"></div>
     </div>
-
     <!-- App -->
-
     <main id="app">
-
         <section class="card">
-
             <!-- Header -->
-
             <header class="hero">
-
                 <div class="logo">
                     🌸
                 </div>
-
                 <div class="title-group">
-
                     <h1 id="project-title">
                         GitHub Release Download
                     </h1>
-
                     <div class="badges">
-
                         <span class="badge beta">
-                            Beta
+                            Beta / Experimental
                         </span>
-
                         <span class="badge latest">
-                            Latest Release
+                            最新发布版
                         </span>
-
                     </div>
-
                     <p id="project-subtitle">
-                        Loading project...
+                        加载作品...
                     </p>
-
                 </div>
-
             </header>
-
             <!-- Loading -->
-
             <section id="loading"
                      class="loading">
-
                 <div class="spinner"></div>
-
                 <p>
-                    Loading GitHub Release...
+                    加载发布版本...
                 </p>
 
             </section>
@@ -92,150 +64,92 @@
                 <div class="icon">
                     ⚠️
                 </div>
-
                 <h2>
-                    Failed to Load
+                    加载错误
                 </h2>
-
                 <p id="error-message">
-                    Unknown Error
+                    未知错误
                 </p>
-
                 <button id="retry-button">
-                    Retry
+                    重试
                 </button>
-
             </section>
-
             <!-- Main Content -->
-
             <section id="content"
                      class="hidden">
-
                 <!-- Release -->
-
                 <section class="release-card">
-
                     <div class="release-header">
-
                         <h2>
-                            Latest Version
+                            最新版本
                         </h2>
-
                         <span id="release-tag"
                               class="version">
                             --
                         </span>
-
                     </div>
-
                     <div class="release-info">
-
                         <div class="info-item">
-
                             <span class="label">
-                                Published
+                                发布
                             </span>
-
                             <span id="release-date">
                                 --
                             </span>
-
                         </div>
-
                         <div class="info-item">
-
                             <span class="label">
-                                Assets
+                                文件
                             </span>
-
                             <span id="asset-count">
                                 0
                             </span>
-
                         </div>
-
                     </div>
-
                     <div class="download-area">
-
                         <a id="latest-download"
                            class="primary-button"
                            href="#">
-
-                            ⬇ Download Latest
-
+                            ⬇ 下载最新版本
                         </a>
-
                     </div>
-
                 </section>
-
                 <!-- Assets -->
-
                 <section class="assets">
-
                     <div class="section-title">
-
                         <h2>
-                            Assets
+                            文件
                         </h2>
-
                     </div>
-
                     <div id="asset-list"
                          class="asset-list">
-
                     </div>
-
                 </section>
-
                 <!-- Release Notes -->
 
                 <section class="notes">
-
                     <div class="section-title">
-
                         <h2>
-                            Release Notes
+                            发布内容
                         </h2>
-
                     </div>
-
                     <article id="release-notes"
                              class="markdown">
-
                     </article>
-
                 </section>
-
             </section>
-
             <!-- Footer -->
-
             <footer>
-
                 <p>
-
                     Made with ❤️ · GitHub Release Download
-
                     <span class="footer-beta">
-
-                        Beta
-
+                        Beta / Experimental
                     </span>
-
                 </p>
-
             </footer>
-
         </section>
-
     </main>
-
     <script type="module"
             src="./src/app.js"></script>
-
 </body>
-
 </html>

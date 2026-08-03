@@ -59,12 +59,12 @@ function updateFooter(release) {
         return;
 
     footer.innerHTML = `
-        Made with ❤️ · GitHub Release Download
+        Made with ❤️ · ${__APP_NAME__}
         <span class="footer-beta">
-            Beta
+            Beta / Experimental
         </span>
         ·
-        ${release.tag}
+        v${__APP_VERSION__}
     `;
 }
 

@@ -8,6 +8,14 @@
 import { execSync } from "node:child_process";
 import fs from "node:fs";
 import path from "node:path";
+import pkg from "../package.json" with { type: "json" };
+
+console.log();
+console.log("====================================");
+console.log(`📦 ${pkg.name}`);
+console.log(`🏷️  Version: v${pkg.version}`);
+console.log("====================================");
+console.log();
 
 const ROOT = process.cwd();
 
@@ -89,7 +97,7 @@ function appendBuildInfo() {
 
     const info =
 `\n<!--
-GitHub Release Download Beta
+Release Download Beta / Experimental
 Built: ${new Date().toISOString()}
 -->
 `;
@@ -124,7 +132,7 @@ async function main() {
     // console.clear();
 
     log(
-        "GitHub Release Download Beta"
+        "Release Download (Beta / Experimental)"
     );
 
     runBuild();
