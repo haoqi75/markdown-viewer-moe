@@ -475,6 +475,11 @@ body {
     text-decoration: underline;
 }
 
+.release-card + .assets,
+.assets + .notes {
+    margin-top: 16px;
+}
+
 footer {
     padding-top: 10px;
     text-align: center;

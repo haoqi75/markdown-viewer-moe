@@ -59,7 +59,7 @@ function registerEvents() {
 }
 
 async function init() {
-    document.title = `${config.title} Beta`;
+    document.title = `${config.title}`;
 
     const title = document.getElementById("project-title");
     const subtitle = document.getElementById("project-subtitle");

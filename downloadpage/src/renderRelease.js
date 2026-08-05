@@ -87,12 +87,12 @@ function updateDownloadButton(release) {
     ) {
 
         button.textContent =
-            `⬇ Download (${release.assets.length})`;
+            `⬇ 下载 (${release.assets.length})`;
 
     } else {
 
         button.textContent =
-            "View on GitHub";
+            "在GitHub打开";
 
     }
 
