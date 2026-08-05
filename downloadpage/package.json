@@ -1,6 +1,6 @@
 {
   "name": "moe-release-downloadpage",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "private": true,
   "description": "A cute Release download page.",
   "author": "",
@@ -10,6 +10,7 @@
     "dev": "vite",
     "build": "vite build",
     "build:onefile": "node scripts/build.js",
+    "postbuild:onefile": "node scripts/verify-download.cjs",
     "preview": "vite preview"
   },
   "dependencies": {
