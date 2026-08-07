@@ -604,3 +604,39 @@ body {
 
 
 }
+/* 下载源 */
+.download-source {
+
+    margin-top: 14px;
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 10px;
+
+}
+
+.download-source label {
+
+    font-size: 14px;
+
+    color: var(--text-secondary);
+
+}
+
+.download-source select {
+
+    flex: 1;
+
+    padding: 8px 12px;
+
+    border-radius: 10px;
+
+    border: 1px solid var(--border);
+
+    background: rgba(255,255,255,.75);
+
+    cursor: pointer;
+
+}

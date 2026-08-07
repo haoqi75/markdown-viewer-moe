@@ -4,20 +4,20 @@ import {
     getAssetIcon,
     getAssetClass
 } from "./ui.p1.js";
-
 import {
     formatSize,
     timeAgo
 } from "./api.js";
+import { buildDownloadURL } from "./utils.js";
 
 /**
  * 创建 Asset 卡片
  */
-function createAssetCard(asset) {
+function createAssetCard(config, release, asset) {
 
     const card = create("a", "asset-card");
 
-    card.href = asset.downloadUrl;
+    card.href = buildDownloadURL(config, release, asset);
     card.target = "_blank";
     card.rel = "noopener noreferrer";
 
@@ -80,7 +80,10 @@ function createEmptyAssets() {
 /**
  * 渲染 Assets
  */
-export function renderAssets(release) {
+export function renderAssets(
+    config,
+    release
+) {
 
     const container =
         document.getElementById("asset-list");
@@ -105,7 +108,7 @@ export function renderAssets(release) {
     for (const asset of release.assets) {
 
         container.append(
-            createAssetCard(asset)
+            createAssetCard(config, release, asset)
         );
 
     }

@@ -337,6 +337,31 @@ export function repositoryURL(owner, repo) {
 }
 
 /* --------------------------
+ * Build Download URL
+ * -------------------------- */
+
+export function buildDownloadURL(
+    config,
+    release,
+    asset
+) {
+
+    const index = Number(
+        localStorage.getItem("download-source")
+        ?? config.defaultSource
+    );
+
+    const source =
+        config.downloadSources[index]
+        ?? config.downloadSources[0];
+
+    return source.base
+        .replace("{tag}", release.tag)
+        + asset.name;
+
+}
+
+/* --------------------------
  * Export
  * -------------------------- */
 
@@ -374,6 +399,8 @@ export default {
 
     releaseURL,
 
-    repositoryURL
+    repositoryURL,
+
+    buildDownloadURL
 
 };

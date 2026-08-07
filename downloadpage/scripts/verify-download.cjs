@@ -12,6 +12,7 @@
 
 const fs = require('fs');
 const path = require('path');
+const { execSync } = require('child_process');
 
 // ---- 终端颜色（零依赖，仅用 ANSI 转义码） ----
 const colors = {
@@ -20,6 +21,7 @@ const colors = {
   dim: '\x1b[2m',
   green: '\x1b[32m',
   red: '\x1b[31m',
+  yellow: '\x1b[33m',
   cyan: '\x1b[36m',
   gray: '\x1b[90m',
 };
@@ -58,8 +60,81 @@ function padLine(leftText, rightText, totalWidth) {
 const DIST_DIR = path.resolve(process.cwd(), 'dist');
 const TARGET_FILE = 'download.html';
 const MIN_FILE_SIZE_BYTES = 50;
+const PACKAGE_JSON_PATH = path.resolve(process.cwd(), 'package.json');
+
+// 用来包裹构建信息的唯一标记，方便重复运行时定位并替换旧的信息块（幂等，不会越叠越多）
+const BUILD_INFO_START = 'BUILD-INFO-START';
+const BUILD_INFO_END = 'BUILD-INFO-END';
+const BUILD_INFO_BLOCK_RE = new RegExp(
+  `<!--\\s*${BUILD_INFO_START}[\\s\\S]*?${BUILD_INFO_END}\\s*-->\\r?\\n?`,
+  'i'
+);
 
 const errors = [];
+const warnings = [];
+
+/** 读取项目根目录 package.json 的 version 字段，失败时返回 null（记为 warning，而非致命错误） */
+function getPackageVersion() {
+  if (!fs.existsSync(PACKAGE_JSON_PATH)) {
+    warnings.push(`未找到 ${path.relative(process.cwd(), PACKAGE_JSON_PATH)}，构建信息中的版本号将标记为 unknown`);
+    return null;
+  }
+  try {
+    const pkg = JSON.parse(fs.readFileSync(PACKAGE_JSON_PATH, 'utf-8'));
+    if (!pkg.version) {
+      warnings.push('package.json 中缺少 "version" 字段，构建信息中的版本号将标记为 unknown');
+      return null;
+    }
+    return pkg.version;
+  } catch (err) {
+    warnings.push(`package.json 解析失败(${err.message})，构建信息中的版本号将标记为 unknown`);
+    return null;
+  }
+}
+
+/** 获取当前 Git 短哈希，非 Git 仓库或 git 命令不可用时返回 null（记为 warning，而非致命错误） */
+function getGitHash() {
+  try {
+    return execSync('git rev-parse --short HEAD', {
+      cwd: process.cwd(),
+      stdio: ['ignore', 'pipe', 'ignore'],
+    })
+      .toString()
+      .trim();
+  } catch (err) {
+    warnings.push('无法获取 Git commit hash（可能不是 Git 仓库，或未安装 git），构建信息中将标记为 unknown');
+    return null;
+  }
+}
+
+/** 生成本次构建信息注释块的内容 */
+function buildInfoComment() {
+  const buildTime = new Date().toISOString();
+  const version = getPackageVersion() || 'unknown';
+  const gitHash = getGitHash() || 'unknown';
+
+  const comment =
+    `<!-- ${BUILD_INFO_START}\n` +
+    `  Build Time: ${buildTime}\n` +
+    `  Version: ${version}\n` +
+    `  Git Commit: ${gitHash}\n` +
+    `${BUILD_INFO_END} -->\n`;
+
+  return { comment, buildTime, version, gitHash };
+}
+
+/**
+ * 将构建信息注释块注入文件头部。
+ * 若文件中已存在旧的构建信息块（通过 BUILD-INFO-START/END 标记识别），先移除旧块再插入新块，
+ * 保证重复运行 postbuild 时不会越叠越多。
+ */
+function injectBuildInfo(filePath) {
+  const original = fs.readFileSync(filePath, 'utf-8');
+  const withoutOldBlock = original.replace(BUILD_INFO_BLOCK_RE, '');
+  const { comment, buildTime, version, gitHash } = buildInfoComment();
+  fs.writeFileSync(filePath, comment + withoutOldBlock, 'utf-8');
+  return { buildTime, version, gitHash };
+}
 
 function verifyDownloadHtml() {
   const filePath = path.join(DIST_DIR, TARGET_FILE);
@@ -167,8 +242,26 @@ function main() {
     process.exit(1);
   }
 
+  // ---- 基础校验通过后，向文件头部注入/刷新构建信息注释块 ----
+  // 幂等：若文件里已有旧的构建信息块（通过 BUILD-INFO-START/END 标记识别），会先移除再插入新的，
+  // 不会因为多次执行 postbuild 而不断堆叠。
+  const targetFilePath = path.join(DIST_DIR, TARGET_FILE);
+  let buildInfo;
+  try {
+    buildInfo = injectBuildInfo(targetFilePath);
+  } catch (err) {
+    errors.push(`[构建信息注入失败] 写入 dist/${TARGET_FILE} 时出错: ${err.message}`);
+  }
+
+  if (errors.length > 0) {
+    console.error(c('red', `\n❌ download.html 校验未通过，发现 ${errors.length} 个问题：\n`));
+    errors.forEach((msg, idx) => console.error(`  ${c('red', `${idx + 1}.`)} ${msg}`));
+    console.error(c('dim', '\n请检查构建流程后重新构建。\n'));
+    process.exit(1);
+  }
+
   const elapsedMs = Date.now() - startTime;
-  const stat = fs.statSync(path.join(DIST_DIR, TARGET_FILE));
+  const stat = fs.statSync(targetFilePath); // 重新 stat：注入后文件大小已变化
   const sizeStr = stat.size >= 1024 ? `${(stat.size / 1024).toFixed(1)} KB` : `${stat.size} B`;
   const boxWidth = 52;
   const line = '─'.repeat(boxWidth);
@@ -182,8 +275,19 @@ function main() {
     `${c('green', '│')} ${padLine(` ${c('cyan', '✔')} dist/${TARGET_FILE}`, c('gray', sizeStr), boxWidth - 2)} ${c('green', '│')}`
   );
   console.log(`${c('green', '├')}${line}${c('green', '┤')}`);
+  printRow(`${c('gray', '📝 已注入构建信息')}`);
+  printRow(c('dim', `  Build Time: ${buildInfo.buildTime}`));
+  printRow(c('dim', `  Version: ${buildInfo.version}`));
+  printRow(c('dim', `  Git Commit: ${buildInfo.gitHash}`));
+  console.log(`${c('green', '├')}${line}${c('green', '┤')}`);
   printRow(c('dim', `耗时 ${elapsedMs}ms`));
   console.log(c('green', `└${line}┘`));
+
+  if (warnings.length > 0) {
+    console.log(c('yellow', '\n⚠ 提示（不影响本次校验通过）：'));
+    warnings.forEach((msg, idx) => console.log(`  ${c('yellow', `${idx + 1}.`)} ${msg}`));
+  }
+
   console.log('');
 
   process.exit(0);

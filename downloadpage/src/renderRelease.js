@@ -13,8 +13,8 @@ import { renderNotes } from "./renderNotes.js";
 function updatePageTitle(config, release) {
 
     const title = release.tag
-        ? `${config.title} Beta · ${release.tag}`
-        : `${config.title} Beta`;
+        ? `${config.title} · ${release.tag}`
+        : `${config.title}`;
 
     document.title = title;
 }
@@ -121,6 +121,7 @@ export function renderRelease(
     );
 
     updateLatestButton(
+        config,
         release
     );
 
@@ -129,6 +130,7 @@ export function renderRelease(
     );
 
     renderAssets(
+        config,
         release
     );
 

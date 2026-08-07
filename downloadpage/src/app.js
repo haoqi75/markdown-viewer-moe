@@ -9,6 +9,12 @@ import {
     renderRelease
 } from "./ui.js";
 
+/* --------------------------
+ * Current Release Cache
+ * -------------------------- */
+
+let currentRelease = null;
+
 async function loadRelease() {
     try {
         showLoading();
@@ -16,7 +22,12 @@ async function loadRelease() {
 
         const release = await fetchLatestRelease(config);
 
-        renderRelease(config, release);
+        currentRelease = release;
+
+        renderRelease(
+            config,
+            release
+        );
 
         hideLoading();
         showContent();
@@ -71,6 +82,50 @@ async function init() {
     if (subtitle) {
         subtitle.textContent = config.subtitle;
     }
+    
+    const select = document.getElementById(
+        "download-source-select"
+    );
+
+    if (!select) return;
+    
+    // 清空已有选项
+    select.innerHTML = "";
+
+    // 创建下载源列表
+    config.downloadSources.forEach((source, index) => {
+
+        const option = document.createElement("option");
+
+        option.value = index;
+        option.textContent = source.name;
+
+        select.appendChild(option);
+
+    });
+
+    // 恢复上次选择
+    select.value = localStorage.getItem("download-source")
+        ?? config.defaultSource;
+
+    // 切换下载源
+    select.addEventListener("change", () => {
+
+        localStorage.setItem(
+            "download-source",
+            select.value
+        );
+
+        if (currentRelease) {
+
+            renderRelease(
+                config,
+                currentRelease
+            );
+
+        }
+
+    });
 
     registerEvents();
 

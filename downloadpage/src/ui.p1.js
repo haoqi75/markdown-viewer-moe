@@ -4,6 +4,7 @@ import {
     formatSize,
     timeAgo
 } from "./api.js";
+import { buildDownloadURL } from "./utils.js";
 
 /* ------------------------------
  * DOM Helpers
@@ -261,7 +262,10 @@ export function fillReleaseInfo(release) {
  * Latest Download Button
  * ------------------------------ */
 
-export function updateLatestButton(release) {
+export function updateLatestButton(
+    config,
+    release
+) {
 
     const button = $("latest-download");
 
@@ -270,8 +274,11 @@ export function updateLatestButton(release) {
 
     if (release.assets.length > 0) {
 
-        button.href =
-            release.assets[0].downloadUrl;
+        button.href = buildDownloadURL(
+            config,
+            release,
+            release.assets[0]
+        );
 
     } else {
 
