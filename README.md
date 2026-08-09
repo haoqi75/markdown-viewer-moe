@@ -42,7 +42,7 @@
 
 </div>
 
-此作品基于[AI Markdown](https://github.com/haoqi75/haoqi75)（我的老版首页，已停止更新）生成和修复内容，专门给Moe爱好提供的Markdown预览器。功能增强，修复了老版本错误。
+此作品基于[AI Markdown](https://github.com/haoqi75/ai-markdown-old)（我的老版首页，项目已停止更新）生成和修复内容，专门给Moe爱好提供的Markdown预览器。功能增强，修复了老版本错误。
 
 我做了这个作品是为了可以让你们拥有 Markdown 网页预览器。把你的普通 Markdown 页面变成 Moe 好看的页面，纯静态前端、单文件、以及JSON配置文件编辑工具。
 
