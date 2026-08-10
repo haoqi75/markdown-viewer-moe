@@ -47,7 +47,7 @@ jobs:
           version: "11"
 
       - name: Install Dependencies
-        run: pnpm install
+        run: pnpm ci --no-frozen-lockfile || pnpm install
         
       - name: Build page and tools
         run: pnpm run build
