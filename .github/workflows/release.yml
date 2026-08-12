@@ -40,15 +40,16 @@ jobs:
           ref: ${{ steps.get_tag.outputs.tag_name }}
           fetch-depth: 0
 
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: "24"
-
       - name: Setup pnpm
         uses: pnpm/action-setup@v6
         with:
-          version: "11"
+          version: 11
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: 'pnpm'
 
       - name: Install Dependencies
         run: pnpm ci --no-frozen-lockfile || pnpm install
