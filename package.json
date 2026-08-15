@@ -21,8 +21,7 @@
   "type": "commonjs",
   "main": "server.js",
   "workspaces": [
-    "tools",
-    "downloadpage"
+    "tools"
   ],
   "scripts": {
     "build": "run-s build:page build:tools build:404",
@@ -34,7 +33,6 @@
     "build:tools": "pnpm run --filter moe-json-editor build:html && node scripts/copy-tools.js",
     "build:tools-release": "pnpm run --filter moe-json-editor build:html && node scripts/copy-tools.js --release",
     "build:404": "node scripts/build-404.js",
-    "build:dwpage": "pnpm run --filter moe-release-downloadpage build:onefile && node scripts/copy-downloadpage.mjs",
     "dev": "gulp",
     "dev:tools": "pnpm run --filter moe-json-editor dev",
     "start": "node ."

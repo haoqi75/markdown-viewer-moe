@@ -1,6 +1,5 @@
 packages:
   - 'tools'
-  - 'downloadpage'
 allowBuilds:
   '@google/genai': false
   esbuild: true

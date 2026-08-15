@@ -30,7 +30,7 @@ jobs:
     runs-on: ubuntu-latest
     name: Build and deploy to Github Pages
     steps:
-      - name: Checkout
+      - name: Checkout repository
         uses: actions/checkout@v4
         
       - name: Setup Pages
@@ -52,10 +52,6 @@ jobs:
         
       - name: Build page and tools
         run: pnpm run build
-        
-      - name: Build download page (Beta / Experimental)
-        if: github.actor == 'haoqi75'
-        run: pnpm run build:dwpage
       
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
