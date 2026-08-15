@@ -16,6 +16,7 @@
 const fs = require('fs');
 const path = require('path');
 const crypto = require('crypto');
+const { execSync } = require('child_process');
 
 // ---- 终端颜色（零依赖，仅用 ANSI 转义码） ----
 const colors = {
@@ -24,6 +25,7 @@ const colors = {
   dim: '\x1b[2m',
   green: '\x1b[32m',
   red: '\x1b[31m',
+  yellow: '\x1b[33m',
   cyan: '\x1b[36m',
   gray: '\x1b[90m',
 };
@@ -62,12 +64,72 @@ function padLine(leftText, rightText, totalWidth) {
 // ---- 配置：需要校验的文件列表 ----
 const DIST_DIR = path.resolve(process.cwd(), 'dist');
 const TOOLS_PACKAGE_JSON_PATH = path.resolve(process.cwd(), 'tools', 'package.json');
+const ROOT_PACKAGE_JSON_PATH = path.resolve(process.cwd(), 'package.json');
 
 // 一个非空 HTML 文件的最小合理体积（字节），用于识别"内容被截断/空文件"等异常
 const MIN_FILE_SIZE_BYTES = 50;
 
 /** 收集所有错误，最后统一输出，而不是遇到第一个错误就退出 */
 const errors = [];
+/** 收集非致命警告（不会导致 exit 1），最后统一输出 */
+const warnings = [];
+
+// 用来包裹构建信息的唯一标记，方便重复运行时定位并替换旧的信息块（幂等，不会越叠越多）
+const BUILD_INFO_START = 'BUILD-INFO-START';
+const BUILD_INFO_END = 'BUILD-INFO-END';
+const BUILD_INFO_BLOCK_RE = new RegExp(
+  `<!--\\s*${BUILD_INFO_START}[\\s\\S]*?${BUILD_INFO_END}\\s*-->\\r?\\n?`,
+  'i'
+);
+
+/**
+ * 读取项目根目录 package.json 的 version 字段（用于 production 模式的构建信息标注）。
+ * 失败时记为 warning 而非致命错误，返回 null。
+ */
+function getRootPackageVersion() {
+  if (!fs.existsSync(ROOT_PACKAGE_JSON_PATH)) {
+    warnings.push(`未找到 ${path.relative(process.cwd(), ROOT_PACKAGE_JSON_PATH)}，构建信息中的版本号将标记为 unknown`);
+    return null;
+  }
+  try {
+    const pkg = JSON.parse(fs.readFileSync(ROOT_PACKAGE_JSON_PATH, 'utf-8'));
+    if (!pkg.version) {
+      warnings.push('package.json 中缺少 "version" 字段，构建信息中的版本号将标记为 unknown');
+      return null;
+    }
+    return pkg.version;
+  } catch (err) {
+    warnings.push(`package.json 解析失败(${err.message})，构建信息中的版本号将标记为 unknown`);
+    return null;
+  }
+}
+
+/** 获取当前 Git 短哈希，非 Git 仓库或 git 命令不可用时返回 null（记为 warning，而非致命错误） */
+function getGitHash() {
+  try {
+    return execSync('git rev-parse --short HEAD', {
+      cwd: process.cwd(),
+      stdio: ['ignore', 'pipe', 'ignore'],
+    })
+      .toString()
+      .trim();
+  } catch (err) {
+    warnings.push('无法获取 Git commit hash（可能不是 Git 仓库，或未安装 git），构建信息中将标记为 unknown');
+    return null;
+  }
+}
+
+/**
+ * 将构建信息注释块注入文件头部（幂等：若文件中已有旧的构建信息块，
+ * 通过 BUILD-INFO-START/END 标记先移除再插入新块，不会越叠越多）。
+ * @param {string} filePath
+ * @param {string} comment - 完整的 <!-- BUILD-INFO-START ... --> 注释块文本
+ */
+function injectBuildInfo(filePath, comment) {
+  const original = fs.readFileSync(filePath, 'utf-8');
+  const withoutOldBlock = original.replace(BUILD_INFO_BLOCK_RE, '');
+  fs.writeFileSync(filePath, comment + withoutOldBlock, 'utf-8');
+}
 
 /**
  * 从 tools/package.json 读取 version 字段，用于生成 release 版本文件名。
@@ -259,6 +321,7 @@ function main() {
   // ---- 根据模式确定本次需要校验的文件列表 ----
   /** @type {{ name: string, requireReleaseConfig?: boolean }[]} */
   let targetFiles;
+  let releaseVersion = null;
 
   if (isRelease) {
     const version = getReleaseVersion();
@@ -269,6 +332,7 @@ function main() {
       console.error('');
       process.exit(1);
     }
+    releaseVersion = version;
     targetFiles = [
       { name: 'index.release.html', requireReleaseConfig: true },
       { name: `tools-v${version}.html`, requireReleaseConfig: false },
@@ -318,6 +382,37 @@ function main() {
   }
 
   // 清理过程本身也可能出错，出错则同样按失败处理退出
+  if (errors.length > 0) {
+    console.error(c('red', `\n❌ 构建产物校验未通过，发现 ${errors.length} 个问题：\n`));
+    errors.forEach((msg, idx) => console.error(`  ${c('red', `${idx + 1}.`)} ${msg}`));
+    console.error(c('dim', '\n请检查构建流程后重新构建。\n'));
+    process.exit(1);
+  }
+
+  // ---- 注入 / 刷新构建信息注释块 ----
+  // production 与 release 模式均生效，写入每个目标文件的最顶部。
+  // 幂等：通过 BUILD-INFO-START/END 标记识别旧块并替换，不会因重复执行 postbuild 而越叠越多。
+  // 放在这里（MD5 清单生成之前）是为了让 files-md5.txt 覆盖的是注入构建信息后的最终文件内容。
+  const buildTime = new Date().toISOString();
+  const buildVersion = isRelease ? releaseVersion : getRootPackageVersion();
+  const gitHash = getGitHash();
+  const buildInfoComment =
+    `<!-- ${BUILD_INFO_START}\n` +
+    `  Build Time: ${buildTime}\n` +
+    `  Version: ${buildVersion || 'unknown'}\n` +
+    `  Git Commit: ${gitHash || 'unknown'}\n` +
+    `${BUILD_INFO_END} -->\n`;
+
+  for (const file of targetFiles) {
+    const filePath = path.join(DIST_DIR, file.name);
+    try {
+      injectBuildInfo(filePath, buildInfoComment);
+    } catch (err) {
+      errors.push(`[构建信息注入失败] 写入 dist/${file.name} 时出错: ${err.message}`);
+    }
+  }
+
+  // 注入过程本身也可能出错，出错则同样按失败处理退出
   if (errors.length > 0) {
     console.error(c('red', `\n❌ 构建产物校验未通过，发现 ${errors.length} 个问题：\n`));
     errors.forEach((msg, idx) => console.error(`  ${c('red', `${idx + 1}.`)} ${msg}`));
@@ -387,7 +482,19 @@ function main() {
     printRow(`${c('gray', '🔐 已生成校验和清单')} dist/${md5FileName}`);
   }
 
+  console.log(`${c('green', '├')}${line}${c('green', '┤')}`);
+  printRow(`${c('gray', '📝 已注入构建信息')}`);
+  printRow(c('dim', `  Build Time: ${buildTime}`));
+  printRow(c('dim', `  Version: ${buildVersion || 'unknown'}`));
+  printRow(c('dim', `  Git Commit: ${gitHash || 'unknown'}`));
+
   console.log(c('green', `└${line}┘`));
+
+  if (warnings.length > 0) {
+    console.log(c('yellow', '\n⚠ 提示（不影响本次校验通过）：'));
+    warnings.forEach((msg, idx) => console.log(`  ${c('yellow', `${idx + 1}.`)} ${msg}`));
+  }
+
   console.log('');
 
   process.exit(0);
