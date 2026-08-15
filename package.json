@@ -1,8 +1,8 @@
 {
   "name": "markdown-viewer-moe",
-  "version": "1.11.3",
+  "version": "1.11.4",
   "description": "由AI生成的Moe Markdown查看器",
-  "homepage": "https://moe520.haoqi75.os.kg/",
+  "homepage": "https://moe520.cc.cd/",
   "keywords": [
     "ai",
     "gulp",
@@ -37,9 +37,9 @@
     "dev:tools": "pnpm run --filter moe-json-editor dev",
     "start": "node ."
   },
-    "dependencies": {
+  "dependencies": {
     "jimp": "^1.6.1",
-    "npm-run-all2": "^9.0.2"
+    "npm-run-all2": "^9.0.3"
   },
   "devDependencies": {
     "browser-sync": "^3.0.4",
