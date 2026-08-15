@@ -267,7 +267,7 @@ export default function App() {
   // Markdown Link Generator states (v1.4.3)
   const [base64ToolMode, setBase64ToolMode] = useState<'link' | 'text'>('link');
   const [markdownUrl, setMarkdownUrl] = useState<string>('');
-  const [prefixPreset, setPrefixPreset] = useState<'kg' | 'mt' | 'custom'>('kg');
+  const [prefixPreset, setPrefixPreset] = useState<'cd' | 'kg' | 'custom'>('cd');
   const [customPrefix, setCustomPrefix] = useState<string>('http://127.0.0.1:8520/');
   const [generatedMoeUrl, setGeneratedMoeUrl] = useState<string>('');
 
@@ -289,9 +289,9 @@ export default function App() {
         return String.fromCharCode(parseInt(p1, 16));
       }));
 
-      let prefix = 'https://moe520.haoqi75.os.kg/';
-      if (preset === 'mt') {
-        prefix = 'https://moe520.haoqi75.cn.mt/';
+      let prefix = 'https://moe520.cc.cd/';
+      if (preset === 'kg') {
+        prefix = 'https://moe520.os.kg/';
       } else if (preset === 'custom') {
         prefix = custom.trim();
       }
@@ -1803,6 +1803,29 @@ https://raw.githubusercontent.com/haoqi75/markdown-viewer-moe/main/README.md"
                     <button
                       type="button"
                       onClick={() => {
+                        setPrefixPreset('cd');
+                        handleGenerateMoeUrl(markdownUrl, 'cd', customPrefix);
+                      }}
+                      className="px-3 py-2 text-3xs sm:text-2xs font-bold rounded-xl border text-left transition-all cursor-pointer"
+                      style={prefixPreset === 'cd' ? {
+                        borderColor: activePalette.primaryAccent,
+                        backgroundColor: activePalette.primaryAccent + '15',
+                        color: activePalette.primaryAccent
+                      } : {
+                        borderColor: activePalette.primaryBorder + '80',
+                        color: undefined
+                      }}
+                    >
+                      <div className="font-bold flex items-center gap-1">
+                        <Globe className="h-3 w-3 shrink-0" style={{ color: activePalette.primaryAccent }} />
+                        <span>主线路 (.cc.cd)</span>
+                      </div>
+                      <div className="text-4xs text-gray-400 dark:text-gray-500 mt-0.5 font-mono truncate">moe520.cc.cd</div>
+                    </button>
+
+                    <button
+                      type="button"
+                      onClick={() => {
                         setPrefixPreset('kg');
                         handleGenerateMoeUrl(markdownUrl, 'kg', customPrefix);
                       }}
@@ -1818,32 +1841,9 @@ https://raw.githubusercontent.com/haoqi75/markdown-viewer-moe/main/README.md"
                     >
                       <div className="font-bold flex items-center gap-1">
                         <Globe className="h-3 w-3 shrink-0" style={{ color: activePalette.primaryAccent }} />
-                        <span>主线路 (.os.kg)</span>
+                        <span>副线路 (.os.kg)</span>
                       </div>
-                      <div className="text-4xs text-gray-400 dark:text-gray-500 mt-0.5 font-mono truncate">moe520.haoqi75.os.kg</div>
-                    </button>
-
-                    <button
-                      type="button"
-                      onClick={() => {
-                        setPrefixPreset('mt');
-                        handleGenerateMoeUrl(markdownUrl, 'mt', customPrefix);
-                      }}
-                      className="px-3 py-2 text-3xs sm:text-2xs font-bold rounded-xl border text-left transition-all cursor-pointer"
-                      style={prefixPreset === 'mt' ? {
-                        borderColor: activePalette.primaryAccent,
-                        backgroundColor: activePalette.primaryAccent + '15',
-                        color: activePalette.primaryAccent
-                      } : {
-                        borderColor: activePalette.primaryBorder + '80',
-                        color: undefined
-                      }}
-                    >
-                      <div className="font-bold flex items-center gap-1">
-                        <Globe className="h-3 w-3 shrink-0" style={{ color: activePalette.primaryAccent }} />
-                        <span>备用线路 (.cn.mt)</span>
-                      </div>
-                      <div className="text-4xs text-gray-400 dark:text-gray-500 mt-0.5 font-mono truncate">moe520.haoqi75.cn.mt</div>
+                      <div className="text-4xs text-gray-400 dark:text-gray-500 mt-0.5 font-mono truncate">moe520.os.kg</div>
                     </button>
 
                     <button

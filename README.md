@@ -37,8 +37,8 @@
 [![Build and deploy to Github Pages](https://img.shields.io/github/actions/workflow/status/haoqi75/markdown-viewer-moe/static.yml?style=for-the-badge&logo=github&label=Build%20and%20deploy%20to%20Github%20Pages&labelColor=violet)](https://github.com/haoqi75/markdown-viewer-moe/actions/workflows/static.yml)
 [![Build to GitHub Releases](https://img.shields.io/github/actions/workflow/status/haoqi75/markdown-viewer-moe/release.yml?style=for-the-badge&logo=github&label=Build%20to%20GitHub%20Releases&labelColor=violet)](https://github.com/haoqi75/markdown-viewer-moe/actions/workflows/release.yml)
 
-[![Github Website](https://img.shields.io/website?url=https%3A%2F%2Fmoe520.haoqi75.os.kg&up_message=%E5%9C%A8%E7%BA%BF&up_color=pink&down_message=%E7%A6%BB%E7%BA%BF&down_color=grey&style=for-the-badge&logo=GitHub&logoColor=violet&label=Github%E7%BD%91%E7%AB%99&labelColor=white)](https://moe520.haoqi75.os.kg/)
-[![Codeberg Website](https://img.shields.io/website?url=https%3A%2F%2Fmoe520.haoqi75.cn.mt&up_message=%E5%9C%A8%E7%BA%BF&up_color=pink&down_message=%E7%A6%BB%E7%BA%BF&down_color=grey&style=for-the-badge&logo=Codeberg&logoColor=violet&label=Codeberg%E7%BD%91%E7%AB%99&labelColor=white)](https://moe520.haoqi75.cn.mt/)
+[![Github Website](https://img.shields.io/website?url=https%3A%2F%2Fmoe520.cc.cd&up_message=%E5%9C%A8%E7%BA%BF&up_color=pink&down_message=%E7%A6%BB%E7%BA%BF&down_color=grey&style=for-the-badge&logo=GitHub&logoColor=violet&label=Github%E7%BD%91%E7%AB%99&labelColor=white)](https://moe520.cc.cd/)
+[![Codeberg Website](https://img.shields.io/website?url=https%3A%2F%2Fmoe520.os.kg&up_message=%E5%9C%A8%E7%BA%BF&up_color=pink&down_message=%E7%A6%BB%E7%BA%BF&down_color=grey&style=for-the-badge&logo=Codeberg&logoColor=violet&label=Codeberg%E7%BD%91%E7%AB%99&labelColor=white)](https://moe520.os.kg/)
 
 </div>
 
@@ -59,15 +59,15 @@
 
 打开*以下地址*即可使用。
 
-主地址：https://moe520.haoqi75.os.kg/
+主地址：https://moe520.cc.cd/
 
-备用地址：https://moe520.haoqi75.cn.mt/
+备用地址：https://moe520.os.kg/
 
 ---
 
 ## 📝 简单编辑 config.json 工具
 
-请打开 [tools.html](https://moe520.haoqi75.os.kg/tools.html) 或者[备用地址](https://moe520.haoqi75.cn.mt/tools.html)来简单编辑。
+请打开 [tools.html](https://moe520.cc.cd/tools.html) 或者[备用地址](https://moe520.os.kg/tools.html)来简单编辑。
 
 **v1.9.3**后，点击上面的 `[>]` （Json编辑器）即可打开编辑器。
 

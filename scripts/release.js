@@ -38,7 +38,7 @@ var releaseConfig = {
 };
 
 // ====== 强制 toolsUrl 为远程地址（release 版固定）======
-html = html.replace(/"toolsUrl"\s*:\s*"[^"]*"/, '"toolsUrl":"https://moe520.haoqi75.os.kg/tools.html"');
+html = html.replace(/"toolsUrl"\s*:\s*"[^"]*"/, '"toolsUrl":"https://moe520.cc.cd/tools.html"');
 
 var block =
     '\n<!--' +
