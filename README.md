@@ -143,6 +143,10 @@
   <img src="images/ready-to-deploy.png" alt="准备好要部署我了吗" width="220">
 </p>
 
+> [!NOTE]
+> 即将会迎来此作品的文档，以后这些配置将在文档显示。地址: https://docs.moe520.cc.cd/
+
+
 ### 下载编辑好的
 
 [![GitHub Release](https://img.shields.io/github/v/release/haoqi75/markdown-viewer-moe?display_name=release&logo=github&style=for-the-badge)](https://github.com/haoqi75/markdown-viewer-moe/releases/latest)
