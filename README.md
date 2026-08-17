@@ -4,7 +4,7 @@
   <img src="images/icon.png" alt="Moe Markdown Viewer 图标" width="128">
 </p>
 
-> 由 AI 生成的 Moe Markdown 查看器 · 萌系主题 · 开箱即用
+> 由 AI 生成的 Moe Markdown 预览器 · 萌系主题 · 开箱即用
 
 <div align="center">
 
