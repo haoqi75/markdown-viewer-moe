@@ -394,7 +394,7 @@ function main() {
   // 幂等：通过 BUILD-INFO-START/END 标记识别旧块并替换，不会因重复执行 postbuild 而越叠越多。
   // 放在这里（MD5 清单生成之前）是为了让 files-md5.txt 覆盖的是注入构建信息后的最终文件内容。
   const buildTime = new Date().toISOString();
-  const buildVersion = isRelease ? releaseVersion : getRootPackageVersion();
+  const buildVersion = getRootPackageVersion(); // production/release 统一使用根目录 package.json 的版本
   const gitHash = getGitHash();
   const buildInfoComment =
     `<!-- ${BUILD_INFO_START}\n` +
