@@ -308,11 +308,11 @@ const Renderer = (function() {
 
     function setupCallouts() {
         var types = {
-            'NOTE':       { icon: '📝', label: 'Note',        cls: 'callout-note' },
-            'TIP':        { icon: '💡', label: 'Tip',         cls: 'callout-tip' },
-            'IMPORTANT':  { icon: '📌', label: 'Important',   cls: 'callout-important' },
-            'WARNING':    { icon: '⚠️', label: 'Warning',     cls: 'callout-warning' },
-            'CAUTION':    { icon: '🚫', label: 'Caution',     cls: 'callout-caution' }
+            'NOTE':       { icon: '📝', label: '笔记 (Note)',        cls: 'callout-note' },
+            'TIP':        { icon: '💡', label: '提示 (Tip)',         cls: 'callout-tip' },
+            'IMPORTANT':  { icon: '📌', label: '重要 (Important)',   cls: 'callout-important' },
+            'WARNING':    { icon: '⚠️', label: '注意 (Warning)',     cls: 'callout-warning' },
+            'CAUTION':    { icon: '🚫', label: '警告 (Caution)',     cls: 'callout-caution' }
         };
         contentEl.querySelectorAll('blockquote').forEach(function(bq) {
             var p = bq.querySelector('p');
