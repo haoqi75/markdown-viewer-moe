@@ -140,7 +140,7 @@
 ## 🚀 快速开始
 
 <p align="left">
-  <img src="images/ready-to-deploy.png" alt="准备好要部署我了吗" width="220">
+  <img src="images/ready-to-deploy-old.png" alt="准备好要部署我了吗" width="220">
 </p>
 
 > [!NOTE]
