@@ -10,7 +10,7 @@
 
 <div align="center">
 
-[![Version](https://img.shields.io/badge/version-1.7.1-pink.svg?style=for-the-badge)](https://github.com/haoqi75/markdown-viewer-moe)
+[![Version](https://img.shields.io/badge/dynamic/json?url=https%3A%2F%2Fraw.githubusercontent.com%2Fhaoqi75%2Fmarkdown-viewer-moe%2Frefs%2Fheads%2Fmain%2Ftools%2Fpackage.json&query=version&prefix=v&style=for-the-badge&label=version&color=pink)](https://github.com/haoqi75/markdown-viewer-moe)
 [![License](https://img.shields.io/badge/license-MIT-blue.svg?style=for-the-badge)](https://github.com/haoqi75/markdown-viewer-moe)
 [![Platform](https://img.shields.io/badge/platform-Web-emerald.svg?style=for-the-badge)](https://github.com/haoqi75/markdown-viewer-moe)
 
