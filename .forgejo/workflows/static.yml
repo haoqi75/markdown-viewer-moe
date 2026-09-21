@@ -31,7 +31,7 @@ jobs:
           cache: 'pnpm'
 
       - name: Install Dependencies
-        run: pnpm ci --no-frozen-lockfile || pnpm install
+        run: pnpm ci
 
       - name: Build page and tools
         run: pnpm run build

@@ -40,7 +40,7 @@ jobs:
         uses: pnpm/setup@v3
 
       - name: Install Dependencies
-        run: pnpm ci --no-frozen-lockfile
+        run: pnpm ci
         
       - name: Build page and tools
         run: pnpm run build

@@ -60,7 +60,7 @@ jobs:
           cache: 'pnpm'
 
       - name: Install Dependencies
-        run: pnpm ci --no-frozen-lockfile
+        run: pnpm ci
 
       - name: Build page and tools for release
         run: pnpm run build:release
