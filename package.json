@@ -20,9 +20,18 @@
   "author": "haoqi75",
   "type": "commonjs",
   "main": "server.js",
-  "workspaces": [
-    "tools"
-  ],
+  "devEngines": {
+    "packageManager": {
+      "name": "pnpm",
+      "version": "12.5.1",
+      "onFail": "download"
+    },
+    "runtime": {
+      "name": "node",
+      "version": "26.4.0",
+      "onFail": "download"
+    }
+  },
   "scripts": {
     "build": "run-s build:page build:tools build:404",
     "postbuild": "node scripts/verify-build.js",

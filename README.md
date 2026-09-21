@@ -9,8 +9,8 @@
 <div align="center">
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-pink.svg?style=for-the-badge)](LICENSE)
-[![Node.js](https://img.shields.io/badge/Node.js-24.x-green?logo=node.js&style=for-the-badge)](https://nodejs.org)
-[![pnpm](https://img.shields.io/badge/pnpm-11.x-blue?logo=pnpm&style=for-the-badge)](https://pnpm.io)
+[![Node.js](https://img.shields.io/badge/Node.js-26.4.0-green?logo=node.js&style=for-the-badge)](https://nodejs.org)
+[![pnpm](https://img.shields.io/badge/pnpm-12.5.1-blue?logo=pnpm&style=for-the-badge)](https://pnpm.io)
 [![Gulp](https://img.shields.io/badge/Gulp-5.x-red?logo=gulp&style=for-the-badge)](https://gulpjs.com)
 [![Platform](https://img.shields.io/badge/platform-Web-emerald.svg?style=for-the-badge&logo=codeforces)](https://moe520.cc.cd/)
 
@@ -23,6 +23,11 @@
 [![Codeberg Repo Forks](https://img.shields.io/gitea/forks/haoqi75/markdown-viewer-moe?gitea_url=https%3A%2F%2Fcodeberg.org%2F&style=for-the-badge&logo=Codeberg&logoColor=white&label=%E5%88%86%E5%8F%89%20\(Forks\)&labelColor=blue&color=pink)](https://codeberg.org/haoqi75/markdown-viewer-moe/forks)
 
 </div>
+
+---
+
+> [!IMPORTANT]
+> 从2026年9月21日更新后，此作品仅使用最新版本的pnpm和nodejs，将会禁用其他软件包管理器。
 
 ---
 

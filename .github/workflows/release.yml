@@ -35,24 +35,16 @@ jobs:
           echo "Tag: $TAG_NAME"
       
       - name: Checkout repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
         with:
           ref: ${{ steps.get_tag.outputs.tag_name }}
           fetch-depth: 0
 
-      - name: Setup pnpm
-        uses: pnpm/action-setup@v6
-        with:
-          version: 11
-
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: 24
-          cache: 'pnpm'
+      - name: Setup pnpm and Node.js
+        uses: pnpm/setup@v3
 
       - name: Install Dependencies
-        run: pnpm ci --no-frozen-lockfile || pnpm install
+        run: pnpm ci --no-frozen-lockfile
         
       - name: Build page and tools for release
         run: pnpm run build:release
