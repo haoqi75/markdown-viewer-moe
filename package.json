@@ -20,9 +20,7 @@
   "author": "haoqi75",
   "type": "commonjs",
   "main": "server.js",
-  "workspaces": [
-    "tools"
-  ],
+  "packageManager": "pnpm@12.18.0",
   "scripts": {
     "build": "run-s build:page build:tools build:404",
     "postbuild": "node scripts/verify-build.js",
@@ -35,11 +33,12 @@
     "build:404": "node scripts/build-404.js",
     "dev": "gulp",
     "dev:tools": "pnpm run --filter moe-json-editor dev",
+    "lint:tools": "pnpm --filter moe-json-editor lint",
     "start": "node ."
   },
   "dependencies": {
     "jimp": "^1.6.1",
-    "npm-run-all2": "^9.0.3"
+    "npm-run-all2": "^9.0.4"
   },
   "devDependencies": {
     "browser-sync": "^3.0.4",
