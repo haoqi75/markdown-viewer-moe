@@ -260,6 +260,10 @@ const Renderer = (function() {
         // 2. 使用 ?p= 查询别名
         var pParam = params.get('p');
         if (pParam) {
+            // 内置关于页：优先于 aliases，保证 /?p=about 始终可用
+            if (pParam.toLowerCase() === 'about') {
+                return '__ABOUT_PAGE__';
+            }
             if (CONFIG.aliases && typeof CONFIG.aliases === 'object') {
                 var lowerP = pParam.toLowerCase();
                 var keys = Object.keys(CONFIG.aliases);
@@ -383,8 +387,44 @@ const Renderer = (function() {
         });
     }
 
+    function renderAbout() {
+        var tpl = document.getElementById('about-page-template');
+        if (!tpl) {
+            contentEl.innerHTML =
+                '<div class="error-wrap">' +
+                    '<p class="error-code">?</p>' +
+                    '<p class="error-msg">关于页面未找到</p>' +
+                    '<p class="error-detail">构建产物中缺少 about-page-template，请重新运行构建。</p>' +
+                    '<button class="retry-btn" onclick="location.href=location.origin+location.pathname">🏠 返回首页</button>' +
+                '</div>';
+            return;
+        }
+
+        contentEl.innerHTML = '';
+        contentEl.appendChild(tpl.content.cloneNode(true));
+
+        var subEl = document.querySelector('.logo-sub');
+        if (subEl) subEl.textContent = '关于';
+        document.title = '关于 · ' + (CONFIG.title || '萌·Markdown');
+
+        if (typeof Prism !== 'undefined') {
+            Prism.highlightAll();
+        }
+        interceptAnchors();
+        setupImagePreview();
+        TOC.generate();
+        TOC.startScrollSpy();
+        window.scrollTo({ top: 0 });
+    }
+
     async function load() {
         var url = resolveUrl();
+
+        if (url === '__ABOUT_PAGE__') {
+            renderAbout();
+            return;
+        }
+
         if (CONFIG.logoSubUseDocTitle) {
             try {
                 var pathname = new URL(url).pathname;

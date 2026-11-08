@@ -1,0 +1,377 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#ff6b9d">
+    <title>关于 · 萌·Markdown</title>
+    <link rel="icon" type="image/svg+xml" href="img/favicon.svg">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fredoka:wght@300..700&family=ZCOOL+KuaiLe&display=swap">
+    <style id="about-page-style">
+        /* ============================================================
+           关于页样式（全部限定在 .about-page 下，内嵌到主页面也不会污染）
+           ============================================================ */
+        .about-page {
+            line-height: 1.8;
+        }
+
+        .about-page .about-hero {
+            text-align: center;
+            padding: 0.2rem 0 1.4rem;
+        }
+
+        .about-page .about-emoji {
+            display: inline-block;
+            font-size: 3.2rem;
+            line-height: 1;
+            animation: aboutFloat 4s ease-in-out infinite;
+        }
+
+        @keyframes aboutFloat {
+            0%, 100% { transform: translateY(0) rotate(-3deg); }
+            50% { transform: translateY(-8px) rotate(3deg); }
+        }
+
+        .about-page .about-title {
+            margin: 0.5rem 0 0.2rem;
+            font-size: 2rem;
+            font-weight: 700;
+            line-height: 1.3;
+            background: linear-gradient(135deg, var(--moe-pink), var(--moe-purple));
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        /* 覆盖主站 #content h1 的下边框/缩进 */
+        #content .about-page h1.about-title {
+            padding: 0;
+            border-bottom: none;
+            text-align: center;
+        }
+
+        .about-page .about-version {
+            display: inline-block;
+            margin: 0.2rem 0 0.6rem;
+            padding: 0.1rem 0.8rem;
+            border-radius: 999px;
+            font-size: 0.78rem;
+            color: var(--moe-pink-dark, #d6336c);
+            background: rgba(var(--moe-pink-rgb, 255, 107, 157), 0.12);
+            border: 1px solid rgba(var(--moe-pink-rgb, 255, 107, 157), 0.2);
+        }
+
+        .about-page .about-tagline {
+            margin: 0 auto 1.1rem;
+            max-width: 34rem;
+            color: var(--moe-text-light, #7a6a85);
+            font-size: 0.95rem;
+        }
+
+        .about-page .about-actions {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 0.6rem;
+        }
+
+        .about-page .about-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.35rem;
+            padding: 0.5rem 1.1rem;
+            border-radius: 999px;
+            font-size: 0.88rem;
+            font-weight: 600;
+            text-decoration: none;
+            color: var(--moe-pink-dark, #d6336c);
+            background: rgba(var(--moe-pink-rgb, 255, 107, 157), 0.1);
+            border: 1px solid rgba(var(--moe-pink-rgb, 255, 107, 157), 0.22);
+            transition: transform 0.2s ease, background 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        /* 用 #content 提高优先级，避免被主站 #content a 的链接样式覆盖 */
+        #content .about-page .about-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.35rem;
+            padding: 0.5rem 1.1rem;
+            border-radius: 999px;
+            font-size: 0.88rem;
+            font-weight: 600;
+            color: var(--moe-pink-dark, #d6336c);
+            background: rgba(var(--moe-pink-rgb, 255, 107, 157), 0.1);
+            border: 1px solid rgba(var(--moe-pink-rgb, 255, 107, 157), 0.22);
+            border-bottom: 1px solid rgba(var(--moe-pink-rgb, 255, 107, 157), 0.22);
+        }
+
+        .about-page .about-btn:hover {
+            transform: translateY(-2px);
+            background: #fff;
+            box-shadow: 0 6px 18px rgba(var(--moe-pink-rgb, 255, 107, 157), 0.2);
+        }
+
+        #content .about-page .about-btn:hover {
+            color: var(--moe-purple, #a855f7);
+            border-bottom-color: var(--moe-purple, #a855f7);
+        }
+
+        .about-page .about-btn.primary {
+            color: #fff;
+            background: linear-gradient(135deg, var(--moe-pink, #ff6b9d), var(--moe-purple, #a855f7));
+            border-color: transparent;
+        }
+
+        #content .about-page .about-btn.primary,
+        #content .about-page .about-btn.primary:hover {
+            color: #fff;
+            background: linear-gradient(135deg, var(--moe-pink, #ff6b9d), var(--moe-purple, #a855f7));
+            border-color: transparent;
+            border-bottom-color: transparent;
+        }
+
+        .about-page .about-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(13rem, 1fr));
+            gap: 0.8rem;
+            margin: 1rem 0 1.4rem;
+        }
+
+        .about-page .about-feature {
+            padding: 0.9rem 1rem;
+            border-radius: 14px;
+            background: rgba(var(--moe-pink-rgb, 255, 107, 157), 0.05);
+            border: 1px solid rgba(var(--moe-pink-rgb, 255, 107, 157), 0.12);
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        .about-page .about-feature:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(var(--moe-pink-rgb, 255, 107, 157), 0.12);
+        }
+
+        .about-page .about-feature b {
+            display: block;
+            margin-bottom: 0.15rem;
+            font-size: 0.92rem;
+        }
+
+        .about-page .about-feature span {
+            display: block;
+            font-size: 0.8rem;
+            color: var(--moe-text-light, #7a6a85);
+            line-height: 1.6;
+        }
+
+        .about-page .about-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.45rem;
+            margin: 0.8rem 0 1.2rem;
+        }
+
+        .about-page .about-tag {
+            padding: 0.2rem 0.7rem;
+            border-radius: 999px;
+            font-size: 0.78rem;
+            background: rgba(var(--moe-pink-rgb, 255, 107, 157), 0.08);
+            border: 1px solid rgba(var(--moe-pink-rgb, 255, 107, 157), 0.14);
+            color: var(--moe-text, #4a3e56);
+        }
+
+        .about-page .about-links {
+            margin: 0.6rem 0 1.2rem;
+            padding-left: 1.4rem;
+        }
+
+        .about-page .about-links li {
+            margin: 0.35rem 0;
+        }
+
+        .about-page .about-footer {
+            margin-top: 1.8rem;
+            padding-top: 1.2rem;
+            border-top: 1px dashed rgba(var(--moe-pink-rgb, 255, 107, 157), 0.22);
+            text-align: center;
+            color: var(--moe-text-light, #7a6a85);
+            font-size: 0.82rem;
+        }
+
+        .about-page .about-mascot {
+            width: 110px;
+            height: auto;
+            margin: 0 auto 0.6rem;
+            display: block;
+            border-radius: 16px;
+            filter: drop-shadow(0 6px 16px rgba(var(--moe-pink-rgb, 255, 107, 157), 0.25));
+        }
+
+        #content .about-page .about-mascot {
+            margin: 0 auto 0.6rem;
+        }
+
+        /* ============================================================
+           仅独立打开 src/about.html 时生效的页面级样式
+           ============================================================ */
+        body.about-standalone {
+            margin: 0;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            padding: 2rem 1rem;
+            box-sizing: border-box;
+            font-family: 'Nunito', 'ZCOOL KuaiLe', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            color: #4a3e56;
+            background:
+                radial-gradient(circle at 10% 20%, rgba(255, 107, 157, 0.12) 0%, transparent 50%),
+                radial-gradient(circle at 90% 80%, rgba(168, 85, 247, 0.12) 0%, transparent 50%),
+                linear-gradient(135deg, #fff5f7 0%, #f0e6ff 50%, #e8f3ff 100%);
+        }
+
+        body.about-standalone .about-page {
+            width: 100%;
+            max-width: 880px;
+            padding: 2rem 2.4rem 2.4rem;
+            background: rgba(255, 255, 255, 0.88);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.6);
+            border-radius: 22px;
+            box-shadow: 0 12px 48px rgba(255, 107, 157, 0.16);
+        }
+
+        body.about-standalone .about-page h1,
+        body.about-standalone .about-page h2,
+        body.about-standalone .about-page h3 {
+            margin: 1.4rem 0 0.6rem;
+            line-height: 1.35;
+        }
+
+        body.about-standalone .about-page h2 {
+            padding-bottom: 0.3rem;
+            border-bottom: 2px solid rgba(255, 107, 157, 0.14);
+        }
+
+        body.about-standalone .about-page a {
+            color: #d6336c;
+            text-decoration: none;
+            border-bottom: 1px solid rgba(255, 107, 157, 0.25);
+        }
+
+        body.about-standalone .about-page a.about-btn {
+            border-bottom-color: rgba(255, 107, 157, 0.22);
+        }
+
+        body.about-standalone .about-page a.about-btn.primary {
+            border-bottom-color: transparent;
+        }
+
+        body.about-standalone .about-page code {
+            padding: 0.12rem 0.45rem;
+            border-radius: 6px;
+            font-family: 'JetBrains Mono', 'Fira Code', monospace;
+            font-size: 0.86em;
+            color: #d6336c;
+            background: rgba(255, 107, 157, 0.08);
+        }
+
+        @media (max-width: 640px) {
+            body.about-standalone {
+                padding: 0.8rem 0.6rem;
+            }
+            body.about-standalone .about-page {
+                padding: 1.4rem 1.2rem 1.8rem;
+                border-radius: 16px;
+            }
+            .about-page .about-title {
+                font-size: 1.6rem;
+            }
+        }
+    </style>
+</head>
+<body class="about-standalone">
+<!-- ABOUT_CONTENT_START -->
+<div class="about-page" id="about-page">
+    <div class="about-hero">
+        <div class="about-emoji" aria-hidden="true">🌸</div>
+        <h1 class="about-title">关于萌·Markdown</h1>
+        <div class="about-version">v__APP_VERSION__ · 萌系 Markdown 预览器</div>
+        <p class="about-tagline">
+            把普通 Markdown 变成粉粉的、毛玻璃质感的阅读空间。<br>
+            纯静态、单文件、开箱即用，只为让阅读多一点可爱。
+        </p>
+        <div class="about-actions">
+            <a class="about-btn primary" href="?">🏠 返回首页</a>
+            <a class="about-btn" href="https://github.com/haoqi75/markdown-viewer-moe" target="_blank" rel="noopener">⭐ GitHub</a>
+            <a class="about-btn" href="https://docs.moe520.cc.cd/" target="_blank" rel="noopener">📖 使用文档</a>
+        </div>
+    </div>
+
+    <h2>✨ 这是什么？</h2>
+    <p>
+        这是一个由 AI 辅助生成的萌系 Markdown 网页预览器。你只需要提供一个 Markdown 地址，
+        它就会把内容渲染成带目录、锚点、代码高亮、图片预览和角色插画的漂亮页面。
+    </p>
+    <p>
+        构建产物是单个 HTML 文件，所有 CSS、JS 和图片都会内联进去，
+        可以直接丢到 GitHub Pages、Codeberg Pages 或任意静态托管上使用。
+    </p>
+
+    <h2>💖 特色</h2>
+    <div class="about-grid">
+        <div class="about-feature"><b>🎀 萌系主题</b><span>粉紫渐变、毛玻璃卡片、浮动装饰与标题小图标。</span></div>
+        <div class="about-feature"><b>📑 智能目录</b><span>自动提取标题，平滑滚动，滚动时同步高亮当前章节。</span></div>
+        <div class="about-feature"><b>🔗 标题锚点</b><span>支持 Markdown 内部锚点跳转，不刷新页面。</span></div>
+        <div class="about-feature"><b>🛣️ 别名路由</b><span>通过 <code>?p=别名</code> 快速切换预设文档，无需改服务器。</span></div>
+        <div class="about-feature"><b>🖼️ 图片增强</b><span>相对路径自动修正、失败占位、点击毛玻璃放大预览。</span></div>
+        <div class="about-feature"><b>💻 代码高亮</b><span>集成 Prism.js，代码块美观易读。</span></div>
+        <div class="about-feature"><b>🎨 主题切换</b><span>内置粉、蓝、绿、紫、白、黄六种颜色主题。</span></div>
+        <div class="about-feature"><b>📦 单文件交付</b><span>构建后所有资源内联，部署简单到只需要一个文件。</span></div>
+    </div>
+
+    <h2>🛠️ 技术栈</h2>
+    <div class="about-tags">
+        <span class="about-tag">marked</span>
+        <span class="about-tag">Prism.js</span>
+        <span class="about-tag">Gulp</span>
+        <span class="about-tag">browser-sync</span>
+        <span class="about-tag">pnpm</span>
+        <span class="about-tag">React 19</span>
+        <span class="about-tag">Vite 6</span>
+        <span class="about-tag">Tailwind 4</span>
+        <span class="about-tag">VitePress</span>
+        <span class="about-tag">pagefind</span>
+    </div>
+
+    <h2>🔗 相关链接</h2>
+    <ul class="about-links">
+        <li>主站：<a href="https://moe520.cc.cd/" target="_blank" rel="noopener">moe520.cc.cd</a></li>
+        <li>备用站：<a href="https://moe520.os.kg/" target="_blank" rel="noopener">moe520.os.kg</a></li>
+        <li>文档：<a href="https://docs.moe520.cc.cd/" target="_blank" rel="noopener">docs.moe520.cc.cd</a></li>
+        <li>源码：<a href="https://github.com/haoqi75/markdown-viewer-moe" target="_blank" rel="noopener">GitHub</a> · <a href="https://codeberg.org/haoqi75/markdown-viewer-moe" target="_blank" rel="noopener">Codeberg</a></li>
+        <li>配置编辑器：<a href="https://moe520.cc.cd/tools.html" target="_blank" rel="noopener">tools.html</a></li>
+    </ul>
+
+    <h2>📄 许可证与致谢</h2>
+    <p>
+        本项目以 <strong>MIT License</strong> 发布，作者 ApHeQua758。
+        内容由 AI 辅助生成与修复，融合了人类审美与机器效率。
+        感谢 marked、Prism.js、Gulp、VitePress 等开源项目。
+    </p>
+    <p>
+        如果你也喜欢这个项目，欢迎在
+        <a href="https://github.com/haoqi75/markdown-viewer-moe" target="_blank" rel="noopener">GitHub</a>
+        点一个 ⭐Star 支持一下～
+    </p>
+
+    <div class="about-footer">
+        <img class="about-mascot" src="img/mascot.png" alt="萌·Markdown 吉祥物">
+        <p>本页面通过 <code>/?p=about</code> 访问 · 用 Markdown 记录，用萌系包裹</p>
+    </div>
+</div>
+<!-- ABOUT_CONTENT_END -->
+</body>
+</html>

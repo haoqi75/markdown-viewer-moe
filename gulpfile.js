@@ -49,7 +49,8 @@ function checkRequiredFiles() {
     const required = [
         path.join(srcDir, 'index.html'),
         path.join(srcDir, 'style.css'),
-        path.join(srcDir, 'script.js')
+        path.join(srcDir, 'script.js'),
+        path.join(srcDir, 'about.html')
     ];
     const missing = required.filter(file => !fs.existsSync(file));
     if (missing.length) {
@@ -74,6 +75,9 @@ function verifyBuild() {
     }
     if (!content.includes('.card') && !content.includes('--moe-pink') && !content.includes('<style')) {
         throw new Error('❌ 构建产物可能缺少样式（未找到 .card / CSS变量 / <style>）');
+    }
+    if (!content.includes('id="about-page-template"') || !content.includes('about-page')) {
+        throw new Error('❌ 构建产物缺少关于页模板（请检查 src/about.html 的 ABOUT_CONTENT 标记）');
     }
     console.log('✅ 构建产物验证通过');
 }
@@ -214,6 +218,22 @@ function build() {
 
     var configScript = '<script>window.__CONFIG__ = ' + JSON.stringify(extendedConfig) + ';</script>';
 
+    // ======== 步骤 3.5：读取 about.html，提取内容与样式 ========
+    var aboutRaw = fs.readFileSync(path.join(srcDir, 'about.html'), 'utf8');
+    var aboutContentMatch = aboutRaw.match(/<!--\s*ABOUT_CONTENT_START\s*-->([\s\S]*?)<!--\s*ABOUT_CONTENT_END\s*-->/);
+    var aboutStyleMatch = aboutRaw.match(/<style[^>]*id=["']about-page-style["'][^>]*>([\s\S]*?)<\/style>/i);
+    if (!aboutContentMatch) {
+        throw new Error('❌ src/about.html 缺少 ABOUT_CONTENT_START / ABOUT_CONTENT_END 标记');
+    }
+    if (!aboutStyleMatch) {
+        throw new Error('❌ src/about.html 缺少 id="about-page-style" 的样式块');
+    }
+    var aboutContent = aboutContentMatch[1]
+        .replace(/__APP_VERSION__/g, pkgVersion || 'dev')
+        .replace(/src="img\/mascot\.png"/g, 'src="' + mascotSrc + '"');
+    var aboutPageHtml = '<template id="about-page-template"><style>' + aboutStyleMatch[1] + '</style>' + aboutContent + '</template>';
+    console.log('✅ 关于页已内嵌: ' + aboutContent.length + ' 字节');
+
     // ======== 步骤 4：流式组装，生成 dist/index.html ========
     return gulp.src(path.join(srcDir, 'index.html'))
         .pipe(replace('<config-placeholder>', configScript))
@@ -225,6 +245,7 @@ function build() {
         .pipe(replace(/src="sit-down-placeholder"/g, 'src="' + sitDownUri + '"'))
         .pipe(replace(/<head-inject><\/head-inject>/g, config.headInject || ''))
         .pipe(replace(/<body-inject><\/body-inject>/g, config.bodyInject || ''))
+        .pipe(replace('<about-page-template></about-page-template>', function() { return aboutPageHtml; }))
         .pipe(replace(/<link rel="manifest" href="[^"]*">/g, ''))
         .pipe(replace(/<link[^>]*href="[^"]*style\.css"[^>]*>/gi, '<style>' + minifiedCss + '</style>'))
         .pipe(replace(/<script[^>]*src="[^"]*script\.js"[^>]*><\/script>/gi, '<script>' + minifiedJs + '</script>'))
@@ -245,7 +266,7 @@ function dev() {
         open: false
     });
     gulp.watch(
-        [srcDir + '/index.html', srcDir + '/style.css', srcDir + '/script.js', srcDir + '/config.json'],
+        [srcDir + '/index.html', srcDir + '/style.css', srcDir + '/script.js', srcDir + '/about.html', srcDir + '/config.json'],
         gulp.series(build, function(done) { browserSync.reload(); done(); })
     );
 }
