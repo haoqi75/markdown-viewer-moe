@@ -1,0 +1,230 @@
+/* ============================================================
+   基于 Catppuccin Mocha + Pink 的萌系增强
+   ============================================================ */
+
+:root {
+  /* 强化粉色品牌感 */
+  --vp-c-brand-1: #fa8adc;          /* Catppuccin pink */
+  --vp-c-brand-2: #d3afaf;
+  --vp-c-brand-3: #cba6f7;
+  --vp-c-brand-soft: rgba(245, 105, 207, 0.459);
+
+  /* 自定义变量，方便复用 */
+  --moe-pink: #f5c2e7;
+  --moe-pink-rgb: 245, 194, 231;
+  --moe-purple: #cba6f7;
+  --moe-blue: #89b4fa;
+  --moe-radius: 16px;
+  
+  --vp-home-hero-image-background-image: radial-gradient(
+    closest-side at 50% 45%,
+    rgba(255, 150, 180, 0.95) 0%,        /* 核心更粉更亮 */
+    rgba(245, 194, 231, 0.85) 20%,
+    rgba(203, 166, 247, 0.65) 40%,
+    rgba(137, 180, 250, 0.4) 60%,
+    transparent 80%
+  ) !important;
+
+  --vp-home-hero-image-filter: blur(90px) !important;
+}
+
+/* 暗色模式保持 Catppuccin Mocha 的基调 */
+.dark {
+  --moe-pink-rgb: 245, 194, 231;
+  
+  --vp-home-hero-image-background-image: radial-gradient(
+    closest-side at 50% 45%,
+    rgba(255, 150, 180, 0.6) 0%,
+    rgba(245, 194, 231, 0.5) 20%,
+    rgba(203, 166, 247, 0.4) 40%,
+    rgba(137, 180, 250, 0.25) 60%,
+    transparent 80%
+  ) !important;
+
+  --vp-home-hero-image-filter: blur(100px) !important;
+}
+
+/* ============================================================
+   Hero 光晕（调整为更有层次的粉蓝渐变）
+   ============================================================ */
+
+.VPHero .image-bg,
+.VPHomeHero .image-bg,
+.image-bg {
+  background-image: radial-gradient(
+    circle at 50% 45%,
+    rgba(255, 180, 200, 0.9) 0%,          /* 粉红核心 */
+    rgba(245, 194, 231, 0.7) 20%,
+    rgba(203, 166, 247, 0.55) 40%,        /* 紫色 */
+    rgba(137, 180, 250, 0.4) 60%,         /* 蓝色 */
+    rgba(180, 220, 255, 0.2) 75%,
+    transparent 90%
+  ) !important;
+
+  filter: blur(70px) !important;
+
+  width: 340px !important;
+  height: 340px !important;
+  top: 50% !important;
+  left: 50% !important;
+  transform: translate(-50%, -50%) scale(1.55) !important;
+  opacity: 1 !important;
+  border-radius: 50% !important;
+  z-index: 0 !important;
+}
+
+/* 手机端 */
+@media (max-width: 640px) {
+  .VPHero .image-bg,
+  .VPHomeHero .image-bg,
+  .image-bg {
+    width: 260px !important;
+    height: 260px !important;
+    transform: translate(-50%, -50%) scale(1.5) !important;
+    filter: blur(55px) !important;
+  }
+
+  .VPHero .image-container,
+  .VPHomeHero .image-container {
+    max-height: 240px !important;
+    margin-bottom: 12px !important;     /* 减少下方多余空白 */
+  }
+}
+
+/* ========== 核心：柔和光晕背景（还原你 style.css 的感觉） ========== */
+html,
+body {
+  background-color: var(--vp-c-bg) !important;
+}
+
+body {
+  /* 导入字体, 按照顺序来设置英中字体 */
+  font-family: "Fredoka", "ZCOOL KuaiLe", sans-serif;
+  background-image:
+    radial-gradient(circle at 12% 18%, rgba(var(--moe-pink-rgb), 0.13) 0%, transparent 48%),
+    radial-gradient(circle at 88% 82%, rgba(203, 166, 247, 0.11) 0%, transparent 50%),
+    radial-gradient(circle at 50% 50%, rgba(137, 180, 250, 0.07) 0%, transparent 65%) !important;
+  background-attachment: fixed !important;
+  background-repeat: no-repeat !important;
+}
+
+/* 让内容区域透出背景 */
+.VPApp,
+.Layout,
+.VPContent,
+.VPDoc,
+.VPHome,
+.VPHero {
+  background: transparent !important;
+}
+
+/* 侧边栏 / 导航 半透明玻璃感 */
+.VPNavBar {
+  background: color-mix(in srgb, var(--vp-c-bg) 78%, transparent) !important;
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  border-bottom: 1px solid rgba(var(--moe-pink-rgb), 0.12);
+}
+
+.VPSidebar {
+  background: color-mix(in srgb, var(--vp-c-bg-alt) 82%, transparent) !important;
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border-right: 1px solid rgba(var(--moe-pink-rgb), 0.10);
+}
+
+/* 卡片、功能块更圆润柔和 */
+.VPFeature,
+.VPTeamMembersItem,
+.custom-block,
+.vp-doc .custom-block {
+  border-radius: var(--moe-radius) !important;
+  box-shadow: 0 8px 28px rgba(var(--moe-pink-rgb), 0.10);
+}
+
+/* 代码块圆角 */
+div[class*="language-"],
+.vp-code-group {
+  border-radius: 14px !important;
+  overflow: hidden;
+}
+
+/* 链接 */
+.vp-doc a {
+  color: var(--vp-c-brand-1);
+  border-bottom: 1.5px solid rgba(var(--moe-pink-rgb), 0.35);
+  transition: all 0.25s ease;
+}
+
+.vp-doc a:hover {
+  color: var(--moe-purple);
+  border-bottom-color: var(--moe-purple);
+}
+
+/* 标题下划线更柔和 */
+.vp-doc h1 {
+  border-bottom: 3px solid rgba(var(--moe-pink-rgb), 0.22);
+  padding-bottom: 0.35rem;
+}
+
+.vp-doc h2 {
+  border-bottom: 2px solid rgba(var(--moe-pink-rgb), 0.14);
+  padding-bottom: 0.25rem;
+}
+
+/* 引用块 */
+.vp-doc blockquote {
+  border-left: 4px solid var(--vp-c-brand-1) !important;
+  background: rgba(var(--moe-pink-rgb), 0.07);
+  border-radius: 0 12px 12px 0;
+}
+
+/* 按钮更圆 */
+.VPButton {
+  border-radius: 999px !important;
+}
+
+/* 首页 Hero 标题渐变 */
+:root {
+  --vp-home-hero-name-color: transparent;
+  --vp-home-hero-name-background: linear-gradient(
+    135deg,
+    #f5c2e7 0%,
+    #cba6f7 45%,
+    #89b4fa 100%
+  );
+}
+
+/* ========== 可选：漂浮装饰 emoji ========== */
+.moe-deco-wrapper {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+  overflow: hidden;
+}
+
+.moe-deco {
+  position: absolute;
+  font-size: 2.1rem;
+  opacity: 0.16;
+  animation: floatDeco 18s ease-in-out infinite alternate;
+}
+
+.moe-deco:nth-child(1) { top: 7%; left: 3.5%; animation-delay: 0s; }
+.moe-deco:nth-child(2) { bottom: 11%; right: 4%; animation-delay: 4s; font-size: 2.8rem; }
+.moe-deco:nth-child(3) { top: 48%; left: 2.5%; animation-delay: 8s; font-size: 1.7rem; }
+.moe-deco:nth-child(4) { bottom: 26%; right: 3%; animation-delay: 12s; font-size: 2.4rem; }
+
+@keyframes floatDeco {
+  0%   { transform: translate(0, 0) rotate(0deg) scale(1); }
+  33%  { transform: translate(12px, -16px) rotate(5deg) scale(1.05); }
+  66%  { transform: translate(-8px, 12px) rotate(-4deg) scale(0.95); }
+  100% { transform: translate(5px, -7px) rotate(3deg) scale(1.02); }
+}
+
+@media (max-width: 768px) {
+  .moe-deco {
+    display: none;
+  }
+}

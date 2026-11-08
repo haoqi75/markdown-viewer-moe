@@ -5,3 +5,6 @@ dist/
 session-ses*
 bun.lock
 package-lock.json
+
+docs/.vitepress/dist
+docs/.vitepress/cache

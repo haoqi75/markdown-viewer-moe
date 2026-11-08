@@ -2,5 +2,17 @@ packages:
   - 'tools'
 allowBuilds:
   '@google/genai': false
+  '@parcel/watcher': false
   esbuild: true
   protobufjs: true
+permissions:
+  dotenv:
+    skills: [dotenv, dotenvx]
+skills:
+  dirs:
+    - .agent/skills
+    - .agents/skills
+    - .claude/skills
+    - .cursor/skills
+    - .gemini/skills
+    - .github/skills
