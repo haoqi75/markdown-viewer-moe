@@ -71,10 +71,11 @@ export default defineConfig({
     nav: [
       { text: '主页', link: '/' },
       { text: '快速开始', link: '/guide/quick-start', activeMatch: '/guide/' },
-      { text: '配置文件', link: '/config', activeMatch: '/config/' }
+      { text: '配置文件', link: '/config/', activeMatch: '/config/' },
+      { text: '关于', link: '/about', activeMatch: '/about' }
     ],
     editLink: {
-      pattern: 'https://github.com/haoqi75/markdown-viewer-moe-docs/edit/main/docs/:path',
+      pattern: 'https://github.com/haoqi75/markdown-viewer-moe/edit/main/docs/src/:path',
       text: '在 GitHub 编辑此页面'
     },
     sidebar: [
@@ -92,7 +93,7 @@ export default defineConfig({
       {
         text: '配置',
         items: [
-          { text: '概览', link: '/config' },
+          { text: '概览', link: '/config/' },
           { text: '生产版配置', link: '/config/normal' },
           { text: '发布版配置', link: '/config/release' },
           { text: '简单编辑 config.json 工具', link: '/config/editor' }

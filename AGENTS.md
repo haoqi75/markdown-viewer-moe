@@ -119,7 +119,7 @@ VitePress 2 (alpha) Chinese documentation site, published at <https://docs.moe52
 - Output `docs/.vitepress/dist` and `docs/.vitepress/cache` are gitignored. `build:docs` is separate from `pnpm build`.
 - **Termux/Android limitation**: pagefind has no `android-arm64` binary, so `pnpm build:docs` fails at the pagefind step on this machine (VitePress page rendering itself succeeds). Use Linux/macOS/Windows or CI for a complete build.
 - CI currently does **not** build or deploy docs; only the viewer/tools `dist/`.
-- Known stale content when editing docs: `docs/src/about.md` badges still say Node 24.x / pnpm 11.x, `docs/src/guide/local.md` still says pnpm 11.x, and `config.mts`'s `editLink.pattern` still points at the old `markdown-viewer-moe-docs` repo.
+- Docs content lives in `docs/src/`; when changing config fields or build commands, update the matching page under `docs/src/config/` or `docs/src/guide/` too.
 
 ## CI workflows (`.github/` and `.forgejo/`)
 

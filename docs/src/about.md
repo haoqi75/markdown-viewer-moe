@@ -11,8 +11,8 @@ outline: doc
 ## 这是什么作品
 
 ![License: MIT](https://img.shields.io/badge/License-MIT-pink.svg?style=for-the-badge)
-[![Node.js](https://img.shields.io/badge/Node.js-24.x-green?logo=node.js&style=for-the-badge)](https://nodejs.org)
-[![pnpm](https://img.shields.io/badge/pnpm-11.x-blue?logo=pnpm&style=for-the-badge)](https://pnpm.io)
+[![Node.js](https://img.shields.io/badge/Node.js-v26.13.0-green?logo=node.js&style=for-the-badge)](https://nodejs.org)
+[![pnpm](https://img.shields.io/badge/pnpm-12.18.0-blue?logo=pnpm&style=for-the-badge)](https://pnpm.io)
 [![Gulp](https://img.shields.io/badge/Gulp-5.x-red?logo=gulp&style=for-the-badge)](https://gulpjs.com)
 [![Platform](https://img.shields.io/badge/platform-Web-emerald.svg?style=for-the-badge&logo=codeforces)](https://moe520.cc.cd/)
 
@@ -24,7 +24,7 @@ Moe美化、强大功能的Markdown预览器
 
 此作品基于[AI Markdown](https://github.com/haoqi75/ai-markdown-old)（我的老版首页，项目已停止更新）生成和修复内容，专门给Moe爱好提供的Markdown预览器。功能增强，修复了老版本错误。
 
-我做了这个作品是为了可以让你们拥有 Markdown 网页预览器。把你的普通 Markdown 页面变成 Moe 好看的页面，纯静态前端、单文件、以及JSON配置文件编辑工具。
+我做了这个作品是为了可以让你们拥有 Markdown 网页预览器。把你的普通 Markdown 页面变成 Moe 好看的页面，纯静态前端、单文件、以及JSON配置文件编辑工具。文档站和 JSON 配置编辑器也在同一个仓库里维护。
 
 ::: note
 此作品为 **AI** 生成，部分代码可能会缺失，我毕竟也不知道如何修复有些问题，所以可能全靠 **AI** 修复，谢谢理解。
@@ -37,6 +37,7 @@ Moe美化、强大功能的Markdown预览器
 - 🔗 **标题锚点** – h1~h6 左侧显示 🌸🌿🍀💮🌺🌻 可点击跳转图标，桌面 hover 显示
 - 🦘 **锚点导航** – 支持 Markdown `[text](#heading)` 锚点，点击平滑滚动不重载
 - 🛣️ **别名路由** – 支持 `?p=test` 形式的参数别名，无需修改服务器配置
+- ℹ️ **关于页面** – 页头按钮或 `/?p=about` 打开，构建时内嵌进单文件，Release 版同样可用
 - 💕 **萌系错误页** – 加载失败时显示吉祥物 + 大号状态码 + 中文提示
 - 🐾 **加载动画** – 加载中显示 loading.png 弹跳吉祥物 + spinner
 - 🖼️ **图片容错** – 加载失败的图片自动替换为吉祥物占位提示
@@ -54,14 +55,18 @@ Moe美化、强大功能的Markdown预览器
 - 💻 **代码高亮** – 集成 Prism.js，代码块美观易读
 - 🦊 **萌系吉祥物** – 可配置透明背景的右下角角色，为页面增添活力
 - 📝 **自定义页脚** – 支持 Markdown 的页脚内容，轻松添加版权或链接
+- 📚 **文档站** – 使用 VitePress 构建，集成 pagefind 中文搜索
+- 🧰 **JSON 配置编辑器** – `tools.html` 可视化编辑 `config.json` 和 `index.release.html`
 
 ## 🛠️ 技术栈
 - **[marked](https://marked.js.org/)** – Markdown 解析
 - **[Prism.js](https://prismjs.com/)** – 代码高亮
 - **[Gulp](https://gulpjs.com/)** – 构建工具（内联、压缩）
 - **[browser-sync](https://browsersync.io/)** – 开发服务器（热重载）
-- **[pnpm](https://pnpm.io/)** – 包管理
-- **[npm-run-all2](https://github.com/mysticatea/npm-run-all)** – 编排构建任务
+- **[pnpm](https://pnpm.io/)** – 包管理（固定 12.18.0）
+- **[npm-run-all2](https://github.com/bcomnes/npm-run-all2)** – 编排构建任务
+- **[VitePress](https://vitepress.dev/)** + **[pagefind](https://pagefind.app/)** – 文档站与搜索
+- **React 19 + Vite 6 + Tailwind 4 + TypeScript** – JSON 配置编辑器
 
 ## ⭐ Star 历史
 

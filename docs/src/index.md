@@ -22,6 +22,9 @@ hero:
     - theme: alt
       text: Codeberg
       link: https://codeberg.org/haoqi75/markdown-viewer-moe
+    - theme: alt
+      text: 关于
+      link: /about
 
 features:
   - icon: 🎀
@@ -39,6 +42,9 @@ features:
   - icon: 🛣️
     title: 别名路由
     details: 支持 ?p=test 形式的参数别名，无需修改服务器配置
+  - icon: ℹ️
+    title: 关于页面
+    details: 页头按钮或 /?p=about 打开，内嵌进单文件，Release 版同样可用
   - icon: 💕
     title: 萌系错误页
     details: 加载失败时显示吉祥物 + 大号状态码 + 中文提示
@@ -90,6 +96,12 @@ features:
   - icon: 📝
     title: 自定义页脚
     details: 支持 Markdown 的页脚内容，轻松添加版权或链接
+  - icon: 📚
+    title: 文档站
+    details: VitePress + pagefind 中文搜索，和主项目放在同一仓库
+  - icon: 🧰
+    title: JSON 配置编辑器
+    details: tools.html 可视化编辑 config.json 和 index.release.html
 ---
 
 此作品基于[AI Markdown](https://github.com/haoqi75/ai-markdown-old)（我的老版首页，项目已停止更新）生成和修复内容，专门给Moe爱好提供的Markdown预览器。功能增强，修复了老版本错误。
