@@ -172,6 +172,38 @@
             margin: 0.8rem 0 1.2rem;
         }
 
+        .about-page .about-env {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(8rem, 1fr));
+            gap: 0.7rem;
+            margin: 0.9rem 0 1.4rem;
+        }
+
+        .about-page .about-env-item {
+            padding: 0.8rem 0.6rem;
+            border-radius: 14px;
+            text-align: center;
+            background: rgba(var(--moe-pink-rgb, 255, 107, 157), 0.05);
+            border: 1px solid rgba(var(--moe-pink-rgb, 255, 107, 157), 0.12);
+        }
+
+        .about-page .about-env-item span {
+            display: block;
+            font-size: 0.72rem;
+            letter-spacing: 0.04em;
+            text-transform: uppercase;
+            color: var(--moe-text-light, #7a6a85);
+        }
+
+        .about-page .about-env-item b {
+            display: block;
+            margin-top: 0.25rem;
+            font-family: 'JetBrains Mono', 'Fira Code', monospace;
+            font-size: 0.9rem;
+            color: var(--moe-pink-dark, #d6336c);
+            word-break: break-all;
+        }
+
         .about-page .about-tag {
             padding: 0.2rem 0.7rem;
             border-radius: 999px;
@@ -298,7 +330,7 @@
     <div class="about-hero">
         <div class="about-emoji" aria-hidden="true">🌸</div>
         <h1 class="about-title">关于萌·Markdown</h1>
-        <div class="about-version">v__APP_VERSION__ · 萌系 Markdown 预览器</div>
+        <div class="about-version">__VERSION_DISPLAY__ · 萌系 Markdown 预览器</div>
         <p class="about-tagline">
             把普通 Markdown 变成粉粉的、毛玻璃质感的阅读空间。<br>
             纯静态、单文件、开箱即用，只为让阅读多一点可爱。
@@ -344,6 +376,27 @@
         <span class="about-tag">Tailwind 4</span>
         <span class="about-tag">VitePress</span>
         <span class="about-tag">pagefind</span>
+    </div>
+
+    <h2>🧪 构建环境</h2>
+    <p>以下版本为构建这个页面时使用的环境，每次 <code>pnpm build</code> 会自动更新。</p>
+    <div class="about-env">
+        <div class="about-env-item">
+            <span>Node.js</span>
+            <b>__NODE_VERSION__</b>
+        </div>
+        <div class="about-env-item">
+            <span>pnpm</span>
+            <b>__PNPM_VERSION__</b>
+        </div>
+        <div class="about-env-item">
+            <span>Gulp</span>
+            <b>__GULP_VERSION__</b>
+        </div>
+        <div class="about-env-item">
+            <span>Git</span>
+            <b>__GIT_HASH__</b>
+        </div>
     </div>
 
     <h2>🔗 相关链接</h2>

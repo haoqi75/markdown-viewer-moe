@@ -3,7 +3,7 @@
 ## 前置要求
 
 - **Node.js 26+**（仓库 `.nvmrc` 固定为 `v26.13.0`）
-- **pnpm 12+**（`package.json` 的 `packageManager` 固定为 `pnpm@12.18.0`）
+- **pnpm 12+**（`package.json` 的 `packageManager` 固定为 `pnpm@12.18.0`，并带 sha512 校验）
 - Git
 
 如果你使用 nvm，可以在仓库根目录执行：

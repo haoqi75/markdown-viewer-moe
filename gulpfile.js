@@ -118,13 +118,43 @@ function build() {
 
     // ======== 步骤 0：读取 package.json 版本号 ========
     var pkgVersion = '';
+    var pkgPackageManager = '';
     try {
         var pkg = JSON.parse(fs.readFileSync(path.join(__dirname, 'package.json'), 'utf8'));
         pkgVersion = pkg.version || '';
+        pkgPackageManager = pkg.packageManager || '';
         console.log('✅ 读取版本号成功: v' + pkgVersion);
     } catch (e) {
         console.warn('⚠️ package.json 版本号读取失败: ' + e.message);
     }
+
+    // ======== 读取构建环境版本（显示在关于页）========
+    var nodeVersion = process.version || 'unknown';
+    var pnpmVersion = '';
+    try {
+        pnpmVersion = require('child_process').execSync('pnpm --version', {
+            cwd: __dirname,
+            stdio: ['ignore', 'pipe', 'ignore']
+        }).toString().trim();
+    } catch (e) {
+        console.warn('⚠️ pnpm 版本读取失败: ' + e.message);
+    }
+    if (!pnpmVersion && pkgPackageManager) {
+        // packageManager 可能带 +sha512... 校验后缀，只取版本号
+        pnpmVersion = pkgPackageManager.replace(/^pnpm@/, '').split('+')[0];
+    }
+    if (!pnpmVersion) pnpmVersion = 'unknown';
+
+    var gulpVersion = 'unknown';
+    try {
+        var gulpPkgPath = path.join(__dirname, 'node_modules', 'gulp', 'package.json');
+        if (fs.existsSync(gulpPkgPath)) {
+            gulpVersion = JSON.parse(fs.readFileSync(gulpPkgPath, 'utf8')).version || 'unknown';
+        }
+    } catch (e) {
+        console.warn('⚠️ Gulp 版本读取失败: ' + e.message);
+    }
+    console.log('🧪 构建环境: Node ' + nodeVersion + ' · pnpm ' + pnpmVersion + ' · Gulp ' + gulpVersion);
 
     // ======== 读取 Git 更改号（短 hash）========
     var gitHash = '';
@@ -136,6 +166,9 @@ function build() {
     } catch (e) {
         console.warn('⚠️ Git 更改号读取失败: ' + e.message);
     }
+
+    // 关于页版本展示：与页脚一致，带 Git 短 hash
+    var versionDisplay = 'v' + (pkgVersion || 'dev') + (gitHash ? '(' + gitHash + ')' : '');
 
     // ======== 步骤 1：读取 config.json，缺失则用默认值 ========
     var configPath = path.join(srcDir, 'config.json');
@@ -229,7 +262,12 @@ function build() {
         throw new Error('❌ src/about.html 缺少 id="about-page-style" 的样式块');
     }
     var aboutContent = aboutContentMatch[1]
+        .replace(/__VERSION_DISPLAY__/g, versionDisplay)
         .replace(/__APP_VERSION__/g, pkgVersion || 'dev')
+        .replace(/__NODE_VERSION__/g, nodeVersion)
+        .replace(/__PNPM_VERSION__/g, pnpmVersion)
+        .replace(/__GULP_VERSION__/g, gulpVersion)
+        .replace(/__GIT_HASH__/g, gitHash || 'unknown')
         .replace(/src="img\/mascot\.png"/g, 'src="' + mascotSrc + '"');
     var aboutPageHtml = '<template id="about-page-template"><style>' + aboutStyleMatch[1] + '</style>' + aboutContent + '</template>';
     console.log('✅ 关于页已内嵌: ' + aboutContent.length + ' 字节');
