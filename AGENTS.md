@@ -4,6 +4,7 @@
 
 ```bash
 pnpm install            # install deps (pnpm 12+, Node 26+; exact pins in package.json/.nvmrc). Run at repo root — workspace installs tools/ too
+pnpm test               # node:test via scripts/run-tests.js → also writes validation.txt (gitignored)
 pnpm build              # page + tools + 404 → dist/
 pnpm dev                # clean + build + browser-sync watch on :8520 (NOT http-server)
 pnpm build:release      # build + node scripts/release.js → dist/index.release.html
@@ -24,7 +25,7 @@ pnpm preview:docs       # preview the built docs site
 
 `pnpm build` does **not** include docs; docs is a separate target.
 
-There are NO tests, no linter for the root package, and no formatter. `tsc --noEmit` in `tools/` is the only static check.
+Tests live in `tests/` and use Node's built-in `node:test` (no extra framework); run `pnpm test`. There is no linter/formatter for the root package; `pnpm lint:tools` (`tsc --noEmit`) is the only static check.
 
 ## Repo layout (pnpm workspace)
 
@@ -126,6 +127,7 @@ VitePress 2 (alpha) Chinese documentation site, published at <https://docs.moe52
 Both dirs contain `release.yml` + `static.yml`; shared build steps should stay in sync, but deploy/publish steps are platform-specific (GitHub vs Codeberg).
 
 - Both workflows use `actions/checkout@v7` + `pnpm/setup@v3`, which installs pnpm from `packageManager`, Node from `.nvmrc`, and runs `pnpm install` — there is no separate install step. `.forgejo` references the action by full URL (`https://github.com/pnpm/setup@v3`).
+- Both run `pnpm test` before the build; test failures stop deployment/release. `validation.txt` and the build output file list are appended to `$GITHUB_STEP_SUMMARY` (Forgejo also exposes this name, plus `$FORGEJO_STEP_SUMMARY`).
 - `release.yml`: on `push tags: ['v*']` or `workflow_dispatch` → `build:release` + `build:tools --release` → uploads `dist/index.release.html` and `dist/tools-v*.html` to Releases. Body from tag annotation.
 - `static.yml`: on `push` to `main` → `pnpm build` (page + tools + 404) → deploys `dist/` to GitHub Pages / Codeberg Pages.
 - Neither workflow builds or deploys `docs/`; the docs site is published separately.

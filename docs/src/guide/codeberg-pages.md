@@ -46,7 +46,8 @@ https://<用户名>.codeberg.page/markdown-viewer-moe/
 ## 工作流做了什么
 
 - 使用 `https://github.com/pnpm/setup@v3` 安装 Node 和 pnpm，并自动执行 `pnpm install`。
-- 运行 `pnpm build`，生成 `dist/index.html`、`dist/tools.html`、`dist/404.html`。
+- 构建前先运行 `pnpm test`；测试失败时不会继续部署。测试结果会写入 job summary。
+- 运行 `pnpm build`，生成 `dist/index.html`、`dist/tools.html`、`dist/404.html`；构建完成后版本、commit 和产物列表也会写入 job summary。
 - 把 `dist/` 推送到 Codeberg Pages。
 
 ::: tip

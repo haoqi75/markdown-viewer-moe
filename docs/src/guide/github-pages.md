@@ -19,7 +19,8 @@ GitHub Actions 工作流文件：[`.github/workflows/static.yml`](https://github
 ## 工作流做了什么
 
 - 使用 `pnpm/setup@v3`，自动读取 `.nvmrc` 安装 Node、读取 `packageManager` 安装 pnpm，并执行 `pnpm install`。
-- 运行 `pnpm build`，生成 `dist/index.html`、`dist/tools.html`、`dist/404.html`。
+- 构建前先运行 `pnpm test`；测试失败时不会继续部署。测试结果会写入 Actions 的 job summary。
+- 运行 `pnpm build`，生成 `dist/index.html`、`dist/tools.html`、`dist/404.html`；构建完成后版本、commit 和产物列表也会写入 job summary。
 - 把整个 `dist/` 上传并部署到 GitHub Pages。
 
 ::: tip

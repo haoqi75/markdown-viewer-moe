@@ -24,8 +24,55 @@ jobs:
       - name: Setup pnpm & Node.js and install Dependencies (From GitHub)
         uses: https://github.com/pnpm/setup@v3
 
+      - name: Run tests
+        run: pnpm test
+
+      - name: Publish test summary
+        if: always()
+        run: |
+          SUMMARY="${GITHUB_STEP_SUMMARY:-${FORGEJO_STEP_SUMMARY:-}}"
+          if [ -z "$SUMMARY" ]; then
+            echo "Step summary is not available on this runner"
+            exit 0
+          fi
+          {
+            echo "## 🧪 Test results"
+            echo ""
+            if [ -f validation.txt ]; then
+              cat validation.txt
+            else
+              echo "validation.txt was not generated."
+            fi
+          } >> "$SUMMARY"
+
       - name: Build page and tools
+        id: build
         run: pnpm run build
+
+      - name: Publish build summary
+        if: always()
+        run: |
+          SUMMARY="${GITHUB_STEP_SUMMARY:-${FORGEJO_STEP_SUMMARY:-}}"
+          if [ -z "$SUMMARY" ]; then
+            exit 0
+          fi
+          VERSION=$(node -p "require('./package.json').version" 2>/dev/null || echo unknown)
+          COMMIT=$(git rev-parse --short HEAD 2>/dev/null || echo unknown)
+          {
+            echo "## 📦 Build result"
+            echo ""
+            echo "- Version: \`$VERSION\`"
+            echo "- Commit: \`$COMMIT\`"
+            echo "- Status: \`${{ steps.build.outcome }}\`"
+            echo ""
+            if [ "${{ steps.build.outcome }}" = "success" ] && [ -d dist ]; then
+              echo "| File | Size |"
+              echo "| --- | --- |"
+              find dist -maxdepth 1 -type f -printf '| `%f` | %s bytes |\n' | sort
+            else
+              echo "_dist/ 未生成或构建未成功_"
+            fi
+          } >> "$SUMMARY"
 
       - name: Deploy to Codeberg Pages
         uses: https://codeberg.org/git-pages/action@v2

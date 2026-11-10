@@ -104,6 +104,10 @@ pnpm start
 ## 其他命令
 
 ```bash
+# 运行主程序测试（路由、构建产物、配置/源码约束）
+# 结束后会在根目录生成 validation.txt（已 gitignore）
+pnpm test
+
 # 检查 tools 的 TypeScript 类型
 pnpm lint:tools
 ```
