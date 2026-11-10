@@ -25,6 +25,7 @@ pnpm test
 | `routing.test.js` | `src/script.js` 的 `?md=` / `?p=` / `?p=about` 路由、别名大小写、release-config 覆盖、关于页渲染 |
 | `build.test.js` | 执行 `gulp build` 检查单文件产物、配置/版本/构建环境注入；执行 `scripts/release.js` 检查 Release 配置块 |
 | `source.test.js` | `config.json` 结构、关于页占位符、主页面入口、关键渲染逻辑和工具链声明 |
+| `verify-build.test.js` | `scripts/verify-build.js` 注入 Build Time / Version / Git Commit / Node.js / pnpm / Gulp，且重复运行不叠加 |
 
 ## 说明
 

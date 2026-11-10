@@ -120,6 +120,61 @@ function getGitHash() {
 }
 
 /**
+ * 获取 pnpm 版本：
+ * 1. 优先执行 pnpm --version；
+ * 2. 失败时回退读取 package.json 的 packageManager（去掉 +sha512... 后缀）；
+ * 3. 都失败则返回 null 并记录 warning。
+ */
+function getPnpmVersion() {
+  try {
+    const version = execSync('pnpm --version', {
+      cwd: process.cwd(),
+      stdio: ['ignore', 'pipe', 'ignore'],
+    })
+      .toString()
+      .trim();
+    if (version) return version;
+  } catch (err) {
+    // 回退到 packageManager，下面处理
+  }
+
+  try {
+    if (fs.existsSync(ROOT_PACKAGE_JSON_PATH)) {
+      const pkg = JSON.parse(fs.readFileSync(ROOT_PACKAGE_JSON_PATH, 'utf-8'));
+      if (typeof pkg.packageManager === 'string' && pkg.packageManager.startsWith('pnpm@')) {
+        const version = pkg.packageManager.replace(/^pnpm@/, '').split('+')[0];
+        if (version) return version;
+      }
+    }
+  } catch (err) {
+    // 下面统一记录 warning
+  }
+
+  warnings.push('无法获取 pnpm 版本，构建信息中将标记为 unknown');
+  return null;
+}
+
+/** 读取本地 node_modules/gulp/package.json 的版本；失败返回 null 并记录 warning */
+function getGulpVersion() {
+  const gulpPkgPath = path.resolve(process.cwd(), 'node_modules', 'gulp', 'package.json');
+  if (!fs.existsSync(gulpPkgPath)) {
+    warnings.push('未找到 node_modules/gulp/package.json，构建信息中的 Gulp 版本将标记为 unknown');
+    return null;
+  }
+
+  try {
+    const pkg = JSON.parse(fs.readFileSync(gulpPkgPath, 'utf-8'));
+    if (pkg.version) return pkg.version;
+  } catch (err) {
+    warnings.push(`读取 Gulp 版本失败(${err.message})，构建信息中将标记为 unknown`);
+    return null;
+  }
+
+  warnings.push('node_modules/gulp/package.json 中缺少 version 字段，构建信息中将标记为 unknown');
+  return null;
+}
+
+/**
  * 将构建信息注释块注入文件头部（幂等：若文件中已有旧的构建信息块，
  * 通过 BUILD-INFO-START/END 标记先移除再插入新块，不会越叠越多）。
  * @param {string} filePath
@@ -396,11 +451,17 @@ function main() {
   const buildTime = new Date().toISOString();
   const buildVersion = getRootPackageVersion(); // production/release 统一使用根目录 package.json 的版本
   const gitHash = getGitHash();
+  const nodeVersion = process.version || 'unknown';
+  const pnpmVersion = getPnpmVersion();
+  const gulpVersion = getGulpVersion();
   const buildInfoComment =
     `<!-- ${BUILD_INFO_START}\n` +
     `  Build Time: ${buildTime}\n` +
     `  Version: ${buildVersion || 'unknown'}\n` +
     `  Git Commit: ${gitHash || 'unknown'}\n` +
+    `  Node.js: ${nodeVersion}\n` +
+    `  pnpm: ${pnpmVersion || 'unknown'}\n` +
+    `  Gulp: ${gulpVersion || 'unknown'}\n` +
     `${BUILD_INFO_END} -->\n`;
 
   for (const file of targetFiles) {
@@ -487,6 +548,9 @@ function main() {
   printRow(c('dim', `  Build Time: ${buildTime}`));
   printRow(c('dim', `  Version: ${buildVersion || 'unknown'}`));
   printRow(c('dim', `  Git Commit: ${gitHash || 'unknown'}`));
+  printRow(c('dim', `  Node.js: ${nodeVersion}`));
+  printRow(c('dim', `  pnpm: ${pnpmVersion || 'unknown'}`));
+  printRow(c('dim', `  Gulp: ${gulpVersion || 'unknown'}`));
 
   console.log(c('green', `└${line}┘`));
 
