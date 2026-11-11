@@ -1,6 +1,8 @@
 import DefaultTheme from 'vitepress/theme'
 import { h } from 'vue'
 import '@catppuccin/vitepress/theme/mocha/pink.css'
+import '@fontsource-variable/fredoka';
+import '@fontsource/zcool-kuaile';
 import './style.css'
 
 export default {

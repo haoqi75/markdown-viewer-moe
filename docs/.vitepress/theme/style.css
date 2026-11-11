@@ -99,7 +99,7 @@ body {
 
 body {
   /* 导入字体, 按照顺序来设置英中字体 */
-  font-family: "Fredoka", "ZCOOL KuaiLe", sans-serif;
+  font-family: "Fredoka Variable", "ZCOOL KuaiLe", sans-serif;
   background-image:
     radial-gradient(circle at 12% 18%, rgba(var(--moe-pink-rgb), 0.13) 0%, transparent 48%),
     radial-gradient(circle at 88% 82%, rgba(203, 166, 247, 0.11) 0%, transparent 50%),

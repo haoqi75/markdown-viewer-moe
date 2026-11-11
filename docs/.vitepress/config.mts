@@ -20,18 +20,6 @@ export default defineConfig({
       { rel: 'icon', type: 'image/svg+xml', href: '/favicon.svg' }
     ],
     [
-      'link',
-      { rel: 'preconnect', href: 'https://fonts.googleapis.com' }
-    ],
-    [
-      'link',
-      { rel: 'preconnect', href: 'https://fonts.gstatic.com', crossorigin: '' }
-    ],
-    [
-      'link',
-      { href: 'https://fonts.googleapis.com/css2?family=Fredoka:wght@300..700&family=ZCOOL+KuaiLe&display=swap', rel: 'stylesheet' }
-    ],
-    [
       'meta',
       { name: 'theme-color', content: "#f472b6"}
     ]
