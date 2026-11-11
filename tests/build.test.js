@@ -101,6 +101,9 @@ test('关于页构建：环境和 Git hash 占位符全部替换', () => {
     const template = match[1];
 
     assert.ok(template.includes('class="about-env"'));
+    assert.ok(template.includes('id="about-check-update"'));
+    assert.ok(template.includes('id="about-update-status"'));
+    assert.ok(template.includes('class="about-emoji" src="img/favicon.svg"'), '关于页图标保留源路径');
     assert.ok(template.includes(`<b>${process.version}</b>`), '缺少注入后的 Node.js 版本');
     assert.ok(template.includes(`<b>${getPnpmVersion()}</b>`), '缺少注入后的 pnpm 版本');
     assert.ok(template.includes(`<b>${getGulpVersion()}</b>`), '缺少注入后的 Gulp 版本');

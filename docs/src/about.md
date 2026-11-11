@@ -38,6 +38,7 @@ Moe美化、强大功能的Markdown预览器
 - 🦘 **锚点导航** – 支持 Markdown `[text](#heading)` 锚点，点击平滑滚动不重载
 - 🛣️ **别名路由** – 支持 `?p=test` 形式的参数别名，无需修改服务器配置
 - ℹ️ **关于页面** – 页头按钮或 `/?p=about` 打开，构建时内嵌进单文件，Release 版同样可用
+- 🔄 **检查更新** – 关于页通过 GitHub Releases API 检查最新版本，处理 API 频率限制并缓存结果
 - 💕 **萌系错误页** – 加载失败时显示吉祥物 + 大号状态码 + 中文提示
 - 🐾 **加载动画** – 加载中显示 loading.png 弹跳吉祥物 + spinner
 - 🖼️ **图片容错** – 加载失败的图片自动替换为吉祥物占位提示
@@ -45,7 +46,7 @@ Moe美化、强大功能的Markdown预览器
 - 🎨 **TOC 装饰** – 侧栏顶部 sit-down 吉祥物 + 可配置对话气泡
 - 🐱 **GitHub 图标** – 右上角猫咪图标直达仓库，吉祥物 hover 对话泡泡
 - ⚙️ **灵活配置** – `config.json` 轻松设置默认文档和别名映射
-- 🔧 **开发友好** – 使用 Gulp 构建，支持 `pnpm dev` 实时预览 + 热重载
+- 🔧 **开发友好** – TypeScript 模块 + SCSS partials，Gulp/esbuild 构建，支持 `pnpm dev` 实时预览 + 热重载
 - 📦 **单文件交付** – 构建后生成 `dist/index.html`，所有资源内联，部署简单
 - 🏷️ **版本号页脚** – 页脚自动显示版本号和 Git 提交 hash，方便追踪部署版本
 - 📱 **移动端主题色** – 自动适配浏览器顶部主题色为萌粉色
@@ -61,6 +62,8 @@ Moe美化、强大功能的Markdown预览器
 ## 🛠️ 技术栈
 - **[marked](https://marked.js.org/)** – Markdown 解析
 - **[Prism.js](https://prismjs.com/)** – 代码高亮
+- **TypeScript + [esbuild](https://esbuild.github.io/)** – 主预览器模块化与打包
+- **[Sass (SCSS)](https://sass-lang.com/)** – 样式 partials 与编译
 - **[Gulp](https://gulpjs.com/)** – 构建工具（内联、压缩）
 - **[browser-sync](https://browsersync.io/)** – 开发服务器（热重载）
 - **[pnpm](https://pnpm.io/)** – 包管理（固定 12.18.0）

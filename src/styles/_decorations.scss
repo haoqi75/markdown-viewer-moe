@@ -1,0 +1,160 @@
+/* ============================================================
+   2. 萌系主题核心
+   ============================================================ */
+.moe-deco {
+    position: fixed;
+    pointer-events: none;
+    z-index: 0;
+    font-size: 2.4rem;
+    opacity: 0.20;
+    animation: floatDeco 18s ease-in-out infinite alternate;
+}
+.moe-deco:nth-child(1) {
+    top: 6%;
+    left: 4%;
+    animation-delay: 0s;
+}
+.moe-deco:nth-child(2) {
+    bottom: 10%;
+    right: 3%;
+    animation-delay: 4s;
+    font-size: 3.2rem;
+}
+.moe-deco:nth-child(3) {
+    top: 50%;
+    left: 2%;
+    animation-delay: 8s;
+    font-size: 1.8rem;
+}
+.moe-deco:nth-child(4) {
+    bottom: 30%;
+    right: 2%;
+    animation-delay: 12s;
+    font-size: 2.8rem;
+}
+@keyframes floatDeco {
+    0% {
+        transform: translate(0, 0) rotate(0deg) scale(1);
+    }
+    33% {
+        transform: translate(12px, -18px) rotate(6deg) scale(1.06);
+    }
+    66% {
+        transform: translate(-8px, 14px) rotate(-4deg) scale(0.94);
+    }
+    100% {
+        transform: translate(6px, -8px) rotate(3deg) scale(1.02);
+    }
+}
+/* 主卡片 */
+.card {
+    position: relative;
+    z-index: 1;
+    max-width: 880px;
+    width: 100%;
+    background: var(--moe-card);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border-radius: var(--moe-radius);
+    box-shadow: var(--moe-shadow), 0 0 0 1px rgba(255, 255, 255, 0.6) inset;
+    padding: 2.2rem 2.6rem 2.8rem;
+    transition: var(--moe-transition);
+    border: 1px solid rgba(255, 255, 255, 0.5);
+}
+@media (max-width: 640px) {
+    body {
+        padding: 0.8rem 0.6rem;
+    }
+    .card {
+        padding: 1.4rem 1.2rem 1.8rem;
+        border-radius: 16px;
+    }
+}
+/* 头部 */
+.header {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    gap: 0.8rem;
+    margin-bottom: 1.4rem;
+    flex-wrap: wrap;
+}
+.header-left {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    margin-right: auto;
+}
+.header-left .logo {
+    font-size: 1.3rem;
+    font-weight: 700;
+    background: linear-gradient(135deg, var(--moe-pink), var(--moe-purple));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    letter-spacing: 0.5px;
+}
+.header-left .logo-sub {
+    font-size: 0.75rem;
+    color: var(--moe-text-light);
+    background: rgba(var(--moe-pink-rgb), 0.10);
+    padding: 0.1rem 0.6rem;
+    border-radius: 30px;
+    -webkit-text-fill-color: var(--moe-text-light);
+}
+.logo-img {
+    height: 32px;   /* 根据喜好调整 */
+    width: auto;
+    margin-right: 8px;
+}
+.toc-toggle {
+    background: rgba(255, 255, 255, 0.7);
+    border: 1px solid rgba(var(--moe-pink-rgb), 0.25);
+    border-radius: 40px;
+    padding: 0.45rem 1.2rem 0.45rem 1rem;
+    cursor: pointer;
+    font-size: 0.9rem;
+    font-weight: 500;
+    color: var(--moe-text);
+    transition: var(--moe-transition);
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+    backdrop-filter: blur(4px);
+    box-shadow: 0 2px 8px rgba(var(--moe-pink-rgb), 0.08);
+}
+.toc-toggle:hover {
+    background: #fff;
+    border-color: var(--moe-pink);
+    box-shadow: 0 4px 16px rgba(var(--moe-pink-rgb), 0.18);
+    transform: translateY(-1px);
+}
+.toc-toggle .badge {
+    background: var(--moe-pink);
+    color: #fff;
+    border-radius: 30px;
+    font-size: 0.65rem;
+    padding: 0.08rem 0.5rem;
+    font-weight: 600;
+}
+.github-link {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    color: var(--moe-text-light);
+    transition: var(--moe-transition);
+    background: rgba(255, 255, 255, 0.5);
+}
+.github-link:hover {
+    color: var(--moe-pink-dark);
+    background: #fff;
+    transform: scale(1.1);
+    box-shadow: 0 2px 10px rgba(var(--moe-pink-rgb), 0.15);
+}
+.github-icon {
+    width: 20px;
+    height: 20px;
+}

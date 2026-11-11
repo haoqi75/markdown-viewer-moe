@@ -45,6 +45,9 @@ features:
   - icon: ℹ️
     title: 关于页面
     details: 页头按钮或 /?p=about 打开，内嵌进单文件，Release 版同样可用
+  - icon: 🔄
+    title: 检查更新
+    details: 关于页通过 GitHub Releases API 检查新版本，处理频率限制并缓存结果
   - icon: 💕
     title: 萌系错误页
     details: 加载失败时显示吉祥物 + 大号状态码 + 中文提示
@@ -68,7 +71,7 @@ features:
     details: config.json 轻松设置默认文档和别名映射
   - icon: 🔧
     title: 开发友好
-    details: 使用 Gulp 构建，支持 `pnpm dev` 实时预览 + 热重载
+    details: TypeScript 模块 + SCSS partials，Gulp/esbuild 构建，`pnpm dev` 实时预览 + 热重载
   - icon: 📦
     title: 单文件交付
     details: 构建后生成 dist/index.html，所有资源内联，部署简单

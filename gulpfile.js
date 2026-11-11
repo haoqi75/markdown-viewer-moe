@@ -1,6 +1,5 @@
 const gulp = require('gulp');
 const cleanCSS = require('gulp-clean-css');
-const uglify = require('gulp-uglify');
 const htmlmin = require('gulp-htmlmin');
 const rename = require('gulp-rename');
 const replace = require('gulp-replace');
@@ -8,7 +7,8 @@ const { deleteAsync } = require('del');
 const fs = require('fs');
 const path = require('path');
 const CleanCSS = require('clean-css');
-const UglifyJS = require('uglify-js');
+const esbuild = require('esbuild');
+const sass = require('sass');
 const browserSync = require('browser-sync').create();
 
 const srcDir = 'src';
@@ -48,8 +48,8 @@ function getMimeType(filePath) {
 function checkRequiredFiles() {
     const required = [
         path.join(srcDir, 'index.html'),
-        path.join(srcDir, 'style.css'),
-        path.join(srcDir, 'script.js'),
+        path.join(srcDir, 'style.scss'),
+        path.join(srcDir, 'ts', 'main.ts'),
         path.join(srcDir, 'about.html')
     ];
     const missing = required.filter(file => !fs.existsSync(file));
@@ -201,15 +201,41 @@ function build() {
     config = mergeDefault(config, DEFAULTS);
     console.log('📋 最终配置:', JSON.stringify(config, null, 2));
 
-    // ======== 步骤 2：读取并压缩 style.css 和 script.js ========
-    var styleContent = fs.readFileSync(path.join(srcDir, 'style.css'), 'utf8');
-    var scriptContent = fs.readFileSync(path.join(srcDir, 'script.js'), 'utf8');
+    // ======== 步骤 2：编译 SCSS、打包 TypeScript、压缩 CSS ========
+    var stylePath = path.join(srcDir, 'style.scss');
+    var styleSource = fs.readFileSync(stylePath, 'utf8');
+    var compiledCss;
+    try {
+        compiledCss = sass.compile(stylePath, {
+            style: 'expanded',
+            loadPaths: [srcDir]
+        }).css;
+    } catch (e) {
+        throw new Error('❌ SCSS 编译失败: ' + e.message);
+    }
 
-    var minifiedCss = new CleanCSS().minify(styleContent).styles;
-    var minifiedJs = UglifyJS.minify(scriptContent).code;
+    var bundledJs;
+    try {
+        var scriptResult = esbuild.buildSync({
+            entryPoints: [path.join(srcDir, 'ts', 'main.ts')],
+            bundle: true,
+            format: 'iife',
+            platform: 'browser',
+            target: ['es2020'],
+            write: false,
+            minify: true,
+            legalComments: 'none',
+            logLevel: 'silent'
+        });
+        bundledJs = scriptResult.outputFiles[0].text;
+    } catch (e) {
+        throw new Error('❌ TypeScript 打包失败: ' + e.message);
+    }
 
-    console.log('📦 CSS: ' + styleContent.length + ' → ' + minifiedCss.length + ' 字节');
-    console.log('📦 JS:  ' + scriptContent.length + ' → ' + minifiedJs.length + ' 字节');
+    var minifiedCss = new CleanCSS().minify(compiledCss).styles;
+
+    console.log('📦 SCSS: ' + styleSource.length + ' → ' + compiledCss.length + ' → ' + minifiedCss.length + ' 字节');
+    console.log('📦 JS:   ' + bundledJs.length + ' 字节（TypeScript bundle）');
 
     // ======== 步骤 3：按 config 处理图标、Logo、吉祥物 ========
     var iconCfg = config.icon || {};
@@ -285,8 +311,8 @@ function build() {
         .pipe(replace(/<body-inject><\/body-inject>/g, config.bodyInject || ''))
         .pipe(replace('<about-page-template></about-page-template>', function() { return aboutPageHtml; }))
         .pipe(replace(/<link rel="manifest" href="[^"]*">/g, ''))
-        .pipe(replace(/<link[^>]*href="[^"]*style\.css"[^>]*>/gi, '<style>' + minifiedCss + '</style>'))
-        .pipe(replace(/<script[^>]*src="[^"]*script\.js"[^>]*><\/script>/gi, '<script>' + minifiedJs + '</script>'))
+        .pipe(replace(/<link[^>]*href="[^"]*style\.(?:css|scss)"[^>]*>/gi, '<style>' + minifiedCss + '</style>'))
+        .pipe(replace(/<script[^>]*src="[^"]*main\.js"[^>]*><\/script>/gi, '<script>' + bundledJs + '</script>'))
         .pipe(htmlmin({ collapseWhitespace: true, removeComments: true }))
         .pipe(rename('index.html'))
         .pipe(gulp.dest(distDir))
@@ -304,7 +330,7 @@ function dev() {
         open: false
     });
     gulp.watch(
-        [srcDir + '/index.html', srcDir + '/style.css', srcDir + '/script.js', srcDir + '/about.html', srcDir + '/config.json'],
+        [srcDir + '/index.html', srcDir + '/**/*.scss', srcDir + '/ts/**/*.ts', srcDir + '/about.html', srcDir + '/config.json'],
         gulp.series(build, function(done) { browserSync.reload(); done(); })
     );
 }

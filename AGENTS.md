@@ -4,6 +4,7 @@
 
 ```bash
 pnpm install            # install deps (pnpm 12+, Node 26+; exact pins in package.json/.nvmrc). Run at repo root — workspace installs tools/ too
+pnpm typecheck          # tsc --noEmit -p tsconfig.viewer.json (main viewer TypeScript)
 pnpm test               # node:test via scripts/run-tests.js → also writes validation.txt (gitignored)
 pnpm build              # page + tools + 404 → dist/
 pnpm dev                # clean + build + browser-sync watch on :8520 (NOT http-server)
@@ -30,7 +31,7 @@ Tests live in `tests/` and use Node's built-in `node:test` (no extra framework);
 ## Repo layout (pnpm workspace)
 
 Three parts in one repo; `pnpm-workspace.yaml` → `packages: ['tools']`:
-- root = single-file Markdown viewer (vanilla JS + gulp)
+- root = single-file Markdown viewer (TypeScript + SCSS + Gulp/esbuild)
 - `tools/` = `moe-json-editor`, a React 19 + Vite 6 + Tailwind 4 SPA that generates `src/config.json`
 - `docs/` = VitePress 2 docs site (Chinese); its dependencies live in the **root** `package.json`, not a separate workspace package
 
@@ -50,8 +51,9 @@ Single-file Markdown viewer. `src/` → gulp → `dist/index.html` (all assets i
 |------|------|
 | `src/index.html` | HTML template with placeholders (`<config-placeholder>`, `logo-placeholder`, `mascot-placeholder`, `<about-page-template>`) |
 | `src/about.html` | About page source; gulp extracts `ABOUT_CONTENT_*` body + `#about-page-style` CSS and embeds it as `<template id="about-page-template">` in `index.html` |
-| `src/script.js` | All app logic: TOC, renderer, scroll spy, image preview, routing |
-| `src/style.css` | Moe pink/purple theme |
+| `src/ts/` | TypeScript modules: `config`, `router`, `toc`, `render-utils`, `about-page`, `renderer`, `version`, `update-checker`, `main`; esbuild bundles `main.ts` |
+| `src/style.scss` | SCSS entry; `@use`s the partials in `src/styles/` (Dart Sass) |
+| `src/styles/` | SCSS partials: base, decorations, toc, content, responsive, callouts, image-preview |
 | `src/config.json` | User-configurable defaults (optional — gulpfile has DEFAULTS fallback) |
 | `scripts/release.js` | Creates `dist/index.release.html` with editable JSON block at top |
 
@@ -60,8 +62,8 @@ Single-file Markdown viewer. `src/` → gulp → `dist/index.html` (all assets i
 1. Read `config.json` (missing/corrupt → use `DEFAULTS` constant, not fail)
 2. Deep-merge each field: config value → DEFAULTS value
 3. Images: config path → DEFAULTS path → **fail build** if default also missing
-4. Read & minify `style.css` (clean-css) + `script.js` (uglify-js)
-5. Read `about.html`, extract the `ABOUT_CONTENT_START/END` body and `#about-page-style` CSS, replace `__VERSION_DISPLAY__` (`vX.Y.Z(shortHash)`, same as footer), `__APP_VERSION__`, `__NODE_VERSION__`, `__PNPM_VERSION__`, `__GULP_VERSION__`, `__GIT_HASH__` and the mascot URL (data URI), embed as `<template id="about-page-template">`
+4. Compile `style.scss` (Dart Sass) and bundle `src/ts/main.ts` (esbuild, IIFE, minified); minify CSS with clean-css
+5. Read `about.html`, extract the `ABOUT_CONTENT_START/END` body and `#about-page-style` CSS, replace `__VERSION_DISPLAY__` (`vX.Y.Z(shortHash)`, same as footer), `__APP_VERSION__`, `__NODE_VERSION__`, `__PNPM_VERSION__`, `__GULP_VERSION__`, `__GIT_HASH__` and the mascot URL (data URI), embed as `<template id="about-page-template">`; the about icon keeps `img/favicon.svg` and `renderAbout()` reuses the already-inlined `<link rel="icon">` at runtime
 6. Replace placeholders in `index.html` → inject minified CSS/JS + about template → htmlmin → `dist/index.html`
 7. Extra config fields injected into `__CONFIG__`: `errorMascot`, `loadingMascot`
 
@@ -71,7 +73,7 @@ Single-file Markdown viewer. `src/` → gulp → `dist/index.html` (all assets i
 2. `DEFAULTS` in gulpfile (per-field fallback, deep merge)
 3. At runtime: `<script id="release-config">` block overrides `defaultUrl` and `aliases` (release builds only)
 
-## URL routing (script.js)
+## URL routing (`src/ts/router.ts`)
 
 - `?md=URL` — direct Markdown URL (highest priority)
 - `?p=about` — built-in about page, rendered from the embedded `<template id="about-page-template">`; takes precedence over aliases and works in release builds too
@@ -95,7 +97,7 @@ Order matters — don't reorder:
 
 ## Scroll & hash gotchas
 
-- `history.scrollRestoration = 'manual'` at top of script.js
+- `history.scrollRestoration = 'manual'` at top of `src/ts/main.ts`
 - Scroll spy (`IntersectionObserver`) suppressed for 2s after activation to avoid overwriting init hash
 - `breaks: false` in `marked.parse()` — matches GitHub README rendering (single LF = space, not `<br>`)
 

@@ -1,6 +1,6 @@
 {
   "name": "markdown-viewer-moe",
-  "version": "1.12.1",
+  "version": "1.13.0",
   "description": "由AI生成的Moe Markdown查看器",
   "homepage": "https://moe520.cc.cd/",
   "keywords": [
@@ -27,12 +27,13 @@
     "postbuild": "node scripts/verify-build.js",
     "build:release": "run-s build:page-release build:tools-release",
     "postbuild:release": "node scripts/verify-build.js --release",
-    "build:page": "gulp build",
-    "build:page-release": "gulp build && node scripts/release.js",
+    "build:page": "pnpm typecheck && gulp build",
+    "build:page-release": "pnpm typecheck && gulp build && node scripts/release.js",
     "build:tools": "pnpm run --filter moe-json-editor build:html && node scripts/copy-tools.js",
     "build:tools-release": "pnpm run --filter moe-json-editor build:html && node scripts/copy-tools.js --release",
     "build:docs": "vitepress build docs",
     "build:404": "node scripts/build-404.js",
+    "typecheck": "tsc --noEmit -p tsconfig.viewer.json",
     "dev": "gulp",
     "dev:tools": "pnpm run --filter moe-json-editor dev",
     "dev:docs": "vitepress dev docs",
@@ -53,6 +54,7 @@
     "browser-sync": "^3.0.4",
     "clean-css": "^5.3.3",
     "del": "^7.1.0",
+    "esbuild": "^0.25.12",
     "gulp": "^5.0.1",
     "gulp-clean-css": "^4.3.0",
     "gulp-concat": "^2.6.1",
@@ -60,9 +62,8 @@
     "gulp-inline": "^0.1.3",
     "gulp-rename": "^2.1.0",
     "gulp-replace": "^1.1.4",
-    "gulp-uglify": "^3.0.2",
     "sass": "^1.108.1",
-    "uglify-js": "^3.19.3",
+    "typescript": "~5.8.3",
     "vitepress": "2.0.0-alpha.21",
     "vitepress-theme-sakura": "^0.5.1"
   }

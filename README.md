@@ -103,6 +103,7 @@
 - 🛣️ **别名路由** – 支持 `?p=test` 形式的参数别名，无需修改服务器配置
 - 💕 **萌系错误页** – 加载失败时显示吉祥物 + 大号状态码 + 中文提示
 - ℹ️ **关于页面** – 通过页头 GitHub 图标旁的「关于」按钮或 `/?p=about` 查看项目介绍
+- 🔄 **检查更新** – 关于页通过 GitHub Releases API 检查最新版本，内置频率限制提示与结果缓存
 - 🐾 **加载动画** – 加载中显示 loading.png 弹跳吉祥物 + spinner
 - 🖼️ **图片容错** – 加载失败的图片自动替换为吉祥物占位提示
 - 🔍 **图片预览** – 点击图片毛玻璃遮罩放大预览，Esc 关闭
@@ -184,6 +185,8 @@ markdown-viewer-moe/
 ## 🛠️ 技术栈
 - **[marked](https://marked.js.org/)** – Markdown 解析
 - **[Prism.js](https://prismjs.com/)** – 代码高亮
+- **TypeScript + [esbuild](https://esbuild.github.io/)** – 主程序模块化与打包
+- **[Sass (SCSS)](https://sass-lang.com/)** – 样式 partials 与编译
 - **[Gulp](https://gulpjs.com/)** – 构建工具（内联、压缩）
 - **[browser-sync](https://browsersync.io/)** – 开发服务器（热重载）
 - **[pnpm](https://pnpm.io/)** – 包管理

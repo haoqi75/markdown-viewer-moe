@@ -104,7 +104,10 @@ pnpm start
 ## 其他命令
 
 ```bash
-# 运行主程序测试（路由、构建产物、配置/源码约束）
+# 主程序 TypeScript 类型检查
+pnpm typecheck
+
+# 运行主程序测试（类型、路由、构建产物、配置/源码约束）
 # 结束后会在根目录生成 validation.txt（已 gitignore）
 pnpm test
 
@@ -116,7 +119,7 @@ pnpm lint:tools
 
 | 目录 | 内容 |
 | --- | --- |
-| `src/` | 主预览器源码：`index.html`、`script.js`、`style.css`、`config.json`、`about.html` |
+| `src/` | 主预览器源码：`index.html`、`ts/`、`styles/`、`style.scss`、`config.json`、`about.html` |
 | `tools/` | JSON 配置编辑器（React + Vite + TypeScript） |
 | `docs/` | 当前文档站（VitePress） |
 | `dist/` | 构建输出，已被 gitignore |

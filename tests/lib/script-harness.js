@@ -1,16 +1,25 @@
 'use strict';
 
 /**
- * 在 Node 的 vm 沙箱里加载 src/script.js，并提供最小 DOM mock。
+ * 用 esbuild 打包 src/ts/main.ts，在 Node 的 vm 沙箱里执行，并提供最小 DOM mock。
  * 只用于测试路由和关于页渲染，不模拟完整浏览器。
  */
 
-const fs = require('node:fs');
 const path = require('node:path');
 const vm = require('node:vm');
+const esbuild = require('esbuild');
 
 const ROOT = path.resolve(__dirname, '..', '..');
-const SCRIPT_SOURCE = fs.readFileSync(path.join(ROOT, 'src', 'script.js'), 'utf8');
+const SCRIPT_SOURCE = esbuild.buildSync({
+    entryPoints: [path.join(ROOT, 'src', 'ts', 'main.ts')],
+    bundle: true,
+    format: 'iife',
+    platform: 'browser',
+    target: ['es2020'],
+    write: false,
+    minify: false,
+    logLevel: 'silent',
+}).outputFiles[0].text;
 
 const atobImpl = typeof globalThis.atob === 'function'
     ? globalThis.atob
@@ -176,7 +185,7 @@ function createHarness(options) {
     sandbox.globalThis = sandbox;
 
     vm.createContext(sandbox);
-    vm.runInContext(SCRIPT_SOURCE, sandbox, { filename: 'src/script.js' });
+    vm.runInContext(SCRIPT_SOURCE, sandbox, { filename: 'src/ts/main.ts' });
 
     return {
         sandbox,
