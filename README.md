@@ -9,9 +9,9 @@
 <div align="center">
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-pink.svg?style=for-the-badge)](LICENSE)
-[![Node.js](https://img.shields.io/badge/Node.js-v26.13.0-green?logo=node.js&style=for-the-badge)](https://nodejs.org)
-[![pnpm](https://img.shields.io/badge/pnpm-12.18.0-blue?logo=pnpm&style=for-the-badge)](https://pnpm.io)
-[![Gulp](https://img.shields.io/badge/Gulp-5.x-red?logo=gulp&style=for-the-badge)](https://gulpjs.com)
+[![Node.js](https://img.shields.io/badge/Node.js-v26.13.1-green?logo=node.js&style=for-the-badge)](https://nodejs.org)
+[![pnpm](https://img.shields.io/badge/pnpm-12.19.0-blue?logo=pnpm&style=for-the-badge)](https://pnpm.io)
+[![Gulp](https://img.shields.io/badge/Gulp-5.0.1-red?logo=gulp&style=for-the-badge)](https://gulpjs.com)
 [![Platform](https://img.shields.io/badge/platform-Web-emerald.svg?style=for-the-badge&logo=codeforces)](https://moe520.cc.cd/)
 
 [![GitHub Tag](https://img.shields.io/github/v/tag/haoqi75/markdown-viewer-moe?style=for-the-badge&logo=github&label=%E7%89%88%E6%9C%AC&color=pink)](https://github.com/haoqi75/markdown-viewer-moe/tags)
