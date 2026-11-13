@@ -50,9 +50,16 @@ jobs:
           echo "sha=$SHA" >> $GITHUB_OUTPUT
           echo "Tag SHA: $SHA"
 
-      - name: Setup pnpm & Node.js and install Dependencies (From GitHub)
-        uses: https://github.com/pnpm/setup@v3
+# 为了兼容性，还是使用 Forgejo 带的 Action
+      - name: Setup Node.js
+        uses: actions/setup-node@v7
         with:
+          node-version-file: '.nvmrc'
+        
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v6
+        with:
+          run_install: true
           cache: true
 
       - name: Run tests
