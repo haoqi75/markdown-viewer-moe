@@ -12,7 +12,7 @@ outline: doc
 
 ![License: MIT](https://img.shields.io/badge/License-MIT-pink.svg?style=for-the-badge)
 [![Node.js](https://img.shields.io/badge/Node.js-v26.13.1-green?logo=node.js&style=for-the-badge)](https://nodejs.org)
-[![pnpm](https://img.shields.io/badge/pnpm-12.19.0-blue?logo=pnpm&style=for-the-badge)](https://pnpm.io)
+[![pnpm](https://img.shields.io/badge/pnpm-12.20.0-blue?logo=pnpm&style=for-the-badge)](https://pnpm.io)
 [![Gulp](https://img.shields.io/badge/Gulp-5.0.1-red?logo=gulp&style=for-the-badge)](https://gulpjs.com)
 [![Platform](https://img.shields.io/badge/platform-Web-emerald.svg?style=for-the-badge&logo=codeforces)](https://moe520.cc.cd/)
 
