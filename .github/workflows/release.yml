@@ -40,7 +40,7 @@ jobs:
           ref: ${{ steps.get_tag.outputs.tag_name }}
           fetch-depth: 0
 
-      - name: Setup pnpm & Node.js and install Dependencies
+      - name: Setup pnpm, Node.js and install Dependencies
         uses: pnpm/setup@v3
         with:
           cache: true

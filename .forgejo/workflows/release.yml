@@ -50,13 +50,13 @@ jobs:
           echo "sha=$SHA" >> $GITHUB_OUTPUT
           echo "Tag SHA: $SHA"
 
-# 为了兼容性，还是使用 Forgejo 带的 Action
+      # 为了兼容性，还是使用 Forgejo 带的 Action
       - name: Setup Node.js
         uses: actions/setup-node@v7
         with:
           node-version-file: '.nvmrc'
         
-      - name: Setup pnpm
+      - name: Setup pnpm and install Dependencies
         uses: pnpm/action-setup@v6
         with:
           run_install: true

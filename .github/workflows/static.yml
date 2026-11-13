@@ -36,7 +36,7 @@ jobs:
       - name: Setup Pages
         uses: actions/configure-pages@v5
 
-      - name: Setup pnpm & Node.js and install Dependencies
+      - name: Setup pnpm, Node.js and install Dependencies
         uses: pnpm/setup@v3
         with:
           cache: true
