@@ -2,14 +2,18 @@
 
 ## 前置要求
 
-- **Node.js 26+**（仓库 `.nvmrc` 固定为 `v26.13.1`）
-- **pnpm 12+**（`package.json` 的 `packageManager` 固定为 `pnpm@12.20.0`，并带 sha512 校验）
+- **Node.js 22.22.2**（完整构建最低要求，22.x LTS；也支持 24.15+ / 26+。仓库 `.nvmrc` 固定推荐版本 `v26.13.1`）
+- **pnpm 12.21.0**（`package.json` 的 `packageManager` 固定版本，并带 sha512 校验；项目使用 pnpm 12 的 lockfile 和配置）
 - Git
+
+::: tip 关于 Node.js 20
+Node.js 20.19.0 可以运行部分构建子任务，但完整 `pnpm build` 依赖 `npm-run-all2`，最低需要 Node.js 22.22.2。建议直接使用 `.nvmrc` 中的 Node.js 26.13.1。
+:::
 
 如果你使用 nvm，可以在仓库根目录执行：
 
 ```bash
-nvm use
+nvm install
 ```
 
 pnpm 版本通常会在执行 `pnpm install` 时根据 `packageManager` 自动切换。

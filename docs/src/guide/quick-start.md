@@ -16,3 +16,7 @@
 ::: tip 新手推荐
 只想快速做一个自己的 Markdown 首页：先看[下载编辑好的](/guide/release)，改 `defaultUrl` 和 `aliases` 即可，不需要碰构建。
 :::
+
+::: info 本地构建环境
+完整构建最低需要 **Node.js 22.22.2** 和 **pnpm 12.21.0**；推荐直接使用仓库 `.nvmrc` 固定的 Node.js `v26.13.1`。只使用在线演示或下载 Release 文件时不需要安装 Node.js/pnpm。
+:::

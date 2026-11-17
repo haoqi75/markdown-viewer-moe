@@ -12,7 +12,7 @@ outline: doc
 
 ![License: MIT](https://img.shields.io/badge/License-MIT-pink.svg?style=for-the-badge)
 [![Node.js](https://img.shields.io/badge/Node.js-v26.13.1-green?logo=node.js&style=for-the-badge)](https://nodejs.org)
-[![pnpm](https://img.shields.io/badge/pnpm-12.20.0-blue?logo=pnpm&style=for-the-badge)](https://pnpm.io)
+[![pnpm](https://img.shields.io/badge/pnpm-12.21.0-blue?logo=pnpm&style=for-the-badge)](https://pnpm.io)
 [![Gulp](https://img.shields.io/badge/Gulp-5.0.1-red?logo=gulp&style=for-the-badge)](https://gulpjs.com)
 [![Platform](https://img.shields.io/badge/platform-Web-emerald.svg?style=for-the-badge&logo=codeforces)](https://moe520.cc.cd/)
 
@@ -66,7 +66,7 @@ Moe美化、强大功能的Markdown预览器
 - **[Sass (SCSS)](https://sass-lang.com/)** – 样式 partials 与编译
 - **[Gulp](https://gulpjs.com/)** – 构建工具（内联、压缩）
 - **[browser-sync](https://browsersync.io/)** – 开发服务器（热重载）
-- **[pnpm](https://pnpm.io/)** – 包管理（固定 12.20.0）
+- **[pnpm](https://pnpm.io/)** – 包管理（固定 12.21.0）
 - **[npm-run-all2](https://github.com/bcomnes/npm-run-all2)** – 编排构建任务
 - **[VitePress](https://vitepress.dev/)** + **[pagefind](https://pagefind.app/)** – 文档站与搜索
 - **React 19 + Vite 6 + Tailwind 4 + TypeScript** – JSON 配置编辑器
