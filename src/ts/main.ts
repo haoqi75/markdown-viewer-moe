@@ -1,4 +1,6 @@
 import { CONFIG } from './config';
+import { setupMobileMenu } from './mobile-menu';
+import { setupRawCopyButton } from './raw-copy';
 import { Renderer } from './renderer';
 import { TOC } from './toc';
 
@@ -51,6 +53,8 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     TOC.init();
+    setupMobileMenu();
+    setupRawCopyButton();
 
     const logoEl = document.querySelector<HTMLElement>('.logo');
     const subEl = document.querySelector<HTMLElement>('.logo-sub');
@@ -101,9 +105,10 @@ document.addEventListener('DOMContentLoaded', () => {
         bubbleEl.textContent = CONFIG.tocWelcome;
     }
 
-    const toolsLink = document.getElementById('tools-link') as HTMLAnchorElement | null;
-    if (toolsLink && CONFIG.toolsUrl) {
-        toolsLink.href = CONFIG.toolsUrl;
+    if (CONFIG.toolsUrl) {
+        document.querySelectorAll<HTMLAnchorElement>('[data-tools-link]').forEach((toolsLink) => {
+            toolsLink.href = CONFIG.toolsUrl as string;
+        });
     }
 
     void Renderer.load();

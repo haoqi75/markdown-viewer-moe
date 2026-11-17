@@ -73,8 +73,7 @@
 
 在Tools版本**v1.7.0**后，配置文件更改了方式，具体在**Tools帮助**查看。
 
-- [Tools帮助](https://moe520.haoqi75.os.kg/?p=tools) 或 [备用](https://moe520.haoqi75.cn.mt/?p=tools)
-- [点我直接查看Tools README](tools/README.md)
+- [Tools帮助文档](https://docs.moe520.cc.cd/config/editor)
 
 ---
 
@@ -104,6 +103,7 @@
 - 💕 **萌系错误页** – 加载失败时显示吉祥物 + 大号状态码 + 中文提示
 - ℹ️ **关于页面** – 通过页头 GitHub 图标旁的「关于」按钮或 `/?p=about` 查看项目介绍
 - 🔄 **检查更新** – 关于页通过 GitHub Releases API 检查最新版本，内置频率限制提示与结果缓存
+- 📋 **复制 RAW 链接** – 页头按钮一键复制当前 Markdown 原始地址，可通过 `showRawCopyButton` 关闭
 - 🐾 **加载动画** – 加载中显示 loading.png 弹跳吉祥物 + spinner
 - 🖼️ **图片容错** – 加载失败的图片自动替换为吉祥物占位提示
 - 🔍 **图片预览** – 点击图片毛玻璃遮罩放大预览，Esc 关闭
@@ -114,6 +114,7 @@
 - 📦 **单文件交付** – 构建后生成 `dist/index.html`，所有资源内联，部署简单
 - 🏷️ **版本号页脚** – 页脚自动显示版本号和 Git 提交 hash，方便追踪部署版本
 - 📱 **移动端主题色** – 自动适配浏览器顶部主题色为萌粉色
+- ⋯ **移动端更多菜单** – 小屏下 GitHub、RAW、关于等页头图标收进「⋯」菜单，避免图标拥挤
 - 🎨 **颜色主题切换** – 6 种颜色主题（粉/蓝/绿/紫/白/黄），支持配置和 Release 编辑
 - 🔗 **专属链接生成** – Tools 内置 Base64 链接生成器，支持多线路网关一键合成
 - 🧩 **自定义注入** – 通过 `config.json` 的 `headInject`/`bodyInject` 自由注入 HTML

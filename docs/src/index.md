@@ -48,6 +48,9 @@ features:
   - icon: 🔄
     title: 检查更新
     details: 关于页通过 GitHub Releases API 检查新版本，处理频率限制并缓存结果
+  - icon: 📋
+    title: 复制 RAW 链接
+    details: 页头按钮一键复制当前 Markdown 原始地址，可通过 showRawCopyButton 关闭
   - icon: 💕
     title: 萌系错误页
     details: 加载失败时显示吉祥物 + 大号状态码 + 中文提示
@@ -81,6 +84,9 @@ features:
   - icon: 📱
     title: 移动端主题色
     details: 自动适配浏览器顶部主题色为萌粉色
+  - icon: ⋯
+    title: 移动端更多菜单
+    details: 小屏下 GitHub、RAW、关于等页头图标收进「⋯」菜单，避免图标拥挤
   - icon: 🎨
     title: 颜色主题切换
     details: 6 种颜色主题（粉/蓝/绿/紫/白/黄），支持配置和 Release 编辑

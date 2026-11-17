@@ -31,6 +31,7 @@
     "headInject": "",
     "bodyInject": "",
     "logoSubUseDocTitle": true,
+    "showRawCopyButton": true,
     "theme": "pink"
 }
 ```
@@ -79,6 +80,7 @@
 
 | 字段 | 类型 | 默认值 | 说明 |
 | --- | --- | --- | --- |
+| `showRawCopyButton` | boolean | `true` | 是否在页头 GitHub/关于图标旁显示「复制当前文档 RAW 链接」按钮。Release 版顶部 JSON 暂不支持配置此项。 |
 | `toolsUrl` | string | `https://moe520.haoqi75.os.kg/tools.html` | 页头「JSON 编辑器」按钮的地址。生产版示例配置为 `./tools.html`。 |
 | `headInject` | string | `""` | 注入到 `</head>` 之前的原始 HTML，可用于 meta、统计脚本或额外样式。 |
 | `bodyInject` | string | `""` | 注入到 `</body>` 之前的原始 HTML，可用于脚本等。 |
@@ -92,7 +94,7 @@
 3. `?p=<别名>`：在 `aliases` 中查找，不区分大小写。
 4. `defaultUrl`：以上都没有时使用默认地址。
 
-Release 版本还会读取文件顶部的 `<script id="release-config">` JSON 块，覆盖 `defaultUrl`、`aliases` 和 `theme`。
+Release 版本还会读取文件顶部的 `<script id="release-config">` JSON 块，覆盖 `title`、`defaultUrl`、`aliases` 和 `theme`。
 
 ## 配置类型
 

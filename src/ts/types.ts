@@ -26,6 +26,7 @@ export interface MoeConfig {
     headInject?: string;
     bodyInject?: string;
     logoSubUseDocTitle?: boolean;
+    showRawCopyButton?: boolean;
     theme?: ThemeName | string;
     version?: string;
     gitHash?: string;

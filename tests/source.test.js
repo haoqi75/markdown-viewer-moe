@@ -16,6 +16,7 @@ test('配置：src/config.json 结构有效', () => {
     assert.equal(config.type, 'normal');
     assert.equal(typeof config.title, 'string');
     assert.match(config.defaultUrl, /^https?:\/\//);
+    assert.equal(config.showRawCopyButton, true);
     assert.ok(THEMES.includes(config.theme), 'theme 必须是支持的六种主题之一');
     assert.ok(config.aliases && typeof config.aliases === 'object' && !Array.isArray(config.aliases));
 
@@ -91,6 +92,8 @@ test('TypeScript：主程序模块拆分齐全', () => {
         'toc.ts',
         'render-utils.ts',
         'about-page.ts',
+        'raw-copy.ts',
+        'mobile-menu.ts',
         'renderer.ts',
         'version.ts',
         'update-checker.ts',
@@ -114,6 +117,8 @@ test('路由与渲染：关键行为没有退化', () => {
     const main = read('src/ts/main.ts');
     const renderUtils = read('src/ts/render-utils.ts');
     const aboutPage = read('src/ts/about-page.ts');
+    const rawCopy = read('src/ts/raw-copy.ts');
+    const mobileMenu = read('src/ts/mobile-menu.ts');
     const updateChecker = read('src/ts/update-checker.ts');
 
     assert.ok(router.includes("pParam.toLowerCase() === 'about'"));
@@ -123,9 +128,23 @@ test('路由与渲染：关键行为没有退化', () => {
     assert.match(renderer, /breaks:\s*false/, 'marked 必须保持 GitHub 风格：breaks: false');
     assert.ok(main.includes('history.scrollRestoration = \'manual\''));
     assert.ok(renderUtils.includes("img.closest('a')"), '图片预览应跳过链接内的图片');
+    assert.ok(rawCopy.includes('showRawCopyButton'));
+    assert.ok(rawCopy.includes('[data-raw-copy]'));
+    assert.ok(mobileMenu.includes('mobile-menu-toggle'));
+    assert.ok(mobileMenu.includes('aria-expanded'));
     assert.ok(updateChecker.includes('api.github.com/repos/'));
     assert.ok(updateChecker.includes('rate-limit'));
     assert.ok(updateChecker.includes('60'));
+});
+
+test('Tools：完整模板提供 RAW 链接开关，Release 模板提供 title', () => {
+    const templates = read('tools/src/templates.ts');
+    const [normalTemplate, releaseTemplate] = templates.split("id: 'markdown_basic'");
+
+    assert.ok(normalTemplate.includes("showRawCopyButton"));
+    assert.ok(!releaseTemplate.includes("showRawCopyButton"));
+    assert.ok(releaseTemplate.includes("key: 'title'"));
+    assert.ok(releaseTemplate.includes('title: "🌸 萌·Markdown 预览器'));
 });
 
 test('工程配置：pnpm test 与工具链版本已声明', () => {

@@ -29,12 +29,13 @@
 ```html
 <!--
   ╔══════════════════════════════════════════════╗
-  ║  RELEASE CONFIG — 编辑 defaultUrl/aliases/theme/type ║
+  ║  RELEASE CONFIG — 编辑 title/defaultUrl/aliases/theme/type ║
   ╚══════════════════════════════════════════════╝
 -->
 <script id="release-config" type="application/json">
 {
   "type": "release",
+  "title": "我的 Markdown 空间",
   "defaultUrl": "https://your-default-api.com/raw/index.md",
   "aliases": {
     "test": "https://another-api.com/raw/rypa",
@@ -48,12 +49,13 @@
 
 可修改的字段：
 
+- `title`：浏览器标签页标题。
 - `defaultUrl`：默认 Markdown 地址。
 - `aliases`：别名映射，例如 `?p=test`。
 - `theme`：`pink` / `blue` / `green` / `purple` / `white` / `yellow`。
 - `type`：保持 `release`。
 
-其他外观字段（标题、Logo、图标、页脚等）已经在构建时写入文件，不能在 Release 配置块里修改。详细说明见[发布版配置](/config/release)。
+Logo、图标、页脚等其他外观字段已经在构建时写入文件，不能在 Release 配置块里修改。详细说明见[发布版配置](/config/release)。
 
 ::: warning
 保存前请确认 JSON 仍然合法；配置块需要保持在 `<!DOCTYPE html>` 之前。构建校验会检查这两点。
@@ -77,7 +79,7 @@ Get-FileHash .\index.release.html -Algorithm MD5
 
 不会手写 JSON 时，可以打开 [简单编辑 config.json 工具](/config/editor)：
 
-- 选择「基础·发布配置」模板，手填 `defaultUrl` 和别名。
+- 选择「基础·发布配置」模板，手填 `title`、`defaultUrl` 和别名。
 - 或直接上传 `index.release.html`，读取顶部配置后重新打包下载。
 
 ## 自己构建

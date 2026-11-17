@@ -4,6 +4,7 @@ import { ConfigTemplate, ValidationResult } from './types';
 import { FormGenerator } from './components/FormGenerator';
 import { JsonView } from './components/JsonView';
 import { TemplateSelector } from './components/TemplateSelector';
+import { AboutModal } from './components/AboutModal';
 import { 
   FileJson, 
   Download, 
@@ -111,7 +112,7 @@ const DEFAULT_RELEASE_HTML = `<!DOCTYPE html>
 
 const INJECTED_VERSION = "__APP_VERSION__";
 const PLACEHOLDER_VERSION = ["__APP", "VERSION__"].join("_");
-const APP_VERSION = INJECTED_VERSION === PLACEHOLDER_VERSION ? "1.7.1" : INJECTED_VERSION;
+const APP_VERSION = INJECTED_VERSION === PLACEHOLDER_VERSION ? "1.8.0" : INJECTED_VERSION;
 
 export const THEME_CONFIGS: Record<string, {
   name: string;
@@ -220,6 +221,13 @@ export default function App() {
   const [viewMode, setViewMode] = useState<'visual' | 'code'>('visual');
   const [validation, setValidation] = useState<ValidationResult>({ isValid: true });
   const [isDarkMode, setIsDarkMode] = useState<boolean>(false);
+  const [isAboutOpen, setIsAboutOpen] = useState<boolean>(() => {
+    try {
+      return new URLSearchParams(window.location.search).get('p') === 'about';
+    } catch {
+      return false;
+    }
+  });
   const [toast, setToast] = useState<{ message: string; type: 'success' | 'error' | 'info' } | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
@@ -389,6 +397,30 @@ export default function App() {
     setBase64Input('');
     setBase64Output('');
     showToast('已清空输入和输出！', 'success');
+  };
+
+  const openAboutPage = () => {
+    setIsAboutOpen(true);
+    try {
+      const url = new URL(window.location.href);
+      url.searchParams.set('p', 'about');
+      window.history.replaceState(null, '', url);
+    } catch {
+      // 忽略不支持 History API 的环境
+    }
+  };
+
+  const closeAboutPage = () => {
+    setIsAboutOpen(false);
+    try {
+      const url = new URL(window.location.href);
+      if (url.searchParams.get('p') === 'about') {
+        url.searchParams.delete('p');
+        window.history.replaceState(null, '', url);
+      }
+    } catch {
+      // 忽略不支持 History API 的环境
+    }
   };
 
   const showToast = (message: string, type: 'success' | 'error' | 'info' = 'success') => {
@@ -1436,6 +1468,19 @@ export default function App() {
           </div>
 
           <div className="flex flex-wrap items-center gap-3 mt-4 md:mt-0">
+            {/* About page */}
+            <button
+              id="btn-about"
+              type="button"
+              onClick={openAboutPage}
+              className="flex items-center space-x-1.5 px-3.5 py-2.5 text-xs font-bold rounded-2xl border border-gray-200/60 bg-white/80 hover:bg-gray-50 dark:border-gray-800 dark:bg-[#251620] dark:hover:bg-gray-800/40 transition-colors shadow-2xs cursor-pointer"
+              title="关于本工具"
+              aria-label="关于本工具"
+            >
+              <HelpCircle className="h-5 w-5 shrink-0" style={{ color: activePalette.primaryAccent }} />
+              <span className="hidden sm:inline" style={{ color: isDarkMode ? activePalette.darkText : activePalette.lightText }}>关于</span>
+            </button>
+
             {/* Dark mode toggle */}
             <button
               id="btn-toggle-theme"
@@ -2173,6 +2218,14 @@ https://raw.githubusercontent.com/haoqi75/markdown-viewer-moe/main/README.md"
           </div>
         </div>
       )}
+
+      <AboutModal
+        isOpen={isAboutOpen}
+        onClose={closeAboutPage}
+        isDarkMode={isDarkMode}
+        palette={activePalette}
+        version={APP_VERSION}
+      />
     </div>
   );
 }

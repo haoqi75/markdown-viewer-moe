@@ -30,8 +30,10 @@ try { config = JSON.parse(match[1]); } catch (e) {
     process.exit(1);
 }
 
+// showRawCopyButton 暂不开放给 Release 配置；它由构建时的 src/config.json 决定
 var releaseConfig = {
     type: 'release',
+    title: config.title || '',
     defaultUrl: config.defaultUrl || '',
     aliases: config.aliases || {},
     theme: config.theme || 'pink'
@@ -43,7 +45,7 @@ html = html.replace(/"toolsUrl"\s*:\s*"[^"]*"/, '"toolsUrl":"https://moe520.cc.c
 var block =
     '\n<!--' +
     '\n  ╔══════════════════════════════════════════════╗' +
-    '\n  ║  RELEASE CONFIG — 编辑 defaultUrl/aliases/theme/type ║' +
+    '\n  ║  RELEASE CONFIG — 编辑 title/defaultUrl/aliases/theme/type ║' +
     '\n  ║  修改下方 JSON 后保存，直接部署即可               ║' +
     '\n  ╚══════════════════════════════════════════════╝' +
     '\n-->' +
@@ -61,4 +63,4 @@ if (!fs.existsSync(outFile)) {
     process.exit(1);
 }
 console.log('✅ 已生成: ' + outFile + ' (' + fs.statSync(outFile).size + ' 字节)');
-console.log('📝 编辑文件顶部的 JSON 即可自定义 defaultUrl 和 aliases');
+console.log('📝 编辑文件顶部的 JSON 即可自定义 title、defaultUrl、aliases 和 theme');

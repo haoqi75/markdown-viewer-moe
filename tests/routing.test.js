@@ -68,21 +68,24 @@ test('路由：?md= 非法或非 http(s) 地址返回解码失败标记', () => 
     assert.equal(resolveWith('?md=' + base64('ftp://example.com/test.md')), '__MD_DECODE_FAILED__');
 });
 
-test('配置：release-config 覆盖 defaultUrl、aliases 和 theme', () => {
+test('配置：release-config 覆盖 title、defaultUrl、aliases 和 theme', () => {
     const harness = createHarness({
         config: {
+            title: '普通版标题',
             defaultUrl: 'https://normal.test/index.md',
             aliases: { page: 'https://normal.test/page.md' },
             theme: 'pink',
         },
         releaseConfig: {
             type: 'release',
+            title: '发布版标题',
             defaultUrl: 'https://release.test/index.md',
             aliases: { page: 'https://release.test/page.md' },
             theme: 'blue',
         },
     });
 
+    assert.equal(harness.MOE.CONFIG.title, '发布版标题');
     assert.equal(harness.MOE.CONFIG.defaultUrl, 'https://release.test/index.md');
     assert.equal(harness.MOE.CONFIG.aliases.page, 'https://release.test/page.md');
     assert.equal(harness.MOE.CONFIG.theme, 'blue');

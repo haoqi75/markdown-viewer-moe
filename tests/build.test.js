@@ -78,12 +78,18 @@ test('主程序构建：生成可用的单文件 index.html', () => {
     assert.ok(builtHtml.includes('<style>'));
     assert.ok(builtHtml.includes('id="about-page-template"'));
     assert.ok(builtHtml.includes('id="about-link"'));
+    assert.ok(builtHtml.includes('id="raw-copy-link"'));
+    assert.ok(builtHtml.includes('id="mobile-menu-toggle"'));
+    assert.ok(builtHtml.includes('id="mobile-menu"'));
+    assert.ok(builtHtml.includes('data-raw-copy'));
+    assert.ok(builtHtml.includes('mobile-menu-icon'));
 });
 
 test('主程序构建：配置、版本号和构建信息正确注入', () => {
     assert.equal(builtConfig.title, sourceConfig.title);
     assert.equal(builtConfig.defaultUrl, sourceConfig.defaultUrl);
     assert.equal(builtConfig.theme, sourceConfig.theme);
+    assert.equal(builtConfig.showRawCopyButton, true);
     assert.equal(builtConfig.version, pkg.version);
     assert.deepEqual(builtConfig.aliases, sourceConfig.aliases);
 
@@ -137,9 +143,15 @@ test('Release 构建：release.js 生成可编辑配置块并保留关于页', (
     const releaseConfig = JSON.parse(configMatch[1]);
 
     assert.equal(releaseConfig.type, 'release');
+    assert.equal(releaseConfig.title, sourceConfig.title);
     assert.equal(releaseConfig.defaultUrl, sourceConfig.defaultUrl);
     assert.equal(releaseConfig.theme, sourceConfig.theme);
     assert.deepEqual(releaseConfig.aliases, sourceConfig.aliases);
+    assert.equal(
+        Object.prototype.hasOwnProperty.call(releaseConfig, 'showRawCopyButton'),
+        false,
+        'Release 配置暂不开放 showRawCopyButton'
+    );
 
     assert.ok(
         releaseHtml.indexOf('<script id="release-config"') < releaseHtml.indexOf('<!DOCTYPE html>'),

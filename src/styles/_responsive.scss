@@ -2,6 +2,12 @@
    5. 响应式
    ============================================================ */
 @media (max-width: 640px) {
+    .header > .github-link {
+        display: none;
+    }
+    .header-more {
+        display: block;
+    }
     .header .logo {
         font-size: 1.0rem;
     }

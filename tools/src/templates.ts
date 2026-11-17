@@ -32,6 +32,7 @@ export const templates: ConfigTemplate[] = [
       headInject: "",
       bodyInject: "",
       logoSubUseDocTitle: true,
+      showRawCopyButton: true,
       theme: "pink"
     },
     schema: [
@@ -66,7 +67,8 @@ export const templates: ConfigTemplate[] = [
             description: '预览器的默认主题配色方案：pink (粉色默认)、blue (浅蓝)、green (绿色)、purple (紫色)、white (淡花白)、yellow (黄色)' 
           },
           { key: 'tocWelcome', label: '目录欢迎词 (tocWelcome)', type: 'string', description: '侧边栏目录最上方显示的欢迎文本' },
-          { key: 'footer', label: '页脚版权声明 (footer)', type: 'textarea', description: '支持 Markdown 链接格式的页脚版权声明，例如: [名称](链接) | 额外信息' }
+          { key: 'footer', label: '页脚版权声明 (footer)', type: 'textarea', description: '支持 Markdown 链接格式的页脚版权声明，例如: [名称](链接) | 额外信息' },
+          { key: 'showRawCopyButton', label: '显示复制 RAW 链接按钮 (showRawCopyButton)', type: 'boolean', description: '在页头 GitHub/关于图标旁显示“复制当前文档 RAW 链接”按钮，默认开启。Release 版顶部 JSON 暂不支持配置此项。' }
         ]
       },
       {
@@ -115,10 +117,11 @@ export const templates: ConfigTemplate[] = [
   {
     id: 'markdown_basic',
     name: '📄 基础·发布配置模板 (Basic Release Config)',
-    description: '标准、极简的 Markdown 预览发布配置，包含默认加载的 Markdown 文件地址与路由别名定义。',
+    description: '标准、极简的 Markdown 预览发布配置，包含页面标题、默认加载的 Markdown 文件地址与路由别名定义。',
     icon: 'Globe',
     config: {
       type: "release",
+      title: "🌸 萌·Markdown 预览器：我的专属 Markdown 空间",
       defaultUrl: "https://raw.githubusercontent.com/haoqi75/markdown-viewer-moe/refs/heads/main/README.md",
       aliases: {
         page: "https://cp.qtdt.qzz.io/api/raw/index",
@@ -143,6 +146,7 @@ export const templates: ConfigTemplate[] = [
             ],
             description: '配置文件的类型标识：release (发布版) 或 normal (完整版)' 
           },
+          { key: 'title', label: '页面标题 (title)', type: 'string', description: '浏览器标签页显示的文字标题' },
           { key: 'defaultUrl', label: '默认 Markdown 地址 (defaultUrl)', type: 'string', description: '预览器默认加载的 Markdown 原始文件链接' },
           { 
             key: 'theme', 

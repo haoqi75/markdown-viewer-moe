@@ -51,7 +51,7 @@ Single-file Markdown viewer. `src/` → gulp → `dist/index.html` (all assets i
 |------|------|
 | `src/index.html` | HTML template with placeholders (`<config-placeholder>`, `logo-placeholder`, `mascot-placeholder`, `<about-page-template>`) |
 | `src/about.html` | About page source; gulp extracts `ABOUT_CONTENT_*` body + `#about-page-style` CSS and embeds it as `<template id="about-page-template">` in `index.html` |
-| `src/ts/` | TypeScript modules: `config`, `router`, `toc`, `render-utils`, `about-page`, `renderer`, `version`, `update-checker`, `main`; esbuild bundles `main.ts` |
+| `src/ts/` | TypeScript modules: `config`, `router`, `toc`, `render-utils`, `about-page`, `raw-copy`, `mobile-menu`, `renderer`, `version`, `update-checker`, `main`; esbuild bundles `main.ts` |
 | `src/style.scss` | SCSS entry; `@use`s the partials in `src/styles/` (Dart Sass) |
 | `src/styles/` | SCSS partials: base, decorations, toc, content, responsive, callouts, image-preview |
 | `src/config.json` | User-configurable defaults (optional — gulpfile has DEFAULTS fallback) |
@@ -71,7 +71,7 @@ Single-file Markdown viewer. `src/` → gulp → `dist/index.html` (all assets i
 
 1. `config.json` fields
 2. `DEFAULTS` in gulpfile (per-field fallback, deep merge)
-3. At runtime: `<script id="release-config">` block overrides `defaultUrl` and `aliases` (release builds only)
+3. At runtime: `<script id="release-config">` block overrides `title`, `defaultUrl`, `aliases`, and `theme` (release builds only)
 
 ## URL routing (`src/ts/router.ts`)
 

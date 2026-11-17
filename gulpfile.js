@@ -28,6 +28,7 @@ const DEFAULTS = {
     headInject: '',
     bodyInject: '',
     logoSubUseDocTitle: true,
+    showRawCopyButton: true,
     theme: 'pink'
 };
 

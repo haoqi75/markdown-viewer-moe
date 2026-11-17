@@ -6,12 +6,14 @@ function loadConfig(): MoeConfig {
     const cfg: MoeConfig = window.__CONFIG__ ?? {
         defaultUrl: DEFAULT_URL,
         aliases: {},
+        showRawCopyButton: true,
     };
 
     const releaseBlock = document.getElementById('release-config');
     if (releaseBlock) {
         try {
             const rel = JSON.parse(releaseBlock.textContent ?? '{}') as Partial<MoeConfig>;
+            if (rel.title) cfg.title = rel.title;
             if (rel.defaultUrl) cfg.defaultUrl = rel.defaultUrl;
             if (rel.aliases && typeof rel.aliases === 'object') {
                 cfg.aliases = { ...(cfg.aliases ?? {}), ...rel.aliases };

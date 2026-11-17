@@ -8,6 +8,7 @@
 <script id="release-config" type="application/json">
 {
   "type": "release",
+  "title": "我的 Markdown 空间",
   "defaultUrl": "https://your-default-api.com/raw/index.md",
   "aliases": {
     "test": "https://another-api.com/raw/rypa",
@@ -23,6 +24,7 @@
 | 字段 | 类型 | 说明 |
 | --- | --- | --- |
 | `type` | string | 固定为 `release`，供 tools 编辑器识别。 |
+| `title` | string | 浏览器标签页标题。 |
 | `defaultUrl` | string | 没有匹配到别名时加载的 Markdown 地址。 |
 | `aliases` | object | 别名映射；键为 `?p=` 的值，值为 Markdown URL。匹配不区分大小写，`about` 为内置保留页。 |
 | `theme` | string | 颜色主题：`pink` / `blue` / `green` / `purple` / `white` / `yellow`。 |
@@ -37,7 +39,8 @@
 ## 注意事项
 
 - 配置块必须是合法 JSON，且保持在 `<!DOCTYPE html>` 之前；构建校验会检查这一点。
-- 发布版只能改 `defaultUrl`、`aliases`、`theme` 等运行期字段；标题、Logo、图标、页脚等在构建时已经写死。
+- 发布版可以改 `title`、`defaultUrl`、`aliases`、`theme`；Logo、图标、页脚等其他外观字段在构建时已经写死。
+- `showRawCopyButton`（页头复制 RAW 链接按钮）暂不支持在 Release 配置块中修改，只跟随构建时 `src/config.json` 的值。
 - 发布版的「JSON 编辑器」按钮固定指向 `https://moe520.cc.cd/tools.html`。如果需要改成本地 tools，请自行构建生产版。
 - `?md=` 仍然优先级最高，`?p=about` 也会优先于同名别名。
 - 关于页、TOC、代码高亮等资源都已内嵌在 `index.release.html` 里，不需要额外文件。

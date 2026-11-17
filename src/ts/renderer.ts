@@ -1,6 +1,7 @@
 import { renderAbout } from './about-page';
 import { CONFIG } from './config';
 import { contentEl } from './dom';
+import { refreshRawCopyVisibility } from './raw-copy';
 import {
     interceptAnchors,
     replaceBrokenImg,
@@ -204,6 +205,7 @@ function showLoadError(url: string, error: unknown): void {
 
 async function load(): Promise<void> {
     const url = resolveUrl();
+    refreshRawCopyVisibility(url);
 
     if (url === ABOUT_PAGE) {
         renderAbout();
