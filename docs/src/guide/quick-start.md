@@ -18,5 +18,5 @@
 :::
 
 ::: info 本地构建环境
-完整构建最低需要 **Node.js 22.22.2** 和 **pnpm 12.22.0**；推荐直接使用仓库 `.nvmrc` 固定的 Node.js `v26.13.1`。只使用在线演示或下载 Release 文件时不需要安装 Node.js/pnpm。
+完整构建最低需要 **Node.js 22.22.2** 和 **pnpm 12.22.0**；`package.json` 已通过 `engines.node` 声明 `>=22.22.2`。推荐直接使用仓库 `.nvmrc` 固定的 Node.js `v26.13.1`。只使用在线演示或下载 Release 文件时不需要安装 Node.js/pnpm。
 :::
