@@ -33,6 +33,7 @@ interface FormGeneratorProps {
   schema?: ConfigGroup[];
   onChange: (updatedConfig: Record<string, any>) => void;
   activePalette?: ThemePalette;
+  isDarkMode?: boolean;
 }
 
 // Helper to access nested objects by path (e.g., "theme.primaryColor")
@@ -146,7 +147,7 @@ export const inferSchema = (json: Record<string, any>): ConfigGroup[] => {
   return groups;
 };
 
-export const FormGenerator: React.FC<FormGeneratorProps> = ({ config, schema, onChange, activePalette }) => {
+export const FormGenerator: React.FC<FormGeneratorProps> = ({ config, schema, onChange, activePalette, isDarkMode = false }) => {
   const activeSchema = schema || inferSchema(config);
   const [activeTab, setActiveTab] = useState<number>(0);
   const [showHelp, setShowHelp] = useState<Record<string, boolean>>({});
@@ -695,7 +696,9 @@ export const FormGenerator: React.FC<FormGeneratorProps> = ({ config, schema, on
                 onClick={() => setActiveTab(idx)}
                 className="flex w-full items-center px-4 py-3 text-sm font-bold rounded-xl transition-all duration-200 cursor-pointer"
                 style={{
-                  backgroundColor: isSelected ? (activePalette?.primaryLight || '#fff0f3') : 'transparent',
+                  backgroundColor: isSelected
+                    ? (isDarkMode ? `${primaryAccent}25` : (activePalette?.primaryLight || '#fff0f3'))
+                    : 'transparent',
                   color: isSelected ? primaryAccent : undefined
                 }}
               >

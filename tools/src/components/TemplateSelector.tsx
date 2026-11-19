@@ -22,6 +22,7 @@ interface TemplateSelectorProps {
   onSelect: (template: ConfigTemplate) => void;
   activeId?: string;
   activePalette?: ThemePalette;
+  isDarkMode?: boolean;
 }
 
 const getIcon = (iconName: string, activePalette?: ThemePalette) => {
@@ -40,7 +41,7 @@ const getIcon = (iconName: string, activePalette?: ThemePalette) => {
   }
 };
 
-export const TemplateSelector: React.FC<TemplateSelectorProps> = ({ templates, onSelect, activeId, activePalette }) => {
+export const TemplateSelector: React.FC<TemplateSelectorProps> = ({ templates, onSelect, activeId, activePalette, isDarkMode = false }) => {
   const accentColor = activePalette?.primaryAccent || '#ec4899';
   const lightBgColor = activePalette?.primaryLight || '#fff0f3';
 
@@ -56,8 +57,12 @@ export const TemplateSelector: React.FC<TemplateSelectorProps> = ({ templates, o
             onClick={() => onSelect(tpl)}
             className="group text-left p-5 rounded-3xl border transition-all duration-300 cursor-pointer shadow-2xs"
             style={{
-              borderColor: isActive ? accentColor : 'rgba(244, 114, 182, 0.2)',
-              backgroundColor: isActive ? (activePalette?.primaryLight + '50' || 'rgba(255,240,243,0.5)') : 'rgba(255,255,255,0.8)',
+              borderColor: isActive
+                ? accentColor
+                : (isDarkMode ? 'rgba(255,255,255,0.12)' : 'rgba(244, 114, 182, 0.2)'),
+              backgroundColor: isActive
+                ? (isDarkMode ? `${accentColor}25` : (activePalette?.primaryLight + '50' || 'rgba(255,240,243,0.5)'))
+                : (isDarkMode ? 'rgba(255,255,255,0.04)' : 'rgba(255,255,255,0.8)'),
               boxShadow: isActive ? `0 0 0 2px ${accentColor}30, 0 4px 12px ${activePalette?.shadow || 'rgba(0,0,0,0.05)'}` : 'none'
             }}
           >
@@ -65,7 +70,9 @@ export const TemplateSelector: React.FC<TemplateSelectorProps> = ({ templates, o
               <div 
                 className="p-2.5 rounded-xl shrink-0 transition-colors"
                 style={{
-                  backgroundColor: isActive ? lightBgColor : 'rgba(0,0,0,0.03)'
+                  backgroundColor: isActive
+                    ? (isDarkMode ? `${accentColor}25` : lightBgColor)
+                    : (isDarkMode ? 'rgba(255,255,255,0.06)' : 'rgba(0,0,0,0.03)')
                 }}
               >
                 {getIcon(tpl.icon, activePalette)}

@@ -112,7 +112,7 @@ const DEFAULT_RELEASE_HTML = `<!DOCTYPE html>
 
 const INJECTED_VERSION = "__APP_VERSION__";
 const PLACEHOLDER_VERSION = ["__APP", "VERSION__"].join("_");
-const APP_VERSION = INJECTED_VERSION === PLACEHOLDER_VERSION ? "1.8.0" : INJECTED_VERSION;
+const APP_VERSION = INJECTED_VERSION === PLACEHOLDER_VERSION ? "1.8.1" : INJECTED_VERSION;
 
 export const THEME_CONFIGS: Record<string, {
   name: string;
@@ -1714,6 +1714,7 @@ export default function App() {
             onSelect={handleTemplateSelect} 
             activeId={activeTemplate.id} 
             activePalette={activePalette}
+            isDarkMode={isDarkMode}
           />
         </div>
 
@@ -1755,6 +1756,7 @@ export default function App() {
               schema={activeTemplate.schema} 
               onChange={handleConfigChange} 
               activePalette={activePalette}
+              isDarkMode={isDarkMode}
             />
           ) : (
             <JsonView 
