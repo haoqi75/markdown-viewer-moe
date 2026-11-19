@@ -1,3 +1,4 @@
+import { setupColorMode } from './color-mode';
 import { CONFIG } from './config';
 import { setupMobileMenu } from './mobile-menu';
 import { setupRawCopyButton } from './raw-copy';
@@ -53,6 +54,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     TOC.init();
+    setupColorMode();
     setupMobileMenu();
     setupRawCopyButton();
 

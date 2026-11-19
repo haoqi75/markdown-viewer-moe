@@ -87,6 +87,9 @@ features:
   - icon: ⋯
     title: 移动端更多菜单
     details: 小屏下 GitHub、RAW、关于等页头图标收进「⋯」菜单，避免图标拥挤
+  - icon: 🌗
+    title: 浅色/深色模式
+    details: 桌面页头或手机菜单切换，支持全部主题并记住偏好
   - icon: 🎨
     title: 颜色主题切换
     details: 6 种颜色主题（粉/蓝/绿/紫/白/黄），支持配置和 Release 编辑

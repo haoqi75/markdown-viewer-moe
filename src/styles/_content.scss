@@ -431,3 +431,21 @@
     background: var(--moe-pink-dark);
     transform: scale(1.03);
 }
+html[data-color-mode="dark"] #content blockquote {
+    background: rgba(var(--moe-pink-rgb), 0.10);
+}
+html[data-color-mode="dark"] #content table {
+    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.25);
+}
+html[data-color-mode="dark"] #content th {
+    background: rgba(var(--moe-pink-rgb), 0.12);
+}
+html[data-color-mode="dark"] #content tr:nth-child(even) {
+    background: rgba(var(--moe-pink-rgb), 0.05);
+}
+html[data-color-mode="dark"] #content img {
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.35);
+}
+html[data-color-mode="dark"] .img-error {
+    background: rgba(var(--moe-pink-rgb), 0.08);
+}

@@ -112,6 +112,71 @@ html[data-theme="yellow"] {
     --moe-card: rgba(255, 253, 245, 0.92);
     --moe-shadow: 0 12px 48px rgba(245, 158, 11, 0.18);
 }
+/* ============================================================
+   深色模式（data-color-mode="dark"）
+   每种主题单独覆盖背景、卡片和文字色
+   ============================================================ */
+html[data-color-mode="dark"] {
+    color-scheme: dark;
+    --moe-bg: #160d13;
+    --moe-card: rgba(31, 22, 30, 0.92);
+    --moe-text: #ffe8f0;
+    --moe-text-light: #d2b4c0;
+    --moe-pink-dark: #ff9ec2;
+    --moe-purple: #c084fc;
+    --moe-shadow: 0 12px 48px rgba(0, 0, 0, 0.45);
+}
+html[data-color-mode="dark"][data-theme="blue"] {
+    --moe-bg: #081322;
+    --moe-card: rgba(15, 29, 48, 0.92);
+    --moe-text: #e0f2fe;
+    --moe-text-light: #9cb9d6;
+    --moe-pink-dark: #93c5fd;
+    --moe-purple: #a5b4fc;
+    --moe-shadow: 0 12px 48px rgba(0, 0, 0, 0.45);
+}
+html[data-color-mode="dark"][data-theme="green"] {
+    --moe-bg: #08160f;
+    --moe-card: rgba(12, 30, 21, 0.92);
+    --moe-text: #d1fae5;
+    --moe-text-light: #9ed9bd;
+    --moe-pink-dark: #86efac;
+    --moe-purple: #6ee7b7;
+    --moe-shadow: 0 12px 48px rgba(0, 0, 0, 0.45);
+}
+html[data-color-mode="dark"][data-theme="purple"] {
+    --moe-bg: #140d1e;
+    --moe-card: rgba(28, 18, 40, 0.92);
+    --moe-text: #f3e8ff;
+    --moe-text-light: #cdb6e3;
+    --moe-pink-dark: #d8b4fe;
+    --moe-purple: #d8b4fe;
+    --moe-shadow: 0 12px 48px rgba(0, 0, 0, 0.45);
+}
+html[data-color-mode="dark"][data-theme="white"] {
+    --moe-bg: #111113;
+    --moe-card: rgba(28, 28, 30, 0.92);
+    --moe-text: #f1f5f9;
+    --moe-text-light: #c7c7cf;
+    --moe-pink-dark: #e8d0d0;
+    --moe-purple: #d5c5d5;
+    --moe-shadow: 0 12px 48px rgba(0, 0, 0, 0.45);
+}
+html[data-color-mode="dark"][data-theme="yellow"] {
+    --moe-bg: #171205;
+    --moe-card: rgba(35, 28, 12, 0.92);
+    --moe-text: #fef3c7;
+    --moe-text-light: #d8c08a;
+    --moe-pink-dark: #fbbf24;
+    --moe-purple: #fb923c;
+    --moe-shadow: 0 12px 48px rgba(0, 0, 0, 0.45);
+}
+html[data-color-mode="dark"] body {
+    background-image:
+        radial-gradient(circle at 10% 20%, rgba(var(--moe-pink-rgb), 0.12) 0%, transparent 50%),
+        radial-gradient(circle at 90% 80%, rgba(168, 85, 247, 0.10) 0%, transparent 50%),
+        radial-gradient(circle at 50% 50%, rgba(96, 165, 250, 0.05) 0%, transparent 70%);
+}
 /* ============================================================ */
 
 html {

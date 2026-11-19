@@ -94,6 +94,7 @@ test('TypeScript：主程序模块拆分齐全', () => {
         'about-page.ts',
         'raw-copy.ts',
         'mobile-menu.ts',
+        'color-mode.ts',
         'renderer.ts',
         'version.ts',
         'update-checker.ts',
@@ -119,6 +120,7 @@ test('路由与渲染：关键行为没有退化', () => {
     const aboutPage = read('src/ts/about-page.ts');
     const rawCopy = read('src/ts/raw-copy.ts');
     const mobileMenu = read('src/ts/mobile-menu.ts');
+    const colorMode = read('src/ts/color-mode.ts');
     const updateChecker = read('src/ts/update-checker.ts');
 
     assert.ok(router.includes("pParam.toLowerCase() === 'about'"));
@@ -132,6 +134,8 @@ test('路由与渲染：关键行为没有退化', () => {
     assert.ok(rawCopy.includes('[data-raw-copy]'));
     assert.ok(mobileMenu.includes('mobile-menu-toggle'));
     assert.ok(mobileMenu.includes('aria-expanded'));
+    assert.ok(colorMode.includes('data-color-mode'));
+    assert.ok(colorMode.includes('moe:color-mode'));
     assert.ok(updateChecker.includes('api.github.com/repos/'));
     assert.ok(updateChecker.includes('rate-limit'));
     assert.ok(updateChecker.includes('60'));

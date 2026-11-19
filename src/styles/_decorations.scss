@@ -259,3 +259,34 @@
     background: rgba(var(--moe-pink-rgb), 0.1);
     color: var(--moe-pink-dark);
 }
+.color-mode-icon-sun {
+    display: none;
+}
+html[data-color-mode="dark"] .color-mode-icon-moon {
+    display: none;
+}
+html[data-color-mode="dark"] .color-mode-icon-sun {
+    display: block;
+}
+html[data-color-mode="dark"] .card {
+    border-color: rgba(255, 255, 255, 0.08);
+    box-shadow: var(--moe-shadow), 0 0 0 1px rgba(255, 255, 255, 0.04) inset;
+}
+html[data-color-mode="dark"] .toc-toggle {
+    background: rgba(255, 255, 255, 0.06);
+}
+html[data-color-mode="dark"] .toc-toggle:hover {
+    background: rgba(255, 255, 255, 0.10);
+}
+html[data-color-mode="dark"] .github-link {
+    background: rgba(255, 255, 255, 0.06);
+}
+html[data-color-mode="dark"] .github-link:hover {
+    background: rgba(255, 255, 255, 0.10);
+}
+html[data-color-mode="dark"] .mobile-menu-toggle {
+    background: rgba(var(--moe-pink-rgb), 0.18);
+}
+html[data-color-mode="dark"] .mobile-menu-toggle:hover {
+    background: rgba(var(--moe-pink-rgb), 0.28);
+}

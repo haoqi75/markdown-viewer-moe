@@ -83,6 +83,8 @@ test('主程序构建：生成可用的单文件 index.html', () => {
     assert.ok(builtHtml.includes('id="mobile-menu"'));
     assert.ok(builtHtml.includes('data-raw-copy'));
     assert.ok(builtHtml.includes('mobile-menu-icon'));
+    assert.ok(builtHtml.includes('data-color-mode-toggle'));
+    assert.ok(builtHtml.includes('color-mode-icon'));
 });
 
 test('主程序构建：配置、版本号和构建信息正确注入', () => {
