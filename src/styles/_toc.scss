@@ -23,7 +23,7 @@
     width: 320px;
     max-width: 82vw;
     height: 100vh;
-    background: rgba(255, 250, 252, 0.98);
+    background: var(--moe-card);
     backdrop-filter: blur(20px);
     -webkit-backdrop-filter: blur(20px);
     border-right: 1px solid rgba(var(--moe-pink-rgb), 0.12);
@@ -45,7 +45,7 @@
     align-items: center;
     padding: 1.2rem 1.6rem;
     border-bottom: 1px solid rgba(var(--moe-pink-rgb), 0.08);
-    background: rgba(255, 248, 250, 0.6);
+    background: rgba(var(--moe-pink-rgb), 0.06);
     flex-shrink: 0;
 }
 .toc-header h3 {

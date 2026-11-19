@@ -201,9 +201,15 @@
     position: relative;
 }
 .mobile-menu-toggle {
+    color: var(--moe-pink-dark);
+    background: rgba(var(--moe-pink-rgb), 0.12);
     font-size: 1.2rem;
     line-height: 1;
     font-weight: 700;
+}
+.mobile-menu-toggle:hover {
+    color: var(--moe-pink-dark);
+    background: rgba(var(--moe-pink-rgb), 0.2);
 }
 .mobile-menu {
     position: absolute;
@@ -216,7 +222,7 @@
     min-width: 13rem;
     max-width: calc(100vw - 2rem);
     padding: 0.4rem;
-    background: rgba(255, 253, 245, 0.98);
+    background: var(--moe-card);
     border: 1px solid rgba(var(--moe-pink-rgb), 0.25);
     border-radius: 16px;
     box-shadow: 0 12px 36px rgba(var(--moe-pink-rgb), 0.18);

@@ -3,7 +3,7 @@
 ## 前置要求
 
 - **Node.js 22.22.2**（完整构建最低要求，22.x LTS；也支持 24.15+ / 26+。仓库 `.nvmrc` 固定推荐版本 `v26.13.1`）
-- **pnpm 12.21.0**（`package.json` 的 `packageManager` 固定版本，并带 sha512 校验；项目使用 pnpm 12 的 lockfile 和配置）
+- **pnpm 12.22.0**（`package.json` 的 `packageManager` 固定版本，并带 sha512 校验；项目使用 pnpm 12 的 lockfile 和配置）
 - Git
 
 ::: tip 关于 Node.js 20
