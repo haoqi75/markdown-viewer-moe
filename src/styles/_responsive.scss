@@ -5,6 +5,9 @@
     .header > .github-link {
         display: none;
     }
+    .header > .toc-toggle {
+        display: flex;
+    }
     .header-more {
         display: block;
     }
@@ -14,10 +17,6 @@
     .header .logo-sub {
         font-size: 0.65rem;
         padding: 0.05rem 0.5rem;
-    }
-    .toc-toggle {
-        font-size: 0.8rem;
-        padding: 0.35rem 0.9rem 0.35rem 0.8rem;
     }
     .toc-sidebar {
         width: 86vw;
