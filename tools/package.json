@@ -1,7 +1,7 @@
 {
   "name": "moe-json-editor",
   "private": true,
-  "version": "1.8.1",
+  "version": "1.8.2",
   "type": "module",
   "scripts": {
     "dev": "vite --port=3000 --host=0.0.0.0",
@@ -9,7 +9,7 @@
     "preview": "vite preview",
     "clean": "rm -rf dist server.js",
     "lint": "tsc --noEmit",
-    "build:html": "gulp"
+    "build:html": "tsc --noEmit && gulp"
   },
   "dependencies": {
     "@google/genai": "^2.17.1",

@@ -13,17 +13,20 @@ export const JsonView: React.FC<JsonViewProps> = ({ config, onChange, onValidati
   const [validation, setValidation] = useState<ValidationResult>({ isValid: true });
   const [copied, setCopied] = useState<boolean>(false);
 
-  // Sync from prop config
+  // Sync from prop config only when the underlying data actually changed.
+  // This keeps minified/formatted text intact after pressing 压缩/美化格式.
   useEffect(() => {
-    try {
-      const formatted = JSON.stringify(config, null, 2);
-      // Only set local text if it's currently valid or empty, to avoid overwriting user typing
-      if (validation.isValid) {
-        setLocalText(formatted);
+    setLocalText((previous) => {
+      try {
+        const previousConfig = JSON.parse(previous);
+        if (JSON.stringify(previousConfig) === JSON.stringify(config)) {
+          return previous;
+        }
+      } catch {
+        // 当前文本不是合法 JSON，使用最新配置覆盖
       }
-    } catch (e) {
-      // Do nothing
-    }
+      return JSON.stringify(config, null, 2);
+    });
   }, [config]);
 
   const handleTextChange = (text: string) => {

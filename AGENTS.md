@@ -13,7 +13,7 @@ node scripts/release.js # standalone: dist/index.html → dist/index.release.htm
 pnpm build:404          # scripts/build-404.js → dist/404.html
 
 # tools/ workspace (moe-json-editor, React/Vite/TS config editor)
-pnpm build:tools        # tools vite build → single tools.html, then copy to dist/tools.html
+pnpm build:tools        # tools typecheck + vite build → single tools.html, then copy to dist/tools.html
 pnpm build:tools --release   # names output dist/tools-<tools-version>.html (from tools/package.json)
 pnpm dev:tools          # vite dev on :3000
 pnpm lint:tools         # tsc --noEmit (tools only; root uses pnpm typecheck)
@@ -26,7 +26,7 @@ pnpm preview:docs       # preview the built docs site
 
 `pnpm build` does **not** include docs; docs is a separate target.
 
-Tests live in `tests/` and use Node's built-in `node:test` (no extra framework); run `pnpm test`. The root viewer is checked with `pnpm typecheck`; `pnpm lint:tools` runs `tsc --noEmit` for the tools workspace. There is no formatter.
+Tests live in `tests/` and use Node's built-in `node:test` (no extra framework); run `pnpm test`. The root viewer is checked with `pnpm typecheck`; `pnpm lint:tools` runs `tsc --noEmit` for the tools workspace, and `tools`' `build:html` repeats that typecheck before building. There is no formatter.
 
 ## Repo layout (pnpm workspace)
 
@@ -103,7 +103,7 @@ Order matters — don't reorder:
 
 ## tools/ build pipeline (`tools/gulpfile.js`)
 
-- `build:html` (gulp) runs `vite build`, then inlines all `/assets/*.css` and `/assets/*.js` into one `dist/index.html`, inlines `public/icon.png` as base64, and replaces `__APP_VERSION__` with `tools/package.json` version → `tools/dist/tools.html`
+- `build:html` first runs `tsc --noEmit`, then gulp runs `vite build`, inlines all `/assets/*.css` and `/assets/*.js` into one `dist/index.html`, inlines `public/icon.png` as base64, and replaces `__APP_VERSION__` with `tools/package.json` version → `tools/dist/tools.html`
 - `scripts/copy-tools.js` then copies it to root `dist/tools.html` (or `dist/tools-<version>.html` with `--release`) and injects favicon `<link>` tags from `src/config.json`
 
 ## Docs site (`docs/`)

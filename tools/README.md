@@ -89,13 +89,13 @@ pnpm run dev
 ### 生成单网页发布版
 如果你想打包出一个完全单网页、可以双击在任何无网电脑、或托管在任意静态空间的单网页工具包：
 ```bash
-# 构建并打包 tools.html
+# 先执行 tsc 类型检查，再构建并打包 tools.html
 pnpm run build:html
 ```
 构建完成后，在 `/dist` 目录下将会产出 `tools.html`。
 
 > [!WARNING]
-> 运行构建以后会出现页面标签不显示图标的问题，请在作品更目录运行 `node scripts/copy-tools.js` 来注射图标。
+> 运行构建以后会出现页面标签不显示图标的问题，请在作品根目录运行 `node scripts/copy-tools.js` 来注射图标。
 
 ---
 

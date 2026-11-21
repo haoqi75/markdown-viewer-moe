@@ -63,7 +63,7 @@ pnpm build
 # 只构建主页面 → dist/index.html
 pnpm build:page
 
-# 只构建 JSON 编辑器 → dist/tools.html
+# 只构建 JSON 编辑器（先 tsc 类型检查）→ dist/tools.html
 pnpm build:tools
 
 # 只构建 404 页面 → dist/404.html
