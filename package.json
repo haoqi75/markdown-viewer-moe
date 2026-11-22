@@ -1,6 +1,6 @@
 {
   "name": "markdown-viewer-moe",
-  "version": "1.15.1",
+  "version": "1.15.2",
   "description": "由AI生成的Moe Markdown查看器",
   "homepage": "https://moe520.cc.cd/",
   "keywords": [
@@ -30,10 +30,10 @@
     "postbuild": "node scripts/verify-build.js",
     "build:release": "run-s build:page-release build:tools-release",
     "postbuild:release": "node scripts/verify-build.js --release",
-    "build:page": "pnpm typecheck && gulp build",
-    "build:page-release": "pnpm typecheck && gulp build && node scripts/release.js",
-    "build:tools": "pnpm run --filter moe-json-editor build:html && node scripts/copy-tools.js",
-    "build:tools-release": "pnpm run --filter moe-json-editor build:html && node scripts/copy-tools.js --release",
+    "build:page": "pnpm typecheck && gulp build && node scripts/minify-html.js",
+    "build:page-release": "pnpm typecheck && gulp build && node scripts/minify-html.js && node scripts/release.js",
+    "build:tools": "pnpm run --filter moe-json-editor build:html && node scripts/copy-tools.js && node scripts/minify-html.js tools.html",
+    "build:tools-release": "pnpm run --filter moe-json-editor build:html && node scripts/copy-tools.js --release && node scripts/minify-html.js tools-v*.html",
     "build:docs": "vitepress build docs",
     "build:404": "node scripts/build-404.js",
     "typecheck": "tsc --noEmit -p tsconfig.viewer.json",
@@ -47,6 +47,7 @@
   "dependencies": {
     "@fontsource-variable/fredoka": "^5.3.0",
     "@fontsource/zcool-kuaile": "^5.3.0",
+    "html-minifier-terser": "^7.2.0",
     "jimp": "^1.6.1",
     "npm-run-all2": "^9.0.4",
     "pagefind": "^1.6.0",

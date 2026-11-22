@@ -6,6 +6,7 @@
 
 var fs = require('fs');
 var path = require('path');
+var vm = require('vm');
 
 var inFile = path.join(__dirname, '..', 'dist', 'index.html');
 var outFile = path.join(__dirname, '..', 'dist', 'index.release.html');
@@ -18,15 +19,33 @@ console.log('✅ 输入: ' + inFile);
 
 var html = fs.readFileSync(inFile, 'utf8');
 
-var match = html.match(/window\.__CONFIG__\s*=\s*(\{[\s\S]*?\});/);
-if (!match) {
+var configIndex = html.indexOf('window.__CONFIG__');
+if (configIndex === -1) {
     console.error('❌ 未找到 __CONFIG__');
     process.exit(1);
 }
 
+var scriptStart = html.lastIndexOf('<script', configIndex);
+var scriptEnd = html.indexOf('</script>', configIndex);
+if (scriptStart === -1 || scriptEnd === -1) {
+    console.error('❌ 未找到 __CONFIG__ 所在的 <script> 标签');
+    process.exit(1);
+}
+
+var contentStart = html.indexOf('>', scriptStart) + 1;
+var configScript = html.slice(contentStart, scriptEnd);
+var sandbox = { window: {} };
 var config;
-try { config = JSON.parse(match[1]); } catch (e) {
-    console.error('❌ JSON 解析失败: ' + e.message);
+try {
+    // __CONFIG__ 可能是合法 JSON，也可能被 Terser 压缩成等价的 JS 对象字面量
+    vm.runInNewContext(configScript, sandbox, { timeout: 1000 });
+    config = sandbox.window.__CONFIG__;
+} catch (e) {
+    console.error('❌ 配置解析失败: ' + e.message);
+    process.exit(1);
+}
+if (!config || typeof config !== 'object' || Array.isArray(config)) {
+    console.error('❌ 配置解析失败: __CONFIG__ 不是对象');
     process.exit(1);
 }
 
@@ -40,7 +59,11 @@ var releaseConfig = {
 };
 
 // ====== 强制 toolsUrl 为远程地址（release 版固定）======
-html = html.replace(/"toolsUrl"\s*:\s*"[^"]*"/, '"toolsUrl":"https://moe520.cc.cd/tools.html"');
+// 同时兼容 "toolsUrl":"..." 和 Terser 压缩后的 toolsUrl:"..."
+html = html.replace(
+    /(["']?toolsUrl["']?\s*:\s*)(["'])[^"']*\2/,
+    '$1$2https://moe520.cc.cd/tools.html$2'
+);
 
 var block =
     '\n<!--' +
