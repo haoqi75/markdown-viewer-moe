@@ -4,7 +4,7 @@ name: Build and deploy to Codeberg Pages
 on:
   # 对推送至默认分支的操作运行
   push:
-    branches: ["main"]
+    branches: ["v1"]
   
   # 允许您从“操作”选项卡手动运行此工作流程。
   workflow_dispatch:
