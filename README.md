@@ -45,6 +45,7 @@
 此作品基于[AI Markdown](https://github.com/haoqi75/ai-markdown-old)（我的老版首页，项目已停止更新）生成和修复内容，专门给Moe爱好提供的Markdown预览器。功能增强，修复了老版本错误。
 
 我做了这个作品是为了可以让你们拥有 Markdown 网页预览器。把你的普通 Markdown 页面变成 Moe 好看的页面，纯静态前端、单文件、以及JSON配置文件编辑工具。
+> 🚧 **即将更新 v2 版本**
 
 > [!NOTE]
 > 此作品为 **AI** 生成，部分代码可能会缺失，我毕竟也不知道如何修复有些问题，所以可能全靠 **AI** 修复，谢谢理解。
@@ -110,8 +111,8 @@
 - 🎨 **TOC 装饰** – 侧栏顶部 sit-down 吉祥物 + 可配置对话气泡
 - 🐱 **GitHub 图标** – 右上角猫咪图标直达仓库，吉祥物 hover 对话泡泡
 - ⚙️ **灵活配置** – `config.json` 轻松设置默认文档和别名映射
-- 🔧 **开发友好** – 使用 Gulp 构建，支持 `pnpm dev` 实时预览 + 热重载
-- 📦 **单文件交付** – 构建后生成 `dist/index.html`，所有资源内联，部署简单
+- 🔧 **开发友好** – Vite + Vue 3 + TypeScript + SCSS，支持 `pnpm dev` 实时预览 + 热重载
+- 📦 **双形态交付** – 生产版多文件输出到 `dist/server/`，Release 版由 Gulp 打包为 `dist/index.release.html`
 - 🏷️ **版本号页脚** – 页脚自动显示版本号和 Git 提交 hash，方便追踪部署版本
 - 📱 **移动端主题色** – 自动适配浏览器顶部主题色为萌粉色
 - ⋯ **移动端更多菜单** – 小屏下 GitHub、RAW、关于等页头图标收进「⋯」菜单，避免图标拥挤
@@ -164,35 +165,42 @@ markdown-viewer-moe/
 │   └── workflows/
 │        ├── release.yml    # 自动发布Release
 │        └── static.yml     # 自动构建并推送到GitHub Pages
-├── images/                  # 图片
+├── images/                  # README / 文档图片
 ├── scripts/
-│   ├── build-404.js        # 构建404页面
-│   ├── copy-tools.js       # Tools复制准备脚本
-│   ├── release.js          # Release版本构建代码
-│   └── verify-build.js     # 确认构建正常
-├── src/                     # 源代码（里面包含所有内容）
-├── dist/                   # 构建输出（包含 index.html、index.release.html、tools.html和tools-vX.X.X.html）
-├── downloadpage/           # 下载页面（Beta / Experimental）
+│   ├── copy-tools.js       # Tools 复制与图标注入
+│   ├── minify-html.js      # Tools HTML 压缩
+│   └── run-tests.js        # 测试入口
+├── src/                    # V2 主程序源码（Vite + Vue + TypeScript + SCSS）
+│   ├── index.html
+│   ├── App.vue
+│   ├── main.ts
+│   ├── style.scss
+│   └── env.d.ts
+├── dist/
+│   ├── server/              # V2 多文件生产构建
+│   ├── index.release.html   # V2 单文件 Release
+│   ├── tools.html           # JSON 配置编辑器
+│   └── tools-vX.X.X.html    # 带版本号的 Tools
 ├── tools/                  # 小白也能编辑内容
-├── AGENTS.md               # AI Agent提示文件
-├── gulpfile.js             # Gulp 构建脚本
+├── AGENTS.md               # AI Agent 提示文件
+├── gulpfile.v2.js          # Release 单文件打包
+├── vite.config.ts          # V2 Vite 配置
 ├── package.json            # 项目依赖和脚本
 ├── LICENSE                 # LICENSE
 ├── README.md               # 就是这个文件啦~
-└── server.js               # 本地服务器文件脚本
+└── server.js               # dist/server 本地服务器
 ```
 
 ---
 
 ## 🛠️ 技术栈
-- **[marked](https://marked.js.org/)** – Markdown 解析
-- **[Prism.js](https://prismjs.com/)** – 代码高亮
-- **TypeScript + [esbuild](https://esbuild.github.io/)** – 主程序模块化与打包
-- **[Sass (SCSS)](https://sass-lang.com/)** – 样式 partials 与编译
-- **[Gulp](https://gulpjs.com/)** – 构建工具（内联、压缩）
-- **[browser-sync](https://browsersync.io/)** – 开发服务器（热重载）
+- **[Vite](https://vite.dev/)** – V2 开发与生产构建
+- **[Vue 3](https://vuejs.org/)** – V2 查看器 UI
+- **TypeScript + [Sass (SCSS)](https://sass-lang.com/)** – 主程序类型与样式
+- **[Gulp](https://gulpjs.com/)** – V2 Release 单文件内联
 - **[pnpm](https://pnpm.io/)** – 包管理
-- **[npm-run-all2](https://github.com/mysticatea/npm-run-all)** – 编排构建任务
+- **[VitePress](https://vitepress.dev/)** + **pagefind** – 文档站与搜索
+- **React 19 + Vite 6 + Tailwind 4 + TypeScript** – JSON 配置编辑器
 
 ---
 

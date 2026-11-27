@@ -47,8 +47,8 @@ Moe美化、强大功能的Markdown预览器
 - 🎨 **TOC 装饰** – 侧栏顶部 sit-down 吉祥物 + 可配置对话气泡
 - 🐱 **GitHub 图标** – 右上角猫咪图标直达仓库，吉祥物 hover 对话泡泡
 - ⚙️ **灵活配置** – `config.json` 轻松设置默认文档和别名映射
-- 🔧 **开发友好** – TypeScript 模块 + SCSS partials，Gulp/esbuild 构建，支持 `pnpm dev` 实时预览 + 热重载
-- 📦 **单文件交付** – 构建后生成 `dist/index.html`，所有资源内联，部署简单
+- 🔧 **开发友好** – Vite + Vue 3 + TypeScript + SCSS，支持 `pnpm dev` 实时预览 + 热重载
+- 📦 **双形态交付** – 生产版多文件输出到 `dist/server/`，Release 版由 Gulp 打包为 `dist/index.release.html`
 - 🏷️ **版本号页脚** – 页脚自动显示版本号和 Git 提交 hash，方便追踪部署版本
 - 📱 **移动端主题色** – 自动适配浏览器顶部主题色为萌粉色
 - ⋯ **移动端更多菜单** – 小屏下 GitHub、RAW、关于等页头图标收进「⋯」菜单，避免图标拥挤
@@ -63,14 +63,11 @@ Moe美化、强大功能的Markdown预览器
 - 🧰 **JSON 配置编辑器** – `tools.html` 可视化编辑 `config.json` 和 `index.release.html`
 
 ## 🛠️ 技术栈
-- **[marked](https://marked.js.org/)** – Markdown 解析
-- **[Prism.js](https://prismjs.com/)** – 代码高亮
-- **TypeScript + [esbuild](https://esbuild.github.io/)** – 主预览器模块化与打包
-- **[Sass (SCSS)](https://sass-lang.com/)** – 样式 partials 与编译
-- **[Gulp](https://gulpjs.com/)** – 构建工具（内联、压缩）
-- **[browser-sync](https://browsersync.io/)** – 开发服务器（热重载）
-- **[pnpm](https://pnpm.io/)** – 包管理（固定 12.22.0）
-- **[npm-run-all2](https://github.com/bcomnes/npm-run-all2)** – 编排构建任务
+- **[Vite](https://vite.dev/)** – V2 开发与生产构建
+- **[Vue 3](https://vuejs.org/)** + **TypeScript** – V2 查看器
+- **[Sass (SCSS)](https://sass-lang.com/)** – 样式
+- **[Gulp](https://gulpjs.com/)** – Release 单文件内联
+- **[pnpm](https://pnpm.io/)** – 包管理（固定 12.23.0）
 - **[VitePress](https://vitepress.dev/)** + **[pagefind](https://pagefind.app/)** – 文档站与搜索
 - **React 19 + Vite 6 + Tailwind 4 + TypeScript** – JSON 配置编辑器
 

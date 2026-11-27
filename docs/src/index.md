@@ -74,10 +74,10 @@ features:
     details: config.json 轻松设置默认文档和别名映射
   - icon: 🔧
     title: 开发友好
-    details: TypeScript 模块 + SCSS partials，Gulp/esbuild 构建，`pnpm dev` 实时预览 + 热重载
+    details: Vite + Vue 3 + TypeScript + SCSS，`pnpm dev` 实时预览 + 热重载
   - icon: 📦
-    title: 单文件交付
-    details: 构建后生成 dist/index.html，所有资源内联，部署简单
+    title: 双形态交付
+    details: 生产版多文件输出到 dist/server，Release 版由 Gulp 打包为 dist/index.release.html
   - icon: 🏷️
     title: 版本号页脚
     details: 页脚自动显示版本号和 Git 提交 hash，方便追踪部署版本

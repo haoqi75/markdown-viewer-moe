@@ -5,12 +5,12 @@ const path = require('path');
 const url = require('url');
 
 // ===== Configuration =====
-const DIST_DIR = path.join(__dirname, 'dist');
+const DIST_DIR = path.join(__dirname, 'dist', 'server');
 const PORT = process.env.PORT || 8080;
 
 // ===== Check if dist folder exists =====
 if (!fs.existsSync(DIST_DIR)) {
-    console.error('\x1b[31m%s\x1b[0m', '❌ Error: dist folder does not exist!');
+    console.error('\x1b[31m%s\x1b[0m', '❌ Error: dist/server folder does not exist! Run pnpm build first.');
     process.exit(1);
 }
 

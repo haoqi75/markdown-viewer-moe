@@ -2,13 +2,9 @@
 
 ## 前置要求
 
-- **Node.js 22.22.2**（`package.json` 的 `engines.node` 已声明 `>=22.22.2`；完整构建最低要求，22.x LTS，也支持 24.15+ / 26+。仓库 `.nvmrc` 固定推荐版本 `v26.13.1`）
-- **pnpm 12.22.0**（`package.json` 的 `packageManager` 固定版本，并带 sha512 校验；项目使用 pnpm 12 的 lockfile 和配置）
+- **Node.js 22.22.2**（`package.json` 的 `engines.node` 已声明 `>=22.22.2`；推荐使用 `.nvmrc` 固定的 `v26.13.1`）
+- **pnpm 12.23.0**（`package.json` 的 `packageManager` 固定版本，并带 sha512 校验）
 - Git
-
-::: tip 关于 Node.js 20
-Node.js 20.19.0 可以运行部分构建子任务，但完整 `pnpm build` 依赖 `npm-run-all2`，最低需要 Node.js 22.22.2。建议直接使用 `.nvmrc` 中的 Node.js 26.13.1。
-:::
 
 如果你使用 nvm，可以在仓库根目录执行：
 
@@ -29,6 +25,7 @@ Codeberg 备份仓库：
 
 ```bash
 git clone https://codeberg.org/haoqi75/markdown-viewer-moe.git
+cd markdown-viewer-moe
 ```
 
 ## 安装依赖
@@ -42,7 +39,7 @@ pnpm install
 ## 开发模式
 
 ```bash
-# 主预览器：http://localhost:8520
+# 主预览器（Vite + Vue）：http://localhost:8520
 pnpm dev
 
 # JSON 配置编辑器：http://localhost:3000
@@ -52,53 +49,48 @@ pnpm dev:tools
 pnpm dev:docs
 ```
 
-`pnpm dev` 会先清理并构建一次 `dist/`，然后启动 browser-sync 监听 `src/` 下的文件变化并自动刷新。
+`pnpm dev` 使用 Vite 开发服务器，修改 `src/` 下的文件会自动热更新。
 
 ## 生产构建
 
 ```bash
-# 页面 + tools + 404 全部构建
+# V2 主程序：多文件输出 → dist/server/
 pnpm build
 
-# 只构建主页面 → dist/index.html
-pnpm build:page
+# V2 Release：Vite 构建后由 Gulp 打包单文件 → dist/index.release.html
+pnpm build:release
 
-# 只构建 JSON 编辑器（先 tsc 类型检查）→ dist/tools.html
+# JSON 编辑器 → dist/tools.html
 pnpm build:tools
 
-# 只构建 404 页面 → dist/404.html
-pnpm build:404
+# 带版本号的 Tools → dist/tools-vX.X.X.html
+pnpm build:tools-release
 
-# 构建文档站 → docs/.vitepress/dist
+# 文档站 → docs/.vitepress/dist
 pnpm build:docs
 ```
 
-`pnpm build` 会执行产物校验；如果 `dist/` 里缺少必要文件或结构异常，命令会以失败退出。
+`pnpm build` 与 `pnpm build:release` 也分别提供 `build:v2`、`build:v2-release` 别名。
+
+## 构建 Release 版本
+
+```bash
+# 主程序单文件 Release
+pnpm build:release
+
+# Tools 单文件 Release
+pnpm build:tools-release
+```
+
+主程序 Release 会把 Vite 生成的 CSS、JS 内联进 `dist/index.release.html`。
 
 ::: tip
 文档站使用 pagefind 生成搜索索引。pagefind 没有 Android/Termux 的预编译二进制，在这些平台上 `pnpm build:docs` 可能在最后的搜索索引步骤失败，建议在桌面系统或 CI 中构建。
 :::
 
-## 构建 Release 版本
-
-```bash
-# 主页面 Release + tools Release
-pnpm build:release
-
-# 只生成 dist/index.release.html
-pnpm build:page-release
-
-# 只生成 dist/tools-vX.X.X.html
-pnpm build:tools-release
-```
-
-完整 Release 构建还会生成 `dist/files-md5.txt` 校验清单。
-
 ## 运行本地服务器
 
-::: warning
-`pnpm start` 只负责启动 `server.js` 托管 `dist/`，运行前请先完成构建。
-:::
+`pnpm start` 会通过 `server.js` 托管 V2 的生产构建目录 `dist/server/`：
 
 ```bash
 pnpm build
@@ -108,10 +100,7 @@ pnpm start
 ## 其他命令
 
 ```bash
-# 主程序 TypeScript 类型检查
-pnpm typecheck
-
-# 运行主程序测试（类型、路由、构建产物、配置/源码约束）
+# 运行 V2 构建测试
 # 结束后会在根目录生成 validation.txt（已 gitignore）
 pnpm test
 
@@ -123,8 +112,9 @@ pnpm lint:tools
 
 | 目录 | 内容 |
 | --- | --- |
-| `src/` | 主预览器源码：`index.html`、`ts/`、`styles/`、`style.scss`、`config.json`、`about.html` |
+| `src/` | V2 主预览器源码（Vite + Vue + TypeScript + SCSS） |
 | `tools/` | JSON 配置编辑器（React + Vite + TypeScript） |
 | `docs/` | 当前文档站（VitePress） |
-| `dist/` | 构建输出，已被 gitignore |
-| `scripts/` | 构建、发布、校验和 404 生成脚本 |
+| `dist/server/` | V2 生产构建，多文件输出 |
+| `dist/index.release.html` | V2 单文件 Release |
+| `scripts/` | Tools 构建、图标注入、HTML 压缩和测试脚本 |
