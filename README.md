@@ -47,6 +47,7 @@
 我做了这个作品是为了可以让你们拥有 Markdown 网页预览器。把你的普通 Markdown 页面变成 Moe 好看的页面，纯静态前端、单文件、以及JSON配置文件编辑工具。
 
 > 🚧 **即将更新 v2 版本**
+>
 > 我现在正在创建 v2 版本，等创建完成以后，将发布到 v2 分支里。临时可以在 [`v2preview`](https://github.com/haoqi75/markdown-viewer-moe/tree/v2preview) 中查看。
 
 > [!NOTE]
