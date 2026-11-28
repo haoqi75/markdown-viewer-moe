@@ -27,6 +27,31 @@ function readInlineAsset(url, type) {
   return fs.readFileSync(assetPath, 'utf8');
 }
 
+function getMimeType(filePath) {
+  const ext = path.extname(filePath).toLowerCase();
+  const map = {
+    '.svg': 'image/svg+xml',
+    '.png': 'image/png',
+    '.jpg': 'image/jpeg',
+    '.jpeg': 'image/jpeg',
+    '.gif': 'image/gif',
+    '.ico': 'image/x-icon',
+    '.webp': 'image/webp',
+  };
+  return map[ext] || 'application/octet-stream';
+}
+
+function readInlineImage(url) {
+  const assetPath = resolveLocalAsset(url);
+  if (!assetPath) return null;
+
+  if (!fs.existsSync(assetPath)) {
+    throw new Error(`Release 打包失败：找不到图片资源 ${url}`);
+  }
+
+  return `data:${getMimeType(assetPath)};base64,${fs.readFileSync(assetPath).toString('base64')}`;
+}
+
 function inlineViteAssets(html) {
   let output = html;
 
@@ -51,12 +76,32 @@ function inlineViteAssets(html) {
 
   output = output.replace(/<link\b[^>]*rel=["']modulepreload["'][^>]*>/gi, '');
 
+  output = output.replace(/<link\b[^>]*>/gi, (tag) => {
+    if (!/\brel=["'](?:icon|shortcut icon|apple-touch-icon)["']/i.test(tag)) {
+      return tag;
+    }
+
+    const hrefMatch = tag.match(/href=["']([^"']+)["']/i);
+    if (!hrefMatch) return tag;
+
+    const dataUri = readInlineImage(hrefMatch[1]);
+    return dataUri === null ? tag : tag.replace(hrefMatch[0], `href="${dataUri}"`);
+  });
+
+  output = output.replace(/<img\b[^>]*>/gi, (tag) => {
+    const srcMatch = tag.match(/src=["']([^"']+)["']/i);
+    if (!srcMatch) return tag;
+
+    const dataUri = readInlineImage(srcMatch[1]);
+    return dataUri === null ? tag : tag.replace(srcMatch[0], `src="${dataUri}"`);
+  });
+
   return output;
 }
 
 async function packRelease() {
   if (!fs.existsSync(serverHtmlPath)) {
-    throw new Error(`Release 打包失败：${serverHtmlPath} 不存在，请先运行 pnpm build:v2`);
+    throw new Error(`Release 打包失败：${serverHtmlPath} 不存在，请先运行 pnpm build`);
   }
 
   const html = fs.readFileSync(serverHtmlPath, 'utf8');

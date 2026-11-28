@@ -14,7 +14,7 @@ const RELEASE_HTML = path.join(ROOT, 'dist', 'index.release.html');
 test('V2 构建：Vite 多文件输出与 Gulp 单文件 Release', { timeout: 120000 }, () => {
     execFileSync(
         process.platform === 'win32' ? 'pnpm.cmd' : 'pnpm',
-        ['run', 'build:v2-release'],
+        ['run', 'build:release'],
         {
             cwd: ROOT,
             encoding: 'utf8',
@@ -28,6 +28,7 @@ test('V2 构建：Vite 多文件输出与 Gulp 单文件 Release', { timeout: 12
     const serverHtml = fs.readFileSync(SERVER_HTML, 'utf8');
     assert.match(serverHtml, /<script[^>]+src="\.\/assets\/[^"]+\.js"/);
     assert.match(serverHtml, /<link[^>]+href="\.\/assets\/[^"]+\.css"/);
+    assert.ok(fs.existsSync(path.join(SERVER_DIR, 'favicon.svg')), '缺少 public 图标产物');
 
     const assets = fs.readdirSync(path.join(SERVER_DIR, 'assets'));
     assert.ok(assets.some((file) => file.endsWith('.js')), '缺少 Vite JS 产物');
@@ -39,5 +40,7 @@ test('V2 构建：Vite 多文件输出与 Gulp 单文件 Release', { timeout: 12
     assert.ok(releaseHtml.includes('<script type="module">'), 'Release 未内联 JS');
     assert.ok(!releaseHtml.includes('src="./assets/'), 'Release 仍引用外部 JS');
     assert.ok(!releaseHtml.includes('href="./assets/'), 'Release 仍引用外部 CSS');
+    assert.ok(releaseHtml.includes('href="data:image/svg+xml;base64,'), 'Release 未内联 favicon');
+    assert.ok(!releaseHtml.includes('href="./favicon'), 'Release 仍引用外部 favicon');
     assert.ok(releaseHtml.includes('2.0.0-rc.0'), 'Release 未注入 v2 版本');
 });

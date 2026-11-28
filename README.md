@@ -183,7 +183,7 @@ markdown-viewer-moe/
 │   └── tools-vX.X.X.html    # 带版本号的 Tools
 ├── tools/                  # 小白也能编辑内容
 ├── AGENTS.md               # AI Agent 提示文件
-├── gulpfile.v2.js          # Release 单文件打包
+├── gulpfile.js          # Release 单文件打包
 ├── vite.config.ts          # V2 Vite 配置
 ├── package.json            # 项目依赖和脚本
 ├── LICENSE                 # LICENSE

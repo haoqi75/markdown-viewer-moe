@@ -70,7 +70,6 @@ pnpm build:tools-release
 pnpm build:docs
 ```
 
-`pnpm build` 与 `pnpm build:release` 也分别提供 `build:v2`、`build:v2-release` 别名。
 
 ## 构建 Release 版本
 

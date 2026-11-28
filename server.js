@@ -2,7 +2,7 @@
 const http = require('http');
 const fs = require('fs');
 const path = require('path');
-const url = require('url');
+
 
 // ===== Configuration =====
 const DIST_DIR = path.join(__dirname, 'dist', 'server');
@@ -52,7 +52,7 @@ function getMimeType(ext) {
 // ===== Logging (Moe Style) =====
 function logRequest(req, status, size, time) {
     const method = req.method;
-    const pathname = url.parse(req.url).pathname;
+    const pathname = new URL(req.url, 'http://localhost').pathname;
     const timestamp = new Date().toISOString();
 
     const statusColor = status >= 400 ? c.fg.red : c.fg.green;
@@ -76,7 +76,7 @@ function logRequest(req, status, size, time) {
 // ===== HTTP Server =====
 const server = http.createServer((req, res) => {
     const startTime = Date.now();
-    const parsedUrl = url.parse(req.url);
+    const parsedUrl = new URL(req.url, 'http://localhost');
     let pathname = parsedUrl.pathname;
 
     // Security: prevent directory traversal

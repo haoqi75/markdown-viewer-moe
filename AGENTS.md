@@ -9,8 +9,6 @@ pnpm test               # node:test via scripts/run-tests.js → also writes val
 pnpm dev                # Vite + Vue dev server on :8520
 pnpm build              # Vite production build → dist/server/ (multi-file)
 pnpm build:release      # Vite build + Gulp inline → dist/index.release.html
-pnpm build:v2           # alias of pnpm build
-pnpm build:v2-release   # alias of pnpm build:release
 pnpm start               # serve dist/server/ with server.js
 
 # tools/ workspace (moe-json-editor, React/Vite/TS config editor)
@@ -53,7 +51,7 @@ A single root `pnpm-lock.yaml` covers root + `tools/`. Toolchain pins: `packageM
 | `src/style.scss` | Self-contained v2 viewer styles |
 | `src/env.d.ts` | Vite/Vue/global version types |
 | `vite.config.ts` | Vite root `src`; outDir `dist/server`; base `./` |
-| `gulpfile.v2.js` | Inlines Vite CSS/JS into `dist/index.release.html` |
+| `gulpfile.js` | Inlines Vite CSS/JS and linked image assets into `dist/index.release.html` |
 | `server.js` | Static server for `dist/server/` |
 
 Build pipeline:

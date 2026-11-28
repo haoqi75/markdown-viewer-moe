@@ -10,5 +10,5 @@
 
 ## 说明
 
-- 测试会真实执行 `pnpm build:v2-release`，因此会重建 `dist/server/` 和 `dist/index.release.html`。
+- 测试会真实执行 `pnpm build:release`，因此会重建 `dist/server/` 和 `dist/index.release.html`。
 - 运行测试前请确保已执行 `pnpm install`。

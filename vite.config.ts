@@ -9,6 +9,7 @@ const pkg = JSON.parse(readFileSync(path.join(__dirname, 'package.json'), 'utf8'
 
 export default defineConfig({
   root: path.join(__dirname, 'src'),
+  publicDir: path.join(__dirname, 'public'),
   base: './',
   plugins: [vue()],
   define: {
