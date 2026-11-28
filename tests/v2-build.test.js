@@ -12,7 +12,7 @@ const __dirname = path.dirname(__filename);
 const ROOT = path.resolve(__dirname, '..');
 const SERVER_DIR = path.join(ROOT, 'dist', 'server');
 const SERVER_HTML = path.join(SERVER_DIR, 'index.html');
-const RELEASE_HTML = path.join(ROOT, 'dist', 'index.release.html');
+const RELEASE_HTML = path.join(ROOT, 'dist', 'index.html');
 
 test('V2 构建：Vite 多文件输出与 Gulp 单文件 Release', { timeout: 120000 }, () => {
     const pkg = JSON.parse(fs.readFileSync(path.join(ROOT, 'package.json'), 'utf8'));
@@ -39,12 +39,13 @@ test('V2 构建：Vite 多文件输出与 Gulp 单文件 Release', { timeout: 12
     assert.match(serverHtml, /<script[^>]+src="\.\/assets\/[^"]+\.js"/);
     assert.match(serverHtml, /<link[^>]+href="\.\/assets\/[^"]+\.css"/);
     assert.ok(fs.existsSync(path.join(SERVER_DIR, 'favicon.svg')), '缺少 public 图标产物');
+    assert.ok(fs.existsSync(path.join(SERVER_DIR, 'images', 'icon.png')), '缺少 README 图片产物');
 
     const assets = fs.readdirSync(path.join(SERVER_DIR, 'assets'));
     assert.ok(assets.some((file) => file.endsWith('.js')), '缺少 Vite JS 产物');
     assert.ok(assets.some((file) => file.endsWith('.css')), '缺少 Vite CSS 产物');
 
-    assert.ok(fs.existsSync(RELEASE_HTML), '缺少 dist/index.release.html');
+    assert.ok(fs.existsSync(RELEASE_HTML), '缺少 dist/index.html');
     const releaseHtml = fs.readFileSync(RELEASE_HTML, 'utf8');
     assert.ok(releaseHtml.includes('<style>'), 'Release 未内联 CSS');
     assert.ok(releaseHtml.includes('<script type="module">'), 'Release 未内联 JS');
@@ -52,6 +53,10 @@ test('V2 构建：Vite 多文件输出与 Gulp 单文件 Release', { timeout: 12
     assert.ok(!releaseHtml.includes('href="./assets/'), 'Release 仍引用外部 CSS');
     assert.ok(releaseHtml.includes('href="data:image/svg+xml;base64,'), 'Release 未内联 favicon');
     assert.ok(!releaseHtml.includes('href="./favicon'), 'Release 仍引用外部 favicon');
-    assert.ok(!releaseHtml.includes('\n'), 'Release 未压缩为单行');
+    assert.ok(releaseHtml.includes('.callout-note'), 'Release 缺少 GitHub callout 样式');
+    assert.ok(
+        releaseHtml.includes('raw.githubusercontent.com/haoqi75/markdown-viewer-moe/refs/heads/main/images/'),
+        'Release 模式应使用远程 README 图片'
+    );
     assert.ok(releaseHtml.includes('2.0.0-rc.0'), 'Release 未注入 v2 版本');
 });

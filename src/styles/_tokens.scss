@@ -1,0 +1,51 @@
+:root {
+  color-scheme: light;
+  --bg-start: #f6f2ff;
+  --bg-mid: #eef7ff;
+  --bg-end: #fff3f8;
+  --text: #17151c;
+  --muted: #64616e;
+  --faint: #8d8997;
+  --glass: rgba(255, 255, 255, 0.52);
+  --glass-strong: rgba(255, 255, 255, 0.74);
+  --glass-soft: rgba(255, 255, 255, 0.34);
+  --glass-border: rgba(255, 255, 255, 0.76);
+  --glass-highlight: rgba(255, 255, 255, 0.92);
+  --shadow: 0 30px 80px rgba(96, 70, 150, 0.16);
+  --shadow-soft: 0 12px 36px rgba(96, 70, 150, 0.10);
+  --accent: #ff4f9a;
+  --accent-rgb: 255, 79, 154;
+  --accent-2: #8b5cf6;
+  --accent-3: #38bdf8;
+  --dock-bg: rgba(255, 255, 255, 0.62);
+  --line: rgba(23, 21, 28, 0.08);
+  --radius-xl: 34px;
+  --radius-lg: 26px;
+  --radius-md: 18px;
+  --font: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'SF Pro Text', 'Segoe UI',
+    'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', system-ui, sans-serif;
+  --mono: 'SFMono-Regular', 'SF Mono', 'Cascadia Code', 'JetBrains Mono', ui-monospace, monospace;
+}
+
+html[data-theme='dark'] {
+  color-scheme: dark;
+  --bg-start: #07070c;
+  --bg-mid: #0b101c;
+  --bg-end: #140a14;
+  --text: #f7f4ff;
+  --muted: #a8a2b5;
+  --faint: #797485;
+  --glass: rgba(27, 27, 38, 0.5);
+  --glass-strong: rgba(36, 36, 50, 0.72);
+  --glass-soft: rgba(22, 22, 32, 0.4);
+  --glass-border: rgba(255, 255, 255, 0.14);
+  --glass-highlight: rgba(255, 255, 255, 0.18);
+  --shadow: 0 30px 90px rgba(0, 0, 0, 0.52);
+  --shadow-soft: 0 12px 40px rgba(0, 0, 0, 0.32);
+  --accent: #ff6b9d;
+  --accent-rgb: 255, 107, 157;
+  --accent-2: #a78bfa;
+  --accent-3: #67e8f9;
+  --dock-bg: rgba(24, 24, 34, 0.62);
+  --line: rgba(255, 255, 255, 0.08);
+}

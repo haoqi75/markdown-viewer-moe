@@ -9,16 +9,16 @@
 
 | 文件 | 说明 |
 | --- | --- |
-| `index.release.html` | 可编辑的完整预览器，推荐下载这个 |
+| `index.html` | 可编辑的完整预览器，推荐下载这个 |
 | `tools-vX.X.X.html` | JSON 配置编辑器 |
 | `files-md5.txt` | 文件校验清单 |
 
 ## 使用步骤
 
-1. 从 [GitHub Releases](https://github.com/haoqi75/markdown-viewer-moe/releases) 或 [Codeberg Releases](https://codeberg.org/haoqi75/markdown-viewer-moe/releases) 下载 `index.release.html`。
+1. 从 [GitHub Releases](https://github.com/haoqi75/markdown-viewer-moe/releases) 或 [Codeberg Releases](https://codeberg.org/haoqi75/markdown-viewer-moe/releases) 下载 `index.html`。
 2. 用记事本、VS Code 等文本编辑器打开文件。
 3. 修改文件顶部的 JSON 配置块。
-4. 保存。建议把文件重命名为 `index.html`。
+4. 保存，文件名保持 `index.html`。
 5. 上传到任意静态托管，或直接双击打开。
 6. 访问 `/?p=about` 可以检查关于页是否正常。
 
@@ -72,7 +72,7 @@ md5sum -c files-md5.txt
 Windows 可以使用：
 
 ```powershell
-Get-FileHash .\index.release.html -Algorithm MD5
+Get-FileHash .\index.html -Algorithm MD5
 ```
 
 ## 用工具编辑
@@ -80,7 +80,7 @@ Get-FileHash .\index.release.html -Algorithm MD5
 不会手写 JSON 时，可以打开 [简单编辑 config.json 工具](/config/editor)：
 
 - 选择「基础·发布配置」模板，手填 `title`、`defaultUrl` 和别名。
-- 或直接上传 `index.release.html`，读取顶部配置后重新打包下载。
+- 或直接上传 `index.html`，读取顶部配置后重新打包下载。
 
 ## 自己构建
 
@@ -88,4 +88,4 @@ Get-FileHash .\index.release.html -Algorithm MD5
 pnpm build:release
 ```
 
-会生成 `dist/index.release.html`、`dist/tools-vX.X.X.html` 和 `dist/files-md5.txt`。构建完成后 `dist/index.html` 会被清理，避免误部署旧版本。
+主程序 Release 会生成单文件 `dist/index.html`。

@@ -1,0 +1,298 @@
+.markdown-body {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: clamp(28px, 5vw, 64px);
+  color: var(--text);
+  font-size: 0.98rem;
+  line-height: 1.85;
+}
+
+.markdown-body > :first-child {
+  margin-top: 0;
+}
+
+.markdown-body > :last-child {
+  margin-bottom: 0;
+}
+
+.markdown-body h1,
+.markdown-body h2,
+.markdown-body h3,
+.markdown-body h4,
+.markdown-body h5,
+.markdown-body h6 {
+  scroll-margin-top: 100px;
+  letter-spacing: -0.035em;
+}
+
+.markdown-body h1 {
+  margin: 0 0 1.2rem;
+  background: linear-gradient(105deg, var(--accent), var(--accent-2) 60%, var(--accent-3));
+  background-clip: text;
+  color: transparent;
+  font-size: clamp(2.3rem, 5vw, 3.8rem);
+  font-weight: 800;
+  line-height: 1.04;
+  -webkit-background-clip: text;
+}
+
+.markdown-body h2 {
+  margin: 2.6rem 0 1rem;
+  padding-bottom: 0.4rem;
+  border-bottom: 1px solid var(--line);
+  font-size: clamp(1.35rem, 2.4vw, 1.7rem);
+  font-weight: 750;
+}
+
+.markdown-body h3 {
+  margin: 2rem 0 0.7rem;
+  font-size: 1.2rem;
+  font-weight: 700;
+}
+
+.markdown-body h4,
+.markdown-body h5,
+.markdown-body h6 {
+  margin: 1.5rem 0 0.6rem;
+  font-size: 1rem;
+  font-weight: 700;
+}
+
+.markdown-body p {
+  margin: 0.9rem 0;
+  color: var(--muted);
+}
+
+.markdown-body p[align='center'] {
+  text-align: center;
+}
+
+.markdown-body strong {
+  color: var(--text);
+  font-weight: 750;
+}
+
+.markdown-body a {
+  color: var(--accent);
+  text-decoration: none;
+  border-bottom: 1px solid rgba(var(--accent-rgb), 0.25);
+  transition: border-color 0.2s ease, color 0.2s ease;
+}
+
+.markdown-body a:hover {
+  color: var(--accent-2);
+  border-bottom-color: var(--accent-2);
+}
+
+.markdown-body ul,
+.markdown-body ol {
+  margin: 0.8rem 0;
+  padding-left: 1.45rem;
+  color: var(--muted);
+}
+
+.markdown-body li {
+  margin: 0.35rem 0;
+  padding-left: 0.15rem;
+}
+
+.markdown-body li::marker {
+  color: var(--accent);
+}
+
+.markdown-body blockquote {
+  margin: 1.2rem 0;
+  padding: 0.8rem 1.1rem;
+  border-left: 3px solid var(--accent);
+  border-radius: 0 14px 14px 0;
+  background: rgba(var(--accent-rgb), 0.08);
+  color: var(--muted);
+}
+
+.markdown-body blockquote > :first-child {
+  margin-top: 0;
+}
+
+.markdown-body blockquote > :last-child {
+  margin-bottom: 0;
+}
+
+.markdown-body code {
+  padding: 0.14rem 0.42rem;
+  border: 1px solid var(--line);
+  border-radius: 7px;
+  background: rgba(var(--accent-rgb), 0.08);
+  color: var(--accent);
+  font-family: var(--mono);
+  font-size: 0.86em;
+}
+
+.markdown-body pre {
+  margin: 1.2rem 0;
+  padding: 18px 20px;
+  overflow-x: auto;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 16px;
+  background: #16111d;
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.16);
+  color: #e8e3ef;
+  font-family: var(--mono);
+  font-size: 0.86rem;
+  line-height: 1.7;
+}
+
+.markdown-body pre code {
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: inherit;
+  font-size: inherit;
+}
+
+.markdown-body table {
+  display: block;
+  width: 100%;
+  margin: 1.2rem 0;
+  overflow-x: auto;
+  border-collapse: collapse;
+  font-size: 0.87rem;
+}
+
+.markdown-body th,
+.markdown-body td {
+  padding: 0.6rem 0.8rem;
+  border: 1px solid var(--line);
+  text-align: left;
+  white-space: nowrap;
+}
+
+.markdown-body th {
+  background: rgba(var(--accent-rgb), 0.08);
+  color: var(--text);
+  font-weight: 700;
+}
+
+.markdown-body tr:nth-child(even) td {
+  background: rgba(var(--accent-rgb), 0.025);
+}
+
+.markdown-body img {
+  max-width: 100%;
+  height: auto;
+  margin: 0.35rem;
+  border-radius: 16px;
+  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.12);
+}
+
+.markdown-body img[src*='shields.io'] {
+  display: inline-block;
+  margin: 2px;
+  border-radius: 0;
+  box-shadow: none;
+  vertical-align: middle;
+}
+
+.markdown-body hr {
+  height: 1px;
+  margin: 2rem 0;
+  border: 0;
+  background: var(--line);
+}
+
+.markdown-body details {
+  margin: 1.2rem 0;
+  padding: 0.9rem 1.1rem;
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  background: var(--glass-soft);
+}
+
+.markdown-body summary {
+  color: var(--text);
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.markdown-body details > :not(summary) {
+  color: var(--muted);
+}
+
+.markdown-body .token.comment,
+.markdown-body .token.prolog,
+.markdown-body .token.doctype,
+.markdown-body .token.cdata {
+  color: #8b949e;
+}
+
+.markdown-body .token.punctuation {
+  color: #c9d1d9;
+}
+
+.markdown-body .token.property,
+.markdown-body .token.tag,
+.markdown-body .token.boolean,
+.markdown-body .token.number,
+.markdown-body .token.constant,
+.markdown-body .token.symbol {
+  color: #ffa657;
+}
+
+.markdown-body .token.selector,
+.markdown-body .token.attr-name,
+.markdown-body .token.string,
+.markdown-body .token.char,
+.markdown-body .token.builtin,
+.markdown-body .token.inserted {
+  color: #a5d6ff;
+}
+
+.markdown-body .token.operator,
+.markdown-body .token.entity,
+.markdown-body .token.url,
+.markdown-body .language-css .token.string,
+.markdown-body .style .token.string {
+  color: #ff7b72;
+}
+
+.markdown-body .token.atrule,
+.markdown-body .token.attr-value,
+.markdown-body .token.keyword {
+  color: #ff7b72;
+}
+
+.markdown-body .token.function,
+.markdown-body .token.class-name {
+  color: #d2a8ff;
+}
+
+.markdown-body .token.regex,
+.markdown-body .token.important,
+.markdown-body .token.variable {
+  color: #ffa657;
+}
+
+html[data-theme='light'] .markdown-body pre,
+:root:not([data-theme='dark']) .markdown-body pre {
+  border-color: rgba(23, 21, 28, 0.12);
+  background: #211a2b;
+}
+
+html[data-theme='light'] .markdown-body .token.comment,
+:root:not([data-theme='dark']) .markdown-body .token.comment {
+  color: #a6a0b3;
+}
+
+html[data-theme='light'] .markdown-body .token.keyword,
+:root:not([data-theme='dark']) .markdown-body .token.keyword {
+  color: #ff8fb5;
+}
+
+html[data-theme='light'] .markdown-body .token.string,
+:root:not([data-theme='dark']) .markdown-body .token.string {
+  color: #b7f0c2;
+}
+
+html[data-theme='light'] .markdown-body .token.function,
+:root:not([data-theme='dark']) .markdown-body .token.function {
+  color: #c7b3ff;
+}

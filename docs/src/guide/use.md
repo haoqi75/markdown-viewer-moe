@@ -22,7 +22,7 @@
 | 方式 | 适合场景 | 操作 |
 | --- | --- | --- |
 | 编辑 `config.json` | 自己构建、长期维护 | 修改 `src/config.json` 后运行 `pnpm build` |
-| 编辑 Release 文件 | 不想安装 Node.js | 下载 `index.release.html`，编辑顶部 JSON 后部署 |
+| 编辑 Release 文件 | 不想安装 Node.js | 下载 `index.html`，编辑顶部 JSON 后部署 |
 | URL 参数 | 临时预览、分享链接 | 使用 `?p=` 或 `?md=` |
 
 具体字段见[配置概览](/config/)。

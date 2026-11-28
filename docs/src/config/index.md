@@ -101,7 +101,7 @@ Release 版本还会读取文件顶部的 `<script id="release-config">` JSON �
 版本 **v1.7.0** 之后，tools 编辑器通过 `type` 识别配置模板：
 
 - `normal`：完整配置，用于 `src/config.json` 和自行构建。
-- `release`：精简配置，用于编辑 `index.release.html` 顶部 JSON。
+- `release`：精简配置，用于编辑 `index.html` 顶部 JSON。
 
 配置文件必须包含 `type`；缺少时需要在编辑器中手动选择模板。
 

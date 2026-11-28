@@ -28,7 +28,7 @@
     "test": "node scripts/run-tests.js",
     "dev": "vite --config vite.config.ts",
     "build": "vite build",
-    "build:release": "vite build && gulp release",
+    "build:release": "vite build --mode release && gulp release",
     "build:tools": "pnpm run --filter moe-json-editor build:html && node scripts/copy-tools.js && node scripts/minify-html.js tools.html",
     "build:tools-release": "pnpm run --filter moe-json-editor build:html && node scripts/copy-tools.js --release && node scripts/minify-html.js tools-v*.html",
     "build:docs": "vitepress build docs",
@@ -42,9 +42,11 @@
     "@fontsource-variable/fredoka": "^5.3.0",
     "@fontsource/zcool-kuaile": "^5.3.0",
     "html-minifier-terser": "^7.2.0",
+    "marked": "^18.3.0",
     "pagefind": "^1.6.0",
-    "vue": "^3.5.45",
-    "vitepress-plugin-pagefind": "^0.4.27"
+    "prismjs": "^1.30.0",
+    "vitepress-plugin-pagefind": "^0.4.27",
+    "vue": "^3.5.45"
   },
   "devDependencies": {
     "@catppuccin/vitepress": "^0.1.4",

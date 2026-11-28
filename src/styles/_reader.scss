@@ -1,0 +1,43 @@
+.reader-wrap {
+  padding-top: 0;
+}
+
+.reader {
+  border-radius: var(--radius-xl);
+  overflow: hidden;
+  animation: fade-up 0.9s 0.08s cubic-bezier(0.2, 0.8, 0.2, 1) both;
+}
+
+.reader-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 14px 20px;
+  border-bottom: 1px solid var(--line);
+  background: var(--glass-soft);
+}
+
+.reader-title {
+  display: inline-flex;
+  align-items: center;
+  gap: 9px;
+  color: var(--muted);
+  font-family: var(--mono);
+  font-size: 0.72rem;
+  font-weight: 600;
+}
+
+.reader-meta {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  color: var(--faint);
+  font-family: var(--mono);
+  font-size: 0.65rem;
+}
+
+.meta-divider {
+  opacity: 0.45;
+}
+

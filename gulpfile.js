@@ -9,7 +9,7 @@ const __dirname = path.dirname(__filename);
 const rootDir = __dirname;
 const serverDir = path.join(rootDir, 'dist', 'server');
 const serverHtmlPath = path.join(serverDir, 'index.html');
-const releasePath = path.join(rootDir, 'dist', 'index.release.html');
+const releasePath = path.join(rootDir, 'dist', 'index.html');
 
 function resolveLocalAsset(url) {
   if (/^(?:https?:)?\/\//i.test(url) || url.startsWith('data:')) {
@@ -70,14 +70,6 @@ function inlineViteAssets(html) {
     }
   );
 
-  output = output.replace(
-    /<script\b[^>]*src=["']([^"']+)["'][^>]*><\/script>/gi,
-    (tag, src) => {
-      const js = readInlineAsset(src, 'JS');
-      return js === null ? tag : `<script type="module">${js}</script>`;
-    }
-  );
-
   output = output.replace(/<link\b[^>]*rel=["']modulepreload["'][^>]*>/gi, '');
 
   output = output.replace(/<link\b[^>]*>/gi, (tag) => {
@@ -99,6 +91,15 @@ function inlineViteAssets(html) {
     const dataUri = readInlineImage(srcMatch[1]);
     return dataUri === null ? tag : tag.replace(srcMatch[0], `src="${dataUri}"`);
   });
+
+  // 最后再内联脚本，避免把 JS 字符串里的 <img> 模板误判成真实标签
+  output = output.replace(
+    /<script\b[^>]*src=["']([^"']+)["'][^>]*><\/script>/gi,
+    (tag, src) => {
+      const js = readInlineAsset(src, 'JS');
+      return js === null ? tag : `<script type="module">${js}</script>`;
+    }
+  );
 
   return output;
 }

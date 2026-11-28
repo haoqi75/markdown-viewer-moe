@@ -48,7 +48,7 @@ pnpm build
 - 生成 `dist/index.html`；如果运行完整 `pnpm build`，还会生成 `tools.html` 和 `404.html`。
 
 ::: tip
-`normal` 配置只影响生产构建。发布版 `index.release.html` 使用单独的 `release` 配置块，见[发布版配置](/config/release)。
+`normal` 配置只影响生产构建。发布版 `index.html` 使用单独的 `release` 配置块，见[发布版配置](/config/release)。
 :::
 
 ## 用编辑器生成

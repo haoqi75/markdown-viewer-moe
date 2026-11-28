@@ -261,7 +261,7 @@ export default function App() {
 
   // HTML file upload state
   const [uploadedHtmlContent, setUploadedHtmlContent] = useState<string | null>(null);
-  const [uploadedHtmlName, setUploadedHtmlName] = useState<string>("index.release.html");
+  const [uploadedHtmlName, setUploadedHtmlName] = useState<string>("index.html");
   const htmlInputRef = useRef<HTMLInputElement>(null);
 
   // Moe Mascot state
@@ -598,11 +598,11 @@ export default function App() {
     e.target.value = '';
   };
 
-  // Pack edited config back and download index.release.html
+  // Pack edited config back and download index.edited.html
   const handleDownloadHtml = () => {
     if (!uploadedHtmlContent) {
-      showToast('⚠️ 下载失败：必须先上传 index.release.html 文件后才可以进行打包下载！', 'error');
-      setMascotMessage("哎呀！你还没有上传 index.release.html 呢～ 必须先上传已有的 HTML 文件，小萌才能帮你把新配置打包进去并提供下载哦！🌸");
+      showToast('⚠️ 下载失败：必须先上传 index.html 文件后才可以进行打包下载！', 'error');
+      setMascotMessage("哎呀！你还没有上传 index.html 呢～ 必须先上传已有的 HTML 文件，小萌才能帮你把新配置打包进去并提供下载哦！🌸");
       setMascotExpression('sad');
       return;
     }
@@ -1575,7 +1575,7 @@ export default function App() {
           </div>
         </div>
         
-        {/* index.release.html Release Injector Tools */}
+        {/* index.html Release Injector Tools */}
         {activeTemplate.id === 'markdown_moe' ? (
           <div className="bg-gray-50/55 dark:bg-[#1a0f16]/60 border border-gray-200/50 dark:border-gray-800 rounded-3xl p-6 mb-8 shadow-inner transition-all animate-fade-in">
             <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
@@ -1585,7 +1585,7 @@ export default function App() {
                 </div>
                 <div>
                   <h3 className="text-sm font-black text-gray-500 dark:text-gray-400 flex items-center gap-1.5">
-                    📦 index.release.html 预发布端配置工具
+                    📦 index.html 预发布端配置工具
                   </h3>
                   <p className="mt-1 text-xs text-gray-400 dark:text-gray-500 font-medium max-w-2xl leading-relaxed">
                     当前选中的是 <strong>完整版（萌·Markdown 预览器）</strong>。此版本使用独立的 <code className="bg-gray-100 dark:bg-gray-950 px-1 py-0.5 rounded text-gray-500 font-mono text-2xs">config.json</code>，不支持将配置内嵌打包到 HTML。
@@ -1630,10 +1630,10 @@ export default function App() {
                 </div>
                 <div>
                   <h3 className="text-sm font-black text-[#4a353d] dark:text-white flex items-center gap-1.5">
-                    📦 index.release.html 预发布端配置工具 (v{APP_VERSION})
+                    📦 index.html 预发布端配置工具 (v{APP_VERSION})
                   </h3>
                   <p className="mt-1 text-xs text-gray-500 dark:text-gray-300 font-medium max-w-2xl leading-relaxed">
-                    必须先在右侧上传您现有的 <code className="px-1 py-0.5 rounded font-mono text-2xs font-bold" style={{ backgroundColor: activePalette.primaryAccent + '15', color: activePalette.primaryAccent }}>index.release.html</code> 文件，系统自动提取其中 <code className="px-1 py-0.5 rounded font-mono text-2xs font-bold" style={{ backgroundColor: activePalette.primaryAccent + '15', color: activePalette.primaryAccent }}>id="release-config"</code> 的 JSON 后方能允许重新打包下载。
+                    必须先在右侧上传您现有的 <code className="px-1 py-0.5 rounded font-mono text-2xs font-bold" style={{ backgroundColor: activePalette.primaryAccent + '15', color: activePalette.primaryAccent }}>index.html</code> 文件，系统自动提取其中 <code className="px-1 py-0.5 rounded font-mono text-2xs font-bold" style={{ backgroundColor: activePalette.primaryAccent + '15', color: activePalette.primaryAccent }}>id="release-config"</code> 的 JSON 后方能允许重新打包下载。
                   </p>
                 </div>
               </div>
@@ -1650,7 +1650,7 @@ export default function App() {
                   }}
                 >
                   <Upload className="h-4 w-4 shrink-0" style={{ color: activePalette.primaryAccent }} />
-                  <span>上传 index.release.html</span>
+                  <span>上传 index.html</span>
                 </button>
                 <input
                   id="input-html-hidden"
@@ -1695,7 +1695,7 @@ export default function App() {
             ) : (
               <div className="mt-4 flex items-center space-x-2 p-3.5 rounded-2xl bg-amber-50/20 border border-amber-200/20 text-xs text-amber-700 dark:text-amber-400">
                 <AlertCircle className="h-4 w-4 shrink-0 text-amber-500 animate-pulse" />
-                <span className="font-bold">⚠️ 请先上传 index.release.html 文件，仅上传或修改 config.json 无法下载打包文件。</span>
+                <span className="font-bold">⚠️ 请先上传 index.html 文件，仅上传或修改 config.json 无法下载打包文件。</span>
               </div>
             )}
           </div>

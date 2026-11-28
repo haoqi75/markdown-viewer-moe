@@ -34,6 +34,7 @@ Moe美化、强大功能的Markdown预览器
 
 - 🎀 **萌系主题** – 粉紫渐变、毛玻璃效果、浮动装饰、标题小图标
 - 🧊 **iOS 玻璃 UI** – V2 采用新版 iOS Liquid Glass 风格，透明、模糊与高光层次
+- 📖 **README 首页** – 构建时读取仓库 README，并用 marked + Prism 渲染为玻璃阅读页
 - 📑 **智能目录** – 自动提取 `h1~h6`，点击平滑滚动并自动关闭，滚动时 URL 自动更新
 - 🔗 **标题锚点** – h1~h6 左侧显示 🌸🌿🍀💮🌺🌻 可点击跳转图标，桌面 hover 显示
 - 🦘 **锚点导航** – 支持 Markdown `[text](#heading)` 锚点，点击平滑滚动不重载
@@ -61,11 +62,12 @@ Moe美化、强大功能的Markdown预览器
 - 🦊 **萌系吉祥物** – 可配置透明背景的右下角角色，为页面增添活力
 - 📝 **自定义页脚** – 支持 Markdown 的页脚内容，轻松添加版权或链接
 - 📚 **文档站** – 使用 VitePress 构建，集成 pagefind 中文搜索
-- 🧰 **JSON 配置编辑器** – `tools.html` 可视化编辑 `config.json` 和 `index.release.html`
+- 🧰 **JSON 配置编辑器** – `tools.html` 可视化编辑 `config.json` 和 `index.html`
 
 ## 🛠️ 技术栈
 - **[Vite](https://vite.dev/)** – V2 开发与生产构建
 - **[Vue 3](https://vuejs.org/)** + **TypeScript** – V2 查看器
+- **[marked](https://marked.js.org/)** + **[Prism.js](https://prismjs.com/)** – README 渲染与代码高亮
 - **[Sass (SCSS)](https://sass-lang.com/)** – 样式
 - **[Gulp](https://gulpjs.com/)** – Release 单文件内联
 - **[pnpm](https://pnpm.io/)** – 包管理（固定 12.23.0）

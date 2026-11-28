@@ -33,6 +33,9 @@ features:
   - icon: 🧊
     title: iOS 玻璃 UI
     details: V2 采用新版 iOS Liquid Glass 风格，透明、模糊与高光层次
+  - icon: 📖
+    title: README 首页
+    details: 构建时读取仓库 README，并用 marked + Prism 渲染为玻璃阅读页
   - icon: 📑
     title: 智能目录
     details: 自动提取 h1~h6，点击平滑滚动并自动关闭，滚动时 URL 自动更新
@@ -116,7 +119,7 @@ features:
     details: VitePress + pagefind 中文搜索，和主项目放在同一仓库
   - icon: 🧰
     title: JSON 配置编辑器
-    details: tools.html 可视化编辑 config.json 和 index.release.html
+    details: tools.html 可视化编辑 config.json 和 index.html
 ---
 
 此作品基于[AI Markdown](https://github.com/haoqi75/ai-markdown-old)（我的老版首页，项目已停止更新）生成和修复内容，专门给Moe爱好提供的Markdown预览器。功能增强，修复了老版本错误。

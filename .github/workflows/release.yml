@@ -138,7 +138,7 @@ jobs:
               echo ""
               echo ""
               echo "## 📥 下载"
-              echo "下载 \`index.release.html\`，用记事本编辑顶部 JSON 即可自定义 defaultUrl 和 aliases。"
+              echo "下载 \`index.html\`，用记事本编辑顶部 JSON 即可自定义 defaultUrl 和 aliases。"
               echo "下载 \`tools-vX.X.X.html\` 可以下载config.json编辑工具。"
               echo "文件 \`files-md5.txt\` 是验证文件，可验证官方构建（注意：主仓库和备份仓库此文件可能不一样）。"
             } > release_body.md
@@ -157,7 +157,7 @@ jobs:
           body_path: release_body.md
           prerelease: false
           files: |
-            ./dist/index.release.html
+            ./dist/index.html
             ./dist/tools-*.html
             ./dist/files-md5.txt
         env:
@@ -166,5 +166,5 @@ jobs:
       - name: Output summary
         run: |
           echo "## 部署完成" >> $GITHUB_STEP_SUMMARY
-          echo "已构建 index.release.html 并发布到 Releases" >> $GITHUB_STEP_SUMMARY
+          echo "已构建 index.html 并发布到 Releases" >> $GITHUB_STEP_SUMMARY
           echo "✅ Success"

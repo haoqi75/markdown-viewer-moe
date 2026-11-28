@@ -34,7 +34,7 @@ const FEATURES = [
   {
     emoji: '📦',
     title: 'Release 打包',
-    description: '读取 index.release.html 里的 release-config，修改后精准写回并下载新文件。',
+    description: '读取 index.html 里的 release-config，修改后精准写回并下载新文件。',
   },
   {
     emoji: '🔗',
@@ -166,7 +166,7 @@ export const AboutModal: React.FC<AboutModalProps> = ({
                 style={{ color: isDarkMode ? palette.darkText : palette.lightText }}
               >
                 萌·Markdown 的配套配置编辑器。把复杂的 <code>config.json</code> 变成可视化表单，
-                也能读取、修改并重新打包 <code>index.release.html</code>。
+                也能读取、修改并重新打包 <code>index.html</code>。
               </p>
               <p className="mt-2 text-xs font-bold" style={{ color: muted }}>
                 纯前端 · 单文件 · 所有配置都在浏览器本地处理

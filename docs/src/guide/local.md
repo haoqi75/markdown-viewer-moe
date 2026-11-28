@@ -57,7 +57,7 @@ pnpm dev:docs
 # V2 主程序：多文件输出 → dist/server/
 pnpm build
 
-# V2 Release：Vite 构建 → Gulp 打包并自动压缩 → dist/index.release.html
+# V2 Release：Vite 构建 → Gulp 打包并自动压缩 → dist/index.html
 pnpm build:release
 
 # 只重新压缩已生成的 Release 文件
@@ -84,7 +84,7 @@ pnpm build:release
 pnpm build:tools-release
 ```
 
-主程序 Release 会把 Vite 生成的 CSS、JS 内联进 `dist/index.release.html`。
+主程序 Release 会把 Vite 生成的 CSS、JS 内联进 `dist/index.html`。
 
 ::: tip
 文档站使用 pagefind 生成搜索索引。pagefind 没有 Android/Termux 的预编译二进制，在这些平台上 `pnpm build:docs` 可能在最后的搜索索引步骤失败，建议在桌面系统或 CI 中构建。
@@ -118,5 +118,5 @@ pnpm lint:tools
 | `tools/` | JSON 配置编辑器（React + Vite + TypeScript） |
 | `docs/` | 当前文档站（VitePress） |
 | `dist/server/` | V2 生产构建，多文件输出 |
-| `dist/index.release.html` | V2 单文件 Release |
+| `dist/index.html` | V2 单文件 Release |
 | `scripts/` | Tools 构建、图标注入、HTML 压缩和测试脚本 |
