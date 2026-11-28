@@ -1,6 +1,11 @@
-const fs = require('fs').promises;
-const path = require('path');
-const { minify } = require('html-minifier-terser');
+import fs from 'node:fs/promises';
+import path from 'node:path';
+import { fileURLToPath } from 'node:url';
+import htmlMinifierTerser from 'html-minifier-terser';
+
+const { minify } = htmlMinifierTerser;
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 /**
  * 压缩项目根目录 dist 下的 HTML 文件并覆盖原文件
@@ -19,8 +24,7 @@ async function minifyDistHtmlFile(targetFileName = 'index.html') {
       conservativeCollapse: false,
       removeComments: true,              // 清理 <!-- ... --> HTML 注释
       removeCommentsFromCDATA: true,     // 清理 CDATA 注释
-      // 内联脚本再次压缩；release.js 会用 JS 对象求值的方式读取 __CONFIG__，
-      // 因此允许 Terser 把 JSON 对象改写成更紧凑的 JS 字面量。
+      // 同时压缩内联脚本和样式
       minifyJS: {
         compress: true,
         mangle: true,
@@ -82,7 +86,13 @@ async function main() {
   }
 }
 
-main().catch((error) => {
-  console.error(error.message || error);
-  process.exitCode = 1;
-});
+const isMain = process.argv[1] && path.resolve(process.argv[1]) === __filename;
+
+if (isMain) {
+  main().catch((error) => {
+    console.error(error.message || error);
+    process.exitCode = 1;
+  });
+}
+
+export { main, minifyDistHtmlFile, resolveTargets };

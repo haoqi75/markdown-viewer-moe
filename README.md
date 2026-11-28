@@ -97,6 +97,7 @@
 ## ✨ 特色
 
 - 🎀 **萌系主题** – 粉紫渐变、毛玻璃效果、浮动装饰、标题小图标
+- 🧊 **iOS 玻璃 UI** – V2 采用新版 iOS Liquid Glass 风格，透明、模糊与高光层次
 - 📑 **智能目录** – 自动提取 `h1~h6`，点击平滑滚动并自动关闭，滚动时 URL 自动更新
 - 🔗 **标题锚点** – h1~h6 左侧显示 🌸🌿🍀💮🌺🌻 可点击跳转图标，桌面 hover 显示
 - 🦘 **锚点导航** – 支持 Markdown `[text](#heading)` 锚点，点击平滑滚动不重载
@@ -112,7 +113,7 @@
 - 🐱 **GitHub 图标** – 右上角猫咪图标直达仓库，吉祥物 hover 对话泡泡
 - ⚙️ **灵活配置** – `config.json` 轻松设置默认文档和别名映射
 - 🔧 **开发友好** – Vite + Vue 3 + TypeScript + SCSS，支持 `pnpm dev` 实时预览 + 热重载
-- 📦 **双形态交付** – 生产版多文件输出到 `dist/server/`，Release 版由 Gulp 打包为 `dist/index.release.html`
+- 📦 **双形态交付** – 生产版多文件输出到 `dist/server/`，Release 版由 Gulp 打包并经 `minify-html.js` 压缩为 `dist/index.release.html`
 - 🏷️ **版本号页脚** – 页脚自动显示版本号和 Git 提交 hash，方便追踪部署版本
 - 📱 **移动端主题色** – 自动适配浏览器顶部主题色为萌粉色
 - ⋯ **移动端更多菜单** – 小屏下 GitHub、RAW、关于等页头图标收进「⋯」菜单，避免图标拥挤
@@ -168,7 +169,7 @@ markdown-viewer-moe/
 ├── images/                  # README / 文档图片
 ├── scripts/
 │   ├── copy-tools.js       # Tools 复制与图标注入
-│   ├── minify-html.js      # Tools HTML 压缩
+│   ├── minify-html.js      # Release / Tools HTML 压缩
 │   └── run-tests.js        # 测试入口
 ├── src/                    # V2 主程序源码（Vite + Vue + TypeScript + SCSS）
 │   ├── index.html

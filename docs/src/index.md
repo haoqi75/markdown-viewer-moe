@@ -30,6 +30,9 @@ features:
   - icon: 🎀
     title: 萌系主题
     details: 粉紫渐变、毛玻璃效果、浮动装饰、标题小图标
+  - icon: 🧊
+    title: iOS 玻璃 UI
+    details: V2 采用新版 iOS Liquid Glass 风格，透明、模糊与高光层次
   - icon: 📑
     title: 智能目录
     details: 自动提取 h1~h6，点击平滑滚动并自动关闭，滚动时 URL 自动更新
@@ -77,7 +80,7 @@ features:
     details: Vite + Vue 3 + TypeScript + SCSS，`pnpm dev` 实时预览 + 热重载
   - icon: 📦
     title: 双形态交付
-    details: 生产版多文件输出到 dist/server，Release 版由 Gulp 打包为 dist/index.release.html
+    details: 生产版多文件输出到 dist/server，Release 版由 Gulp 打包并经 minify-html.js 压缩为单文件
   - icon: 🏷️
     title: 版本号页脚
     details: 页脚自动显示版本号和 Git 提交 hash，方便追踪部署版本

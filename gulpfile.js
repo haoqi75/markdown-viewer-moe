@@ -1,7 +1,11 @@
-const gulp = require('gulp');
-const fs = require('node:fs');
-const path = require('node:path');
+import gulp from 'gulp';
+import fs from 'node:fs';
+import path from 'node:path';
+import { fileURLToPath } from 'node:url';
+import { minifyDistHtmlFile } from './scripts/minify-html.js';
 
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 const rootDir = __dirname;
 const serverDir = path.join(rootDir, 'dist', 'server');
 const serverHtmlPath = path.join(serverDir, 'index.html');
@@ -113,5 +117,11 @@ async function packRelease() {
   console.log(`✅ Release 单文件已生成: ${releasePath} (${Buffer.byteLength(releaseHtml)} 字节)`);
 }
 
-exports.release = gulp.series(packRelease);
-exports.default = exports.release;
+async function minifyRelease() {
+  await minifyDistHtmlFile(path.basename(releasePath));
+}
+
+export { minifyRelease as 'minify-html' };
+export { minifyRelease as minifyHtml };
+export const release = gulp.series(packRelease, minifyRelease);
+export default release;

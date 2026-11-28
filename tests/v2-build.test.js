@@ -1,17 +1,27 @@
 'use strict';
 
-const { test } = require('node:test');
-const assert = require('node:assert/strict');
-const fs = require('node:fs');
-const path = require('node:path');
-const { execFileSync } = require('node:child_process');
+import { test } from 'node:test';
+import assert from 'node:assert/strict';
+import fs from 'node:fs';
+import path from 'node:path';
+import { execFileSync } from 'node:child_process';
+import { fileURLToPath } from 'node:url';
 
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 const ROOT = path.resolve(__dirname, '..');
 const SERVER_DIR = path.join(ROOT, 'dist', 'server');
 const SERVER_HTML = path.join(SERVER_DIR, 'index.html');
 const RELEASE_HTML = path.join(ROOT, 'dist', 'index.release.html');
 
 test('V2 构建：Vite 多文件输出与 Gulp 单文件 Release', { timeout: 120000 }, () => {
+    const pkg = JSON.parse(fs.readFileSync(path.join(ROOT, 'package.json'), 'utf8'));
+    const gulpSource = fs.readFileSync(path.join(ROOT, 'gulpfile.js'), 'utf8');
+    assert.match(pkg.scripts['build:release'], /gulp release/, 'Release 构建应由 Gulp 执行');
+    assert.match(gulpSource, /from '\.\/scripts\/minify-html\.js'/, 'gulpfile 应引入 minify-html');
+    assert.match(gulpSource, /as 'minify-html'/, '应提供 gulp minify-html 任务');
+    assert.match(gulpSource, /gulp\.series\(packRelease, minifyRelease\)/, 'release 任务应自动压缩');
+
     execFileSync(
         process.platform === 'win32' ? 'pnpm.cmd' : 'pnpm',
         ['run', 'build:release'],
@@ -42,5 +52,6 @@ test('V2 构建：Vite 多文件输出与 Gulp 单文件 Release', { timeout: 12
     assert.ok(!releaseHtml.includes('href="./assets/'), 'Release 仍引用外部 CSS');
     assert.ok(releaseHtml.includes('href="data:image/svg+xml;base64,'), 'Release 未内联 favicon');
     assert.ok(!releaseHtml.includes('href="./favicon'), 'Release 仍引用外部 favicon');
+    assert.ok(!releaseHtml.includes('\n'), 'Release 未压缩为单行');
     assert.ok(releaseHtml.includes('2.0.0-rc.0'), 'Release 未注入 v2 版本');
 });

@@ -11,10 +11,13 @@
  * validation.txt 已被 .gitignore 忽略，用于本地/CI 留档。
  */
 
-const fs = require('node:fs');
-const path = require('node:path');
-const { spawn, execFileSync } = require('node:child_process');
+import fs from 'node:fs';
+import path from 'node:path';
+import { spawn, execFileSync } from 'node:child_process';
+import { fileURLToPath } from 'node:url';
 
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 const ROOT = path.resolve(__dirname, '..');
 const VALIDATION_FILE = path.join(ROOT, 'validation.txt');
 const TEST_DIR = path.join(ROOT, 'tests');

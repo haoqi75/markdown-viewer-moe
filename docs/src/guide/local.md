@@ -57,8 +57,11 @@ pnpm dev:docs
 # V2 主程序：多文件输出 → dist/server/
 pnpm build
 
-# V2 Release：Vite 构建后由 Gulp 打包单文件 → dist/index.release.html
+# V2 Release：Vite 构建 → Gulp 打包并自动压缩 → dist/index.release.html
 pnpm build:release
+
+# 只重新压缩已生成的 Release 文件
+pnpm exec gulp minify-html
 
 # JSON 编辑器 → dist/tools.html
 pnpm build:tools
