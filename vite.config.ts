@@ -44,22 +44,35 @@ function readmeImagesPlugin(): Plugin {
   };
 }
 
-export default defineConfig({
-  root: path.join(rootDir, 'src'),
-  publicDir: path.join(rootDir, 'public'),
-  base: './',
-  plugins: [vue(), readmeImagesPlugin()],
-  define: {
-    __APP_VERSION__: JSON.stringify(pkg.version),
-  },
-  build: {
-    outDir: path.join(rootDir, 'dist/server'),
-    emptyOutDir: true,
-    assetsDir: 'assets',
-    target: 'es2020',
-  },
-  server: {
-    port: 8520,
-    host: '0.0.0.0',
-  },
+export default defineConfig(({ mode }) => {
+  const isRelease = mode === 'release';
+  const pageInputs = isRelease
+    ? { main: path.join(rootDir, 'src', 'index.html') }
+    : {
+        main: path.join(rootDir, 'src', 'index.html'),
+        about: path.join(rootDir, 'src', 'about.html'),
+      };
+
+  return {
+    root: path.join(rootDir, 'src'),
+    publicDir: path.join(rootDir, 'public'),
+    base: './',
+    plugins: [vue(), readmeImagesPlugin()],
+    define: {
+      __APP_VERSION__: JSON.stringify(pkg.version),
+    },
+    build: {
+      outDir: path.join(rootDir, 'dist/server'),
+      emptyOutDir: true,
+      assetsDir: 'assets',
+      target: 'es2020',
+      rollupOptions: {
+        input: pageInputs,
+      },
+    },
+    server: {
+      port: 8520,
+      host: '0.0.0.0',
+    },
+  };
 });

@@ -12,7 +12,18 @@ const __dirname = path.dirname(__filename);
 const ROOT = path.resolve(__dirname, '..');
 const SERVER_DIR = path.join(ROOT, 'dist', 'server');
 const SERVER_HTML = path.join(SERVER_DIR, 'index.html');
+const SERVER_ABOUT = path.join(SERVER_DIR, 'about.html');
 const RELEASE_HTML = path.join(ROOT, 'dist', 'index.html');
+const PNPM = process.platform === 'win32' ? 'pnpm.cmd' : 'pnpm';
+
+function runPnpm(script) {
+    execFileSync(PNPM, ['run', script], {
+        cwd: ROOT,
+        encoding: 'utf8',
+        stdio: 'pipe',
+        timeout: 110000,
+    });
+}
 
 test('V2 构建：Vite 多文件输出与 Gulp 单文件 Release', { timeout: 120000 }, () => {
     const pkg = JSON.parse(fs.readFileSync(path.join(ROOT, 'package.json'), 'utf8'));
@@ -22,16 +33,7 @@ test('V2 构建：Vite 多文件输出与 Gulp 单文件 Release', { timeout: 12
     assert.match(gulpSource, /as 'minify-html'/, '应提供 gulp minify-html 任务');
     assert.match(gulpSource, /gulp\.series\(packRelease, minifyRelease\)/, 'release 任务应自动压缩');
 
-    execFileSync(
-        process.platform === 'win32' ? 'pnpm.cmd' : 'pnpm',
-        ['run', 'build:release'],
-        {
-            cwd: ROOT,
-            encoding: 'utf8',
-            stdio: 'pipe',
-            timeout: 110000,
-        }
-    );
+    runPnpm('build:release');
 
     assert.ok(fs.existsSync(SERVER_HTML), '缺少 dist/server/index.html');
 
@@ -55,8 +57,18 @@ test('V2 构建：Vite 多文件输出与 Gulp 单文件 Release', { timeout: 12
     assert.ok(!releaseHtml.includes('href="./favicon'), 'Release 仍引用外部 favicon');
     assert.ok(releaseHtml.includes('.callout-note'), 'Release 缺少 GitHub callout 样式');
     assert.ok(
-        releaseHtml.includes('raw.githubusercontent.com/haoqi75/markdown-viewer-moe/refs/heads/main/images/'),
+        releaseHtml.includes('raw.githubusercontent.com/haoqi75/markdown-viewer-moe/main/images/'),
         'Release 模式应使用远程 README 图片'
     );
     assert.ok(releaseHtml.includes('2.0.0-rc.0'), 'Release 未注入 v2 版本');
+    assert.ok(releaseHtml.includes('?p=about'), 'Release 未嵌入关于页路由');
+    assert.ok(releaseHtml.includes('纯静态的 Markdown 阅读器'), 'Release 未嵌入关于页内容');
+
+    runPnpm('build');
+
+    assert.ok(fs.existsSync(SERVER_ABOUT), '缺少 dist/server/about.html');
+    const aboutHtml = fs.readFileSync(SERVER_ABOUT, 'utf8');
+    assert.match(aboutHtml, /data-page="about"/, 'about.html 未标记关于页入口');
+    assert.match(aboutHtml, /src="\.\/assets\/[^"]+\.js"/, 'about.html 未引用 Vite JS 产物');
+    assert.match(aboutHtml, /href="\.\/assets\/[^"]+\.css"/, 'about.html 未引用 Vite CSS 产物');
 });

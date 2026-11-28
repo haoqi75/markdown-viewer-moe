@@ -7,7 +7,7 @@ pnpm install            # install deps (pnpm 12+, Node 26+; exact pins in packag
 pnpm test               # node:test via scripts/run-tests.js → also writes validation.txt (gitignored)
 
 pnpm dev                # Vite + Vue dev server on :8520
-pnpm build              # Vite production build → dist/server/ (multi-file)
+pnpm build              # Vite production build → dist/server/ (index.html + about.html)
 pnpm build:release      # Vite build + Gulp inline + minify → dist/index.html
 gulp minify-html        # re-minify dist/index.html only
 pnpm start               # serve dist/server/ with server.js
@@ -47,28 +47,30 @@ A single root `pnpm-lock.yaml` covers root + `tools/`. Toolchain pins: `packageM
 | Path | Role |
 |------|------|
 | `src/index.html` | Vite entry HTML |
-| `src/main.ts` | Mounts the Vue app and imports SCSS |
-| `src/App.vue` | iOS Liquid Glass app shell composed from `src/components` |
-| `src/components/` | `AppHeader`, `ReaderView`, `AppDock`, `AppFooter`, `AmbientBackground` |
+| `src/about.html` | Vite entry for the production about page (`dist/server/about.html`) |
+| `src/main.ts` | Mounts the Vue app and imports SCSS; both HTML entries share it |
+| `src/App.vue` | iOS Liquid Glass app shell; selects `AboutView` from `data-page` or `?p=about` |
+| `src/components/` | `AppHeader`, `ReaderView`, `AboutView`, `AppDock`, `AppFooter`, `AmbientBackground` |
 | `src/composables/` | `useTheme` (persisted light/dark) and `useReadme` (README loading/rendering) |
 | `src/utils/` | `markdown` (GitHub callouts) and `prism` (code highlighting) |
 | `src/style.scss` | SCSS entry; `@use`s partials in `src/styles/` |
-| `src/styles/` | `tokens`, `base`, `topbar`, `reader`, `markdown`, `callouts`, `dock`, `animations`, `responsive` |
+| `src/styles/` | `tokens`, `base`, `topbar`, `reader`, `markdown`, `callouts`, `about`, `dock`, `animations`, `responsive` |
 | `src/env.d.ts` | Vite/Vue/global version types |
-| `vite.config.ts` | Vite root `src`; outDir `dist/server`; base `./`; serves/copies root `images/` for README images |
+| `vite.config.ts` | Vite root `src`; outDir `dist/server`; base `./`; normal builds include `index.html` + `about.html`, release builds only `index.html`; serves/copies root `images/` for README images |
 | `gulpfile.js` | Inlines Vite CSS/JS and linked image assets into `dist/index.html` |
 | `server.js` | Static server for `dist/server/` |
 
 Build pipeline:
 
-1. `vite build` compiles `src` into `dist/server/index.html` + hashed `assets/`.
-2. `pnpm build:release` then runs Gulp, inlining CSS/JS and linked images into `dist/index.html`.
-3. Gulp's `minify-html` task calls `scripts/minify-html.js` to compress the final Release HTML; `gulp release` includes it by default.
-4. The release artifact is a single minified file in `dist/`; production is multi-file in `dist/server/`.
+1. Normal `vite build` compiles `src/index.html` and `src/about.html` into `dist/server/` + hashed `assets/`; `about.html` is directly accessible on the production server.
+2. `pnpm build:release` runs Vite in `release` mode (only the main entry), then Gulp inlines CSS/JS and linked images into `dist/index.html`.
+3. The release bundle includes `AboutView`, so `dist/index.html?p=about` works without a separate `about.html` file. Normal production uses `dist/server/about.html`.
+4. Gulp's `minify-html` task calls `scripts/minify-html.js` to compress the final Release HTML; `gulp release` includes it by default.
+5. The release artifact is a single minified file in `dist/`; production is multi-file in `dist/server/`.
 
 The v2 app currently renders the repository root `README.md` as the homepage. `marked` handles Markdown and Prism handles code blocks. Relative README images use local `./images/` in normal builds and remote GitHub raw URLs in `--mode release` builds, keeping the release HTML self-contained apart from those external images.
 
-Legacy viewer features (routing, TOC, themes, about page, RAW copy, dark mode, update checker) are **not yet ported**; do not document them as currently available until they are implemented in `src`.
+Legacy viewer features (routing, TOC, themes, RAW copy, update checker) are **not yet ported**; do not document them as currently available until they are implemented in `src`.
 
 ## tools/ build pipeline (`tools/gulpfile.js`)
 

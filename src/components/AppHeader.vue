@@ -1,13 +1,23 @@
 <script setup lang="ts">
 import { useTheme } from '../composables/useTheme';
 
+withDefaults(defineProps<{
+  aboutHref?: string;
+  homeHref?: string;
+  aboutActive?: boolean;
+}>(), {
+  aboutHref: './about.html',
+  homeHref: './',
+  aboutActive: false,
+});
+
 const version = __APP_VERSION__;
 const { isDark, toggleTheme } = useTheme();
 </script>
 
 <template>
   <header class="topbar glass">
-    <a class="brand" href="./" aria-label="萌·Markdown V2 首页">
+    <a class="brand" :href="homeHref" aria-label="萌·Markdown V2 首页">
       <span class="brand-mark">
         <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
           <path d="M12 2.8l2.35 6.85L21.2 12l-6.85 2.35L12 21.2l-2.35-6.85L2.8 12l6.85-2.35L12 2.8z" fill="currentColor"/>
@@ -21,6 +31,20 @@ const { isDark, toggleTheme } = useTheme();
 
     <div class="topbar-actions">
       <span class="version-pill">v{{ version }}</span>
+      <a
+        class="icon-button"
+        :class="{ 'is-active': aboutActive }"
+        :href="aboutHref"
+        :aria-current="aboutActive ? 'page' : undefined"
+        title="关于"
+        aria-label="关于"
+      >
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true">
+          <circle cx="12" cy="12" r="9"/>
+          <path d="M12 10.5v6"/>
+          <path d="M12 7.5h.01"/>
+        </svg>
+      </a>
       <button
         type="button"
         class="icon-button"

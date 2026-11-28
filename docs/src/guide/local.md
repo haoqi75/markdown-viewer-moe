@@ -117,6 +117,6 @@ pnpm lint:tools
 | `src/` | V2 主预览器源码（Vite + Vue + TypeScript + SCSS） |
 | `tools/` | JSON 配置编辑器（React + Vite + TypeScript） |
 | `docs/` | 当前文档站（VitePress） |
-| `dist/server/` | V2 生产构建，多文件输出 |
-| `dist/index.html` | V2 单文件 Release |
+| `dist/server/` | V2 生产构建，多文件输出（含 `index.html`、`about.html`） |
+| `dist/index.html` | V2 单文件 Release，可用 `?p=about` 打开关于页 |
 | `scripts/` | Tools 构建、图标注入、HTML 压缩和测试脚本 |

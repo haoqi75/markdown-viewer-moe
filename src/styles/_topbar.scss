@@ -96,9 +96,14 @@
   height: 18px;
 }
 
-.icon-button:hover {
+.icon-button:hover,
+.icon-button.is-active {
   transform: translateY(-1px) scale(1.04);
   background: var(--glass-strong);
   box-shadow: var(--shadow-soft);
+}
+
+.icon-button.is-active {
+  color: var(--accent);
 }
 

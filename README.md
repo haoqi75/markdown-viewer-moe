@@ -104,7 +104,7 @@
 - 🦘 **锚点导航** – 支持 Markdown `[text](#heading)` 锚点，点击平滑滚动不重载
 - 🛣️ **别名路由** – 支持 `?p=test` 形式的参数别名，无需修改服务器配置
 - 💕 **萌系错误页** – 加载失败时显示吉祥物 + 大号状态码 + 中文提示
-- ℹ️ **关于页面** – 通过页头 GitHub 图标旁的「关于」按钮或 `/?p=about` 查看项目介绍
+- ℹ️ **关于页面** – 通过页头「关于」按钮、生产版 `about.html` 或单文件 Release 的 `?p=about` 查看项目介绍
 - 🔄 **检查更新** – 关于页通过 GitHub Releases API 检查最新版本，内置频率限制提示与结果缓存
 - 📋 **复制 RAW 链接** – 页头按钮一键复制当前 Markdown 原始地址，可通过 `showRawCopyButton` 关闭
 - 🐾 **加载动画** – 加载中显示 loading.png 弹跳吉祥物 + spinner
@@ -178,6 +178,7 @@ markdown-viewer-moe/
 │   ├── utils/               # Markdown callout 与 Prism
 │   ├── styles/              # SCSS partials
 │   ├── index.html
+│   ├── about.html
 │   ├── App.vue
 │   ├── main.ts
 │   ├── style.scss

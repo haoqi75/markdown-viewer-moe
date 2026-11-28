@@ -8,7 +8,7 @@ marked.setOptions({
 });
 
 const readmeImageBase = import.meta.env.MODE === 'release'
-  ? 'https://raw.githubusercontent.com/haoqi75/markdown-viewer-moe/refs/heads/main/images/'
+  ? 'https://raw.githubusercontent.com/haoqi75/markdown-viewer-moe/main/images/'
   : './images/';
 
 function rewriteReadmeImages(markdown: string): string {
